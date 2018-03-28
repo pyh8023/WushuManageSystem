@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>裁判员信息修改</title>
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+    	body {
+    		margin-top: 50px;
+    		margin-bottom: 70px;
+    		background: #EBEBEB;
+    	}
+    
+      .div_judge_msg {
+    		background: white;
+    	  padding: 30px 40px;
+    	  border-radius: 5px;
+    	  margin-bottom: 20px;
+    	  height: 500px;
+    	}
+    	
+    	.div_judge_msg h3 {
+    		 padding-bottom: 20px;
+    	}
+    </style>
+  </head>
+  <body>
+  	<!--导航条-->
+	  <nav class="navbar navbar-fixed-top navbar-inverse">
+	  <div class="container">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	    </div>
+	
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	      	<!--<li><a href="index.html">首页</a></li>-->
+	        <li><a href="../index.html">首页<span class="sr-only">(current)</span></a></li>
+	        <li class="dropdown active">
+          		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
+	          	<ul class="dropdown-menu">
+	            <li><a href="../admin/competition-manage.html">赛事管理</a></li>
+	            <li><a href="../admin/apply.html">报名报项</a></li>
+	            <li><a href="../delegation/delegation-manage.html">代表团管理</a></li>
+	            <li><a href="../athlet/athlet-manage.html">运动员管理</a></li>
+	            <li class="active"><a href="../admin/judge-manage.html">裁判员管理</a></li>
+	          	</ul>
+        	</li>
+	        <li><a href="../admin/competition-arrange-list.html">竞赛编排</a></li>
+	        <li class="dropdown">
+          		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
+	          	<ul class="dropdown-menu">
+	             <li><a href="../judge/grade-list.html">录入成绩</a></li>
+	            <li><a href="../admin/stage-msg.html">阶段信息</a></li>
+	            <li><a href="../admin/print-report.html">打印报表</a></li>
+	           </ul>
+        	</li>
+	        <li><a href="../admin/statistic-query.html">统计查询</a></li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	
+	
+	<ol class="breadcrumb">
+	  <li><a href="../index.html">首页</a></li>
+	  <li><a href="#">赛事准备</a></li>
+	  <li><a href="judge-manage.html">裁判员管理</a></li>
+	  <li><a href="#">裁判员信息修改</a></li>
+	</ol>
+	
+	<div class="container div_judge_msg  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+		<h3 align="center">裁判员信息修改</h3>
+		<form class="form-horizontal">
+		  <div class="form-group">
+		    <label for="judge_name" class="control-label col-sm-2 col-sm-offset-2">姓名</label>
+		    <div class="col-sm-5">
+		    	<input type="text" class="form-control" id="judge_name" placeholder="请输入裁判员姓名" value="张三" required>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="judge_sex" class="control-label col-sm-2 col-sm-offset-2">性别</label>
+		    <div class="col-sm-5">
+		    	<select class="form-control" id="judge_sex">
+		    		<option>男</option>
+		    		<option>女</option>
+		    	</select>
+		    </div>
+		  </div>
+		  <div class="form-group">
+		    <label for="judge_station" class="control-label col-sm-2 col-sm-offset-2">岗位</label>
+		    <div class="col-sm-5">
+		    	<select class="form-control" id="judge_station">
+		    		<option>总裁判长</option>
+		    		<option>副裁判长</option>
+		    		<option>裁判员</option>
+		    	</select>
+		    </div>
+		  </div>
+		  <div class="col-sm-offset-4">
+		  	<button type="submit" class="btn btn-primary" disabled="disabled">保存</button>
+		  	<button class="btn btn-primary">重置</button>
+		  </div>
+		</form>
+	</div>
+	
+	
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery-1.11.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../js/bootstrap.min.js"></script>
+    
+  </body>
+</html>
