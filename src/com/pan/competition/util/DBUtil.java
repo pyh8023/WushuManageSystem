@@ -22,9 +22,7 @@ public class DBUtil {
 			url=ps.getProperty("url");
 			username=ps.getProperty("username");
 			password=ps.getProperty("password");
-			System.out.print(driver+" "+url);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -39,12 +37,10 @@ public class DBUtil {
 		}
 	}
 	public void closeCon(Connection con) {
-		// TODO Auto-generated method stub
 		if(con!=null){
 			try {
 				con.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

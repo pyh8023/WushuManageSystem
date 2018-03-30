@@ -2,15 +2,13 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <head>    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>首页</title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="${ basePath }/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -89,25 +87,25 @@
 	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	      	<!--<li><a href="index.html">首页</a></li>-->
-	        <li class="active"><a href="index.html">首页<span class="sr-only">(current)</span></a></li>
+	        <li class="active"><a href="${ basePath }/index.jsp">首页<span class="sr-only">(current)</span></a></li>
 	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-		            <li><a href="admin/competition-manage.html" target="_self">赛事管理</a></li>
-		            <li><a href="admin/apply.html">报名报项</a></li>
-		            <li><a href="delegation/delegation-manage.html">代表团管理</a></li>
-		            <li><a href="judge/judge-manage.html">裁判员管理</a></li>
+		            <li><a href="${ basePath }/admin/competition/competition-manage.jsp" target="_self">赛事管理</a></li>
+		            <li><a href="${ basePath }/admin/apply.jsp">报名报项</a></li>
+		            <li><a href="${ basePath }/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
+		            <li><a href="${ basePath }/admin/judge/judge-manage.html">裁判员管理</a></li>
 	          	</ul>
         	</li>
-	        <li><a href="admin/competition-arrange-list.html">竞赛编排</a></li>
+	        <li><a href="${ basePath }/admin/competition-arrange.jsp">竞赛编排</a></li>
 	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	            <li><a href="judge/grade-list.html">录入成绩</a></li>
-	            <li><a href="admin/stage-msg.html">阶段信息</a></li>
+	            <li><a href="${ basePath }/admin/judge/grade-list.jsp">录入成绩</a></li>
+	            <li><a href="${ basePath }/admin/stage-msg.jsp">阶段信息</a></li>
 	          	</ul>
         	</li>
-	        <li><a href="admin/print-report.html">打印报表</a></li>
+	        <li><a href="${ basePath }/admin/print-report.jsp">打印报表</a></li>
 	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
@@ -224,8 +222,8 @@
   </div>
   	
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="js/jquery-1.11.1.min.js"></script>
+    <script src="${ basePath }/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="${ basePath }/js/bootstrap.min.js"></script>
  </body>
 </html>

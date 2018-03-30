@@ -12,7 +12,7 @@
 </head>
 <%
 	AthletService  athletService = new AthletService();
-	List<Athlet> list = athletService.querAthlet();
+	List<Athlet> list = athletService.queryAthlet();
 %>
 <body>
 	<c:forEach  items="<%=list %>" var="athlet">

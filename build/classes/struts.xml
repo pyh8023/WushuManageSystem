@@ -4,17 +4,21 @@
     "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-	
-	<package name="struts" namespace="/"  extends="struts-default">
+	<constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+	<package name="struts"  extends="struts-default">
 
    		<action name="test"  class="com.pan.competition.action.TestAction"> 
 			<result name="success">/test/test1.jsp</result>
 			<result name="failed">/test/test.jsp</result>
 		</action>
 		
-		<action name="login" class="com.pan.competition.action.LoginAction">
+		<action name="admin" class="com.pan.competition.action.AdminAction">
 			<result name="success">/index.jsp</result>
-			<result name="failde">/admin/login.jsp</result>
+			<result name="failed">/admin/login.jsp</result>
+		</action>
+		<action name="user"  class="com.pan.competition.action.UserAction"> 
+			<result name="success">/test/test1.jsp</result>
+			<result name="failed">/test/test.jsp</result>
 		</action>
    </package>
 </struts>

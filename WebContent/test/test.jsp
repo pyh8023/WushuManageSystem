@@ -9,5 +9,9 @@
 <body>
 <a href="test.action">test</a>
 <a href="test!execute2.action">test!execute2.action</a>
+<form action="user.action" method="post">
+<input type="text" >
+<input type="submit" value="提交"> 
+</form>
 </body>
 </html>

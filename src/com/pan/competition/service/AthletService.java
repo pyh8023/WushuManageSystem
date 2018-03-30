@@ -9,7 +9,7 @@ public class AthletService {
 
 	AthletDao athletDao = new AthletDao();
 	
-	public List<Athlet> querAthlet(){
+	public List<Athlet> queryAthlet(){
 		List<Athlet> list = athletDao.queryAthlet();
 		return list;
 	}
