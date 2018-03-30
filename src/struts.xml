@@ -5,16 +5,16 @@
 
 <struts>
 	<constant name="struts.enable.DynamicMethodInvocation" value="true"/>
-	<package name="struts"  extends="struts-default">
-
-   		<action name="test"  class="com.pan.competition.action.TestAction"> 
-			<result name="success">/test/test1.jsp</result>
-			<result name="failed">/test/test.jsp</result>
-		</action>
+	
+	<!--解决乱码    -->
+    <constant name="struts.i18n.encoding" value="UTF-8"></constant>
+    
+	<package name="struts"  namespace="/"  extends="json-default">
 		
 		<action name="admin" class="com.pan.competition.action.AdminAction">
-			<result name="success">/index.jsp</result>
-			<result name="failed">/admin/login.jsp</result>
+			<result name="success" type="json">
+				<param name="root">result</param>
+			</result>
 		</action>
 		<action name="user"  class="com.pan.competition.action.UserAction"> 
 			<result name="success">/test/test1.jsp</result>

@@ -20,7 +20,6 @@ public class AdminDao {
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				password = rs.getString("password");
-				System.out.println(password);
 				break;
 			}
 		} catch (Exception e) {
