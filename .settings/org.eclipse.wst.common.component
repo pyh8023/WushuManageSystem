@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="wushu">
+    <wb-module deploy-name="WushuManageSystem">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="wushu"/>
-        <property name="java-output-path" value="/wushu/build/classes"/>
+        <property name="context-root" value="WushuManageSystem"/>
+        <property name="java-output-path" value="/WushuManageSystem/build/classes"/>
     </wb-module>
 </project-modules>

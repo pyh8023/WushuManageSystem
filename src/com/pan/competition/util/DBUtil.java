@@ -31,12 +31,8 @@ public class DBUtil {
 		Connection con=DriverManager.getConnection(url, username, password);
 		return con;
 	}
-	public static void Close(Connection con)throws Exception{
-		if(con!=null){
-			con.close();
-		}
-	}
-	public void closeCon(Connection con) {
+	
+	public static void closeCon(Connection con) {
 		if(con!=null){
 			try {
 				con.close();
@@ -49,7 +45,6 @@ public class DBUtil {
       try {
 		System.out.println(DBUtil.getCon());
 	} catch (Exception e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
  	}

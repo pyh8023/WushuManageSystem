@@ -1,15 +1,15 @@
 package com.pan.competition.bean;
 
 public class Athlet {
-	private int id;
+	private String id;
 	private String name;
 	private String sex;
-	private int age;
-	private int delegation;
-	public int getId() {
+	private String age;
+	private String delegation;
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -24,17 +24,16 @@ public class Athlet {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	public int getAge() {
+	public String getAge() {
 		return age;
 	}
-	public void setAge(int age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
-	public int getDelegation() {
+	public String getDelegation() {
 		return delegation;
 	}
-	public void setDelegation(int delegation) {
+	public void setDelegation(String delegation) {
 		this.delegation = delegation;
 	}
-	
 }

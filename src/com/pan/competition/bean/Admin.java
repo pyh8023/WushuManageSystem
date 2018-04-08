@@ -16,6 +16,16 @@ public class Admin {
 		return password;
 	}
 
+	
+	public Admin(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
+	
+	public Admin() {
+		super();
+	}
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}

@@ -127,9 +127,9 @@
 	</nav>
 	
 	<ol class="breadcrumb">
-	  <li><a href="../index.html">首页</a></li>
+	  <li><a href="${ basePath }/index.jsp">首页</a></li>
 	  <li><a href="#">赛前准备</a></li>
-	  <li><a href="apply.html">报名报项</a></li>
+	  <li><a href="${ basePath }/admin/apply.jsp">报名报项</a></li>
 	</ol>
 	
 	<div id="content" class="col-md-offset-1 col-md-10"> 

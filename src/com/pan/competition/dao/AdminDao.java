@@ -3,35 +3,33 @@ package com.pan.competition.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import com.pan.competition.bean.Admin;
 import com.pan.competition.util.DBUtil;
 
 public class AdminDao {
 	
-	DBUtil dbcon = new DBUtil();
-	
-	public String queryAdmin(String username){
-		String password = null;
+	public boolean login(Admin admin){
 		Connection con = null;
 		try {
-			String sql = "select password from admin where username = ?";
-			con = dbcon.getCon();
+			String sql = "select username,password from admin";
+			con = DBUtil.getCon();
 			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, username);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				password = rs.getString("password");
-				break;
+				String username = rs.getString("username");
+				String password = rs.getString("password");
+				if(username.equals(admin.getUsername())&& password.equals(admin.getPassword()))
+					return true;
+				else if(username.equals(admin.getUsername()))
+					return false;
 			}
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{
-			try {
-				dbcon.closeCon(con);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			DBUtil.closeCon(con);
 		}
-		return password;
+		return false;
 	}
-	
 }

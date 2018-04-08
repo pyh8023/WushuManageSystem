@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page isELIgnored="false" %> 
 <html lang="zh-CN">
   <%
         String path = request.getContextPath();
@@ -56,8 +55,8 @@
 	      </ul>
 	      
 	      <ul class="nav navbar-nav navbar-right">
-	        <li class="active"><a href="login.jsp">登录</a></li>
-	        <li><a href="register.jsp">注册</a></li>
+	        <li class="active"><a href="${ basePath }/admin/login.jsp">登录</a></li>
+	        <li><a href="${ basePath }/admin/register.jsp">注册</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
@@ -95,7 +94,7 @@
 	
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="${ basePath }/js/jquery-1.11.1.min.js"></script>
+    <script src="${ basePath }/js/jquery-1.8.2.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="${ basePath }/js/bootstrap.min.js"></script>
     <script src="${ basePath }/customjs/login.js"></script>
