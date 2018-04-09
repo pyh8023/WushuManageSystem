@@ -7,13 +7,13 @@
   </welcome-file-list>
   
   <servlet>
-  	<servlet-name>ServletTest</servlet-name>
-  	<servlet-class>com.pan.competition.servlet.ServletTest</servlet-class>
+  	<servlet-name>LoginServlet</servlet-name>
+  	<servlet-class>com.pan.competition.servlet.LoginServlet</servlet-class>
   </servlet>
   
   <servlet-mapping>
-  	<servlet-name>ServletTest</servlet-name>
-  	<url-pattern>/ServletTest</url-pattern>
+  	<servlet-name>LoginServlet</servlet-name>
+  	<url-pattern>/servlet/LoginServlet</url-pattern>
   </servlet-mapping>
   
   <!-- <filter>
