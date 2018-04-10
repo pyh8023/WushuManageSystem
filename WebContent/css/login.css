@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+	body {
+   		margin-top: 90px;
+   		margin-bottom: 70px;
+   	}
+   	
+   	.div_login_button{
+   		padding: 0px;
+   	}
+   	
+   	.div_register_button {
+   		padding: 0px;
+   	}
+    	

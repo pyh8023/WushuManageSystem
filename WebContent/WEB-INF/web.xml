@@ -21,4 +21,12 @@
     <servlet-name>CompetitionServlet</servlet-name>
     <url-pattern>/servlet/CompetitionServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>EventServlet</servlet-name>
+    <servlet-class>com.pan.competition.servlet.EventServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EventServlet</servlet-name>
+    <url-pattern>/servlet/EventServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

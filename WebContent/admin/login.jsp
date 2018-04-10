@@ -14,6 +14,7 @@
 
     <!-- Bootstrap -->
     <link href="${ basePath }/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${ basePath }/css/login.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,16 +23,6 @@
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-    <style type="text/css">
-    	body {
-    		margin-top: 90px;
-    		margin-bottom: 70px;
-    	}
-    	
-    	.div_login_button{
-    		padding: 0px;
-    	}
-    </style>
   </head>
   <body>
 	  <nav class="navbar navbar-fixed-top navbar-inverse">

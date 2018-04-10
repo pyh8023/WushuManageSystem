@@ -24,6 +24,7 @@
     <!-- Bootstrap -->
     <link href="${ basePath }/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="${ basePath }/css/bootstrap-datepicker3.min.css" />
+    <link rel="stylesheet" href="${ basePath }/css/competition-add.css" />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,47 +32,6 @@
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
-    <style type="text/css">
-    	
-    	body {
-    		margin-top: 50px;
-    		margin-bottom: 70px;
-    		background: #EBEBEB;
-    	}
-    	
-    	.content {
-    		background: white;
-    	  padding: 30px 40px;
-    	  border-radius: 5px;
-    	  margin-bottom: 20px;
-    	}
-    	    	
-    	.content table {
-    		background: white;
-    		text-align: center; 
-    	}
-    	
-    	.content table thead{
-    		background: #337AB7;
-    		color: white;
-    	}
-    	
-    	.content table thead tr th,td{
-    		text-align: center;
-    		vertical-align: middle!important;
-    	}
-    	
-    	#competition_date_div div{
-    		width:10%;
-    		display: inline;
-    		text-align: center;
-    	}
-    	
-    	#competition_date_div input{
-    		width:45%;
-    	}
-    	
     </style>
   </head>
   <body>
@@ -100,7 +60,7 @@
 		            <li class="active"><a href="${ basePath }/admin/competition/competition-manage.jsp" target="_self">赛事管理</a></li>
 		            <li><a href="${ basePath }/admin/apply.jsp">报名报项</a></li>
 		            <li><a href="${ basePath }/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
-		            <li><a href="${ basePath }/admin/judge/judge-manage.html">裁判员管理</a></li>
+		            <li><a href="${ basePath }/admin/judge/judge-manage.jsp">裁判员管理</a></li>
 	          	</ul>
         	</li>
 	        <li><a href="${ basePath }/admin/competition-arrange.jsp">竞赛编排</a></li>
@@ -122,7 +82,7 @@
 	  <li><a href="${ basePath }/index.html">首页</a></li>
 	  <li><a href="#">赛前准备</a></li>
 	  <li><a href="${ basePath }/admin/competition/competition-manage.jsp">赛事管理</a></li>
-	  <li><a href="${ basePath }/admin/competition/competition-change.jsp">赛事修改</a></li>
+	  <li><a href="#">赛事修改</a></li>
 	</ol>
 	
 	<div class="container content  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
@@ -146,8 +106,8 @@
 				  <div class="form-group form-inline" id="distpicker">
 				    <label for="competition_location" class="control-label">地点</label>
 				    <div>
-				    	<select class="form-control" id="province" name="province" value="${competition.province }"></select>
-				    	<select class="form-control" id="city" name="city" value="${competition.city }"></select>
+				    	<select class="form-control" id="province" name="province" data-province="${competition.province }"></select>
+				    	<select class="form-control" id="city" name="city" data-city="${competition.city }"></select>
 				    </div>
 				  </div>
 				  <div class="form-group">

@@ -60,7 +60,7 @@
 		            <li class="active"><a href="${ basePath }/admin/competition/competition-manage.jsp" target="_self">赛事管理</a></li>
 		            <li><a href="${ basePath }/admin/apply.jsp">报名报项</a></li>
 		            <li><a href="${ basePath }/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
-		            <li><a href="${ basePath }/admin/judge/judge-manage.html">裁判员管理</a></li>
+		            <li><a href="${ basePath }/admin/judge/judge-manage.jsp">裁判员管理</a></li>
 	          	</ul>
         	</li>
 	        <li><a href="${ basePath }/admin/competition-arrange.jsp">竞赛编排</a></li>
@@ -98,7 +98,7 @@
 			<tbody>
 				<c:forEach var="competition" items="<%=list %>">	
 					<tr>
-						<td><a href="competition-msg.jsp">${ competition.name }</a></td>
+						<td><a href="competition-msg.jsp?competition_id=${ competition.id }">${ competition.name }</a></td>
 						<td>${ competition.startDate }至 ${ competition.endDate }</td>
 						<td>${ competition.city }</td>
 						<td>${ competition.stadium }</td>

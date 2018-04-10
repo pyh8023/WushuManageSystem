@@ -34,9 +34,10 @@ public class EventDao {
 				event.setType(rs.getString("event_type"));
 				event.setEvent_group(rs.getString("event_group"));
 				event.setSex(rs.getString("event_sex"));
-				event.setMax_athlet_num(rs.getString("min_athlet_num"));
+				event.setMax_athlet_num(rs.getString("max_athlet_num"));
+				event.setMin_athlet_num(rs.getString("min_athlet_num"));
 				event.setMax_female_num(rs.getString("max_female_num"));
-				event.setMin_female_num(rs.getString("min_male_num"));
+				event.setMin_female_num(rs.getString("min_female_num"));
 				event.setMax_male_num(rs.getString("min_male_num"));
 				event.setMin_male_num(rs.getString("min_male_num"));
 				event.setCompetition_id(competition_id);
@@ -77,6 +78,7 @@ public class EventDao {
 			pstmt.setInt(11, Integer.parseInt(event.getMax_male_num()));
 			pstmt.setInt(12, Integer.parseInt(event.getCompetition_id()));
 			result = pstmt.executeUpdate();
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -93,6 +95,7 @@ public class EventDao {
 	 */
 	public boolean isExistEventName(String name,String competition_id) {
 		Connection con = null;
+		boolean result = false;
 		try {
 			con = DBUtil.getCon();
 			String sql = "select name from event where competition_id = ? and name = ?";
@@ -101,14 +104,15 @@ public class EventDao {
 			pstmt.setString(2, name);
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				return true;
+				result = true;
 			}
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		}finally{
 			DBUtil.closeCon(con);
 		}
-		return false;
+		return result;
 	}
 	
 	/**
@@ -120,6 +124,7 @@ public class EventDao {
 	 */
 	public boolean isExistEventName(String name,String competition_id,String event_id) {
 		Connection con = null;
+		boolean result = false;
 		try {
 			con = DBUtil.getCon();
 			String sql = "select event_id from event where competition_id = ? and name = ?";
@@ -129,14 +134,15 @@ public class EventDao {
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				if(!event_id.equals(rs.getInt("event_id")+""))
-					return true;
+					result = true;
 			}
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			DBUtil.closeCon(con);
 		}
-		return false;
+		return result;
 	}
 	
 	/**
@@ -146,6 +152,7 @@ public class EventDao {
 	 */
 	public boolean isExistEventNum(String num,String competition_id) {
 		Connection con = null;
+		boolean result = false;
 		try {
 			con = DBUtil.getCon();
 			String sql = "select name from event where event_num = ? and competition_id = ?";
@@ -154,14 +161,15 @@ public class EventDao {
 			pstmt.setInt(2, Integer.parseInt(competition_id));
 			ResultSet rs = pstmt.executeQuery();
 			if(rs.next()) {
-				return true;
+				result = true;
 			}
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			DBUtil.closeCon(con);
 		}
-		return false;
+		return result;
 	}
 	
 	/**
@@ -184,6 +192,7 @@ public class EventDao {
 				menuItem.setName(rs.getString("name"));
 				list.add(menuItem);
 			}
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -216,6 +225,7 @@ public class EventDao {
 			pstmt.setInt(10, Integer.parseInt(event.getMax_male_num()));
 			pstmt.setInt(11, Integer.parseInt(event.getId()));
 			result = pstmt.executeUpdate();
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -238,11 +248,46 @@ public class EventDao {
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, Integer.parseInt(event_id));
 			result = pstmt.executeUpdate();
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			DBUtil.closeCon(con);
 		}
 		return result;
+	}
+	
+	public Event getEventById(String event_id) {
+		Event event = null;
+		Connection con = null;
+		try {
+			con = DBUtil.getCon();
+			String sql = "select * from event where event_id = ?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(event_id));
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				event = new Event();
+				event.setId(event_id);
+				event.setName(rs.getString("name"));
+				event.setEvent_num(rs.getString("event_num"));
+				event.setType(rs.getString("event_type"));
+				event.setEvent_group(rs.getString("event_group"));
+				event.setSex(rs.getString("event_sex"));
+				event.setMax_athlet_num(rs.getString("max_athlet_num"));
+				event.setMin_athlet_num(rs.getString("min_athlet_num"));
+				event.setMax_female_num(rs.getString("max_female_num"));
+				event.setMin_female_num(rs.getString("min_female_num"));
+				event.setMax_male_num(rs.getString("max_male_num"));
+				event.setMin_male_num(rs.getString("min_male_num"));
+				event.setCompetition_id(rs.getInt("competition_id")+"");
+			}
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return event;
 	}
 }
