@@ -1,7 +1,21 @@
+<%@page import="com.pan.competition.bean.Competition"%>
+<%@page import="java.util.List"%>
+<%@page import="com.pan.competition.bean.Message"%>
+<%@page import="com.pan.competition.service.CompetitionService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
+ 	<%
+        CompetitionService competitionService = new CompetitionService();
+ 		Message<List<Competition>> message = competitionService.getCompetitionList();
+ 		List<Competition> list = null;
+ 		if(message.getCode().equals("200")){
+ 			list = message.getData();
+ 		}
+    %>
+  <head>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +25,7 @@
 
     <!-- Bootstrap -->
     <link href="${ basePath }/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${ basePath }/css/competition-manage.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -18,37 +33,6 @@
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
-    <style type="text/css">
-    	
-    	body {
-    		margin-top: 50px;
-    		margin-bottom: 70px;
-    		background: #EBEBEB;
-    	}
-    	
-    	.content {
-    		background: white;
-    	  padding: 30px 40px;
-    	  border-radius: 5px;
-    	  margin-bottom: 20px;
-    	}
-    	    	
-    	.content table {
-    		background: white;
-    		text-align: center; 
-    	}
-    	
-    	.content table thead{
-    		background: #337AB7;
-    		color: white;
-    	}
-    	
-    	.content table thead tr th,td{
-    		text-align: center;
-    		vertical-align: middle!important;
-    	}
-    </style>
   </head>
   <body>  
 	  <!--导航条-->
@@ -112,51 +96,25 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td><a href="competition-msg.html">第十三届全运会武术套路比赛</a></td>
-					<td>2018-02-15 至 2018-03-01</td>
-					<td>北京</td>
-					<td>北京朝阳区武术场馆</td>
-					<td>
-						<button class="btn btn-primary btn-xs" id="update_competition_btn">修改</button>
-					</td>
-				</tr>
-				<tr>
-					<td><a href="competition-msg.html">第十二届全运会武术套路比赛</a></td>
-					<td>2018-02-15 至 2018-03-01</td>
-					<td>北京</td>
-					<td>北京朝阳区武术场馆</td>
-					<td>
-						<button class="btn btn-primary btn-xs" id="update_competition_btn">修改</button>
-					</td>
-				</tr>
-				<tr>
-					<td><a href="competition-msg.html">第十一届全运会武术套路比赛</a></td>
-					<td>2018-02-15 至 2018-03-01</td>
-					<td>北京</td>
-					<td>北京朝阳区武术场馆</td>
-					<td>
-						<button class="btn btn-primary btn-xs" id="update_competition_btn">修改</button>
-					</td>
-				</tr>
-				<tr>
-					<td><a href="competition-msg.html">第十届全运会武术套路比赛</a></td>
-					<td>2018-02-15 至 2018-03-01</td>
-					<td>北京</td>
-					<td>北京朝阳区武术场馆</td>
-					<td>
-						<button class="btn btn-primary btn-xs" id="update_competition_btn">修改</button>
-					</td>
-				</tr>
+				<c:forEach var="competition" items="<%=list %>">	
+					<tr>
+						<td><a href="competition-msg.jsp">${ competition.name }</a></td>
+						<td>${ competition.startDate }至 ${ competition.endDate }</td>
+						<td>${ competition.city }</td>
+						<td>${ competition.stadium }</td>
+						<td>
+							<a class="btn btn-primary btn-xs" href="competition-change.jsp?id=${ competition.id }">修改</a>
+						</td>
+					</tr>
+				</c:forEach>
 			</tbody>
 		</table>
-		<a class="btn btn-primary" href="competition-add.html">添加赛事</a>
+		<a class="btn btn-primary" href="competition-add.jsp">添加赛事</a>
 	</div>
 	
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="${ basePath }/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="${ basePath }/js/bootstrap.min.js"></script>
-    
  </body>
 </html>

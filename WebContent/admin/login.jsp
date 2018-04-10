@@ -64,24 +64,24 @@
 	
 	<!--登录表单-->
 	<div class="container-fluid col-md-4 col-md-offset-4">
-		<form id="form_login" method="post">
+		<form id="form_login" method="post" action="/WushuManageSystem/servlet/LoginServlet">
 			<h2 class="text-center" style="margin-bottom: 30px;">登录</h2>
 		  <div class="form-group">
 		    <label for="username" class="control-label">用户名</label>
 		    <div>
-		    	<input type="text" class="form-control" id="username" placeholder="请输入用户名" required autofocus>
+		    	<input type="text" class="form-control" name="username" placeholder="请输入用户名" required autofocus>
 		    </div>
 		  </div>
 		  <div class="form-group">
 		    <label for="password" class="control-label">密码</label>
 		    <div>
-		    	<input type="password" class="form-control" id="password" placeholder="请输入密码" required>
+		    	<input type="password" class="form-control" name="password" placeholder="请输入密码" required>
 		    </div>
 		  </div>
 		   <div class="form-group">
 		    <label for="verification_code" class="control-label">验证码</label>
 		    <div class="form-inline">
-		    	<input type="number" class="form-control" id="verification_code" placeholder="请输入验证码" required>
+		    	<input type="number" class="form-control" name="verification_code" placeholder="请输入验证码" required>
 		    	&nbsp;&nbsp;
 		    	<img src="${ basePath }/image.jsp" id="identity" onclick="reloadImage()" title="看不清，点击换一张">
 		    </div>
@@ -92,12 +92,20 @@
 		</form>
 	</div>
 	
-
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="${ basePath }/js/jquery-1.8.2.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="${ basePath }/js/bootstrap.min.js"></script>
-    <script src="${ basePath }/customjs/login.js"></script>
-    
+    <%-- <script src="${ basePath }/customjs/login.js"></script> --%>
+    <script type="text/javascript">
+    	var msg = "${ login_msg }";
+    	if(msg !=null && msg!=""){
+    		alert(msg);
+    	}
+    	
+    	function reloadImage(){
+    		  document.getElementById("identity").src = "/WushuManageSystem/image.jsp?"+Math.random(); //Math.random()方法非常重要，它使每次的请求都不同以便重新发送。如果每次的请求都一样，那么不会重新生成页面 
+    	}
+    </script>
   </body>
 </html>

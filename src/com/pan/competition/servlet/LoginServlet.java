@@ -40,9 +40,7 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setCharacterEncoding("UTF-8");  
-		response.setHeader("Content-type", "text/html;charset=UTF-8");  
-		PrintWriter out = response.getWriter();  
+		request.setCharacterEncoding("UTF-8"); 
 		String code = (String) request.getSession().getAttribute("sRand");
 		Admin admin = new Admin();
 		String username = request.getParameter("username");
@@ -51,25 +49,19 @@ public class LoginServlet extends HttpServlet {
 		admin.setUsername(username);
 		admin.setPassword(password);
 		
-		String result;
-		Gson gson = new Gson();
 		if(code!=null && code.equals(verificationCode)){
 			AdminService loginService = new AdminService();
 			System.out.println(loginService.login(admin));
 			if(loginService.login(admin)){
-				Message<String> message = new Message<String>(Constant.QUERY_SUCCESS_RESPONSE_CODE, "登录成功", "");
-				result = gson.toJson(message, Message.class);
+				response.sendRedirect( request.getContextPath()+"/index.jsp"); 
 			}else{
-				Message<String> message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, "用户名或密码错误", "");
-				result = gson.toJson(message, Message.class);
+				request.setAttribute("login_msg", "用户名或密码错误");
+				request.getRequestDispatcher("/admin/login.jsp").forward(request, response);
 			}
 		}else{
-			Message<String> message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, "验证码错误", "");
-			result = gson.toJson(message, Message.class);
+			request.setAttribute("login_msg", "验证码错误");
+			request.getRequestDispatcher("/admin/login.jsp").forward(request, response);
 		}
-		out.write(result);
-		out.flush();
-		out.close();
 	}
 
 }

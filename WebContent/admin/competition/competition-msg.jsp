@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
@@ -8,7 +10,7 @@
     <title>赛事项目信息</title>
 
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="${ basePath }/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -69,35 +71,35 @@
 	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	      	<!--<li><a href="index.html">首页</a></li>-->
-	        <li><a href="../index.html">首页<span class="sr-only">(current)</span></a></li>
+	        <li><a href="${ basePath }/index.html">首页<span class="sr-only">(current)</span></a></li>
 	        <li class="dropdown active">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	            <li class="active"><a href="../admin/competition-manage.html">赛事管理</a></li>
-	            <li><a href="../admin/apply.html">报名报项</a></li>
-	            <li><a href="../delegation/delegation-manage.html">代表团管理</a></li>
-	            <li><a href="../judge/judge-manage.html">裁判员管理</a></li>
+	            <li class="active"><a href="${ basePath }/admin/competition-manage.html">赛事管理</a></li>
+	            <li><a href="${ basePath }/admin/apply.jsp">报名报项</a></li>
+	            <li><a href="${ basePath }/delegation/delegation-manage.html">代表团管理</a></li>
+	            <li><a href="${ basePath }/judge/judge-manage.html">裁判员管理</a></li>
 	          	</ul>
         	</li>
-	        <li><a href="../admin/competition-arrange-list.html">竞赛编排</a></li>
+	        <li><a href="${ basePath }/admin/competition-arrange-list.html">竞赛编排</a></li>
 	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	             <li><a href="../judge/grade-list.html">录入成绩</a></li>
-	            <li><a href="../admin/stage-msg.html">晋级信息</a></li>
+	             <li><a href="${ basePath }/judge/grade-list.html">录入成绩</a></li>
+	            <li><a href="${ basePath }/admin/stage-msg.html">晋级信息</a></li>
 	           </ul>
         	</li>
-					<li><a href="../admin/print-report.html">打印报表</a></li>
+					<li><a href="${ basePath }/admin/print-report.html">打印报表</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
 	<ol class="breadcrumb">
-	  <li><a href="../index.html">首页</a></li>
+	  <li><a href="${ basePath }/index.html">首页</a></li>
 	  <li><a href="#">赛前准备</a></li>
-	  <li><a href="competition-manage.html">赛事管理</a></li>
-	  <li><a href="competition-msg.html">赛事项目信息</a></li>
+	  <li><a href="competition-manage.jsp">赛事管理</a></li>
+	  <li><a href="competition-msg.jsp">赛事项目信息</a></li>
 	</ol>
 	
 	<div class="container content  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
@@ -197,9 +199,9 @@
 	</div>
 	
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="${ basePath }/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../js/bootstrap.min.js"></script>
+    <script src="${ basePath }/js/bootstrap.min.js"></script>
     <script type="text/javascript">
     	/*删除项目*/
     	$(".remove").click(function(){

@@ -1,7 +1,20 @@
+<%@page import="com.pan.competition.bean.Competition"%>
+<%@page import="com.pan.competition.bean.Message"%>
+<%@page import="com.pan.competition.service.CompetitionService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
+<%
+	String competition_id = request.getParameter("id");
+	CompetitionService competitionService = new CompetitionService();
+	Message<Competition> message = competitionService.getCompetitionById(competition_id);
+	if(message.getCode().equals("200")){
+		request.setAttribute("competition", message.getData());
+	}else{
+		request.setAttribute("msg", message.getMsg());
+	}
+%>
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -115,44 +128,44 @@
 	<div class="container content  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
 		<h4 class="text-center"><b>修改赛事</b></h4>
 		<div class="col-md-6 col-md-offset-3">
-	    	<form class="form" action="competitionAction!addCompetition.action" method="post">
+	    	<form class="form" action="/WushuManageSystem/servlet/CompetitionServlet?action=update&id=${competition.id }" method="post">
 				  <div class="form-group">
 				    <label for="competition_name" class="control-label">赛事名称</label>
 				    <div>
-				    	<input type="text" class="form-control" name="competition_name" placeholder="请输入赛事名称" required autofocus>
+				    	<input type="text" class="form-control" name="competition_name" placeholder="请输入赛事名称" value="${competition.name }" required autofocus>
 				    </div>
 				  </div>
 				  <div class="form-group form-inline">
 				    <label for="competition_date" class="control-label">时间</label>
 				    <div id="competition_date_div">
-				    		<input name="competition_start_date" type="text" class="form-control date" required>
+				    		<input name="competition_start_date" type="text" class="form-control date" value="${competition.startDate }" required>
 				    	          <div>至</div>
-				    		<input name="competition_end_date" type="text" class="form-control date">
+				    		<input name="competition_end_date" type="text" class="form-control date" value="${competition.endDate }">
 				    </div>
 				  </div>
 				  <div class="form-group form-inline" id="distpicker">
 				    <label for="competition_location" class="control-label">地点</label>
 				    <div>
-				    	<select class="form-control" id="province" name="province"></select>
-				    	<select class="form-control" id="city" name="city"></select>
+				    	<select class="form-control" id="province" name="province" value="${competition.province }"></select>
+				    	<select class="form-control" id="city" name="city" value="${competition.city }"></select>
 				    </div>
 				  </div>
 				  <div class="form-group">
 				    <label for="competition_stadium" class="control-label">场馆</label>
 				    <div>
-				    	<input type="text" class="form-control" name="competition_stadium" placeholder="请输入场馆" required>
+				    	<input type="text" class="form-control" name="competition_stadium" placeholder="请输入场馆" value="${competition.stadium }" required>
 				    </div>
 				  </div>
 				  <div class="form-group">
 				    <label for="competition_mascot" class="control-label">吉祥物</label>
 				    <div>
-				    	<input type="text" class="form-control" name="competition_mascot" placeholder="请输入吉祥物">
+				    	<input type="text" class="form-control" name="competition_mascot" value="${competition.mascot }" placeholder="请输入吉祥物">
 				    </div>
 				  </div>
 				  <!--<div class="form-group">
 				    <label for="competition_logo" class="control-label">Logo</label>
 				    <div>
-				    	<input type="text" class="form-control" id="competition_logo" placeholder="请输入赛事名称">
+				    	<input type="text" class="form-control" id="competition_logo" value="${competition.sponsor }" placeholder="请输入赛事名称">
 				    </div>
 				  </div>-->
 				  <div class="form-group">
@@ -162,7 +175,7 @@
 				    </div>
 				  </div>
 				  <div>
-				  	<button type="submit" id="add_competition_btn" class="btn btn-primary col-md-12">添加</button>
+				  	<button type="submit" id="update_competition_btn" class="btn btn-primary col-md-12">修改</button>
 				  </div>
 				</form>
 	    </div>
@@ -188,7 +201,26 @@
 			
 			 /*省份城市选择器设置*/
 			 $('#distpicker').distpicker();
+			 
+			 $("#update_competition_btn").click(function(){
+				 var startDate=$("input[name='competition_start_date']").val();  
+				 var endDate=$("input[name='competition_end_date']").val();  
+				 var curTime = new Date();
+				var startTime = new Date(Date.parse(startDate));
+				var endTime = new Date(Date.parse(endDate));
+				if(curTime<=startTime || curTime<=endTime){
+					alert("填写日期不能大于当前日期！");
+					return false;
+				}else if(startTime >= endTime){
+					alert("开始日期不能大于结束日期！");
+					return false;
+				}
+			 });
 			
+			 var msg = "${ msg }";
+			 if(msg !=null && msg!=""){
+				 alert(msg);
+			 }
 		</script>
  </body>
 </html>

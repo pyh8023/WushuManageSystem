@@ -3,7 +3,8 @@ package com.pan.competition.bean;
 public class Competition {
 	private String id;
 	private String name;
-	private String location;
+	private String province;
+	private String city;
 	private String startDate;
 	private String endDate;
 	private String stadium;
@@ -21,11 +22,17 @@ public class Competition {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getLocation() {
-		return location;
+	public String getProvince() {
+		return province;
 	}
-	public void setLocation(String location) {
-		this.location = location;
+	public void setProvince(String province) {
+		this.province = province;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
 	}
 	public String getStartDate() {
 		return startDate;

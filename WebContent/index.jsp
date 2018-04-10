@@ -200,7 +200,7 @@
   	<h4 class="text-left"><strong>精彩图片</strong><span></span></h4>
   	<div class="row">
   		<div class="col-md-4 col-sm-12">
-		  	<img src="images/img1.JPG" width="100%" height="150px" />
+		  	<img src="images/img1.jpg" width="100%" height="150px" />
   		</div>
   		<div class="col-md-4 col-sm-12">
   			<img src="images/img2.jpg" width="100%" height="150px" />
@@ -211,7 +211,7 @@
   	</div>
   	<div class="row ">
   		<div class="col-md-4 col-sm-12">
-		  	<img src="images/img1.JPG" width="100%" height="150px" />
+		  	<img src="images/img1.jpg" width="100%" height="150px" />
   		</div>
   		<div class="col-md-4 col-sm-12">
   			<img src="images/img2.jpg" width="100%" height="150px" />

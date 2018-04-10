@@ -2,20 +2,18 @@ package com.pan.competition.service;
 
 import java.util.List;
 
-import com.google.gson.Gson;
 import com.pan.competition.bean.Competition;
 import com.pan.competition.bean.MenuItem;
 import com.pan.competition.bean.Message;
 import com.pan.competition.config.Constant;
 import com.pan.competition.dao.CompetitionDao;
 
-import net.sf.json.JSONObject;
 
 public class CompetitionService {
 	
 	private CompetitionDao competitionDao = new CompetitionDao();
 	
-	public String addCompetition(Competition competition){
+	public Message<String> addCompetition(Competition competition){
 		Message<String> message;
 		boolean isExist = competitionDao.isExistCompetitionName(competition.getName()); //是否存在该赛事名称
 		if(isExist) {
@@ -28,24 +26,22 @@ public class CompetitionService {
 				message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, "添加赛事失败", "");
 			}
 		}
-		return JSONObject.fromObject(message).toString();
+		return message;
 	}
 	
-	public String getCompetitionList() {
+	public Message<List<Competition>> getCompetitionList() {
 		List<Competition> list = competitionDao.getCompetitionList();
-		Gson gson = new Gson();
 		Message<List<Competition>> message = new Message<List<Competition>>(Constant.QUERY_SUCCESS_RESPONSE_CODE, "", list);
-		return gson.toJson(message, Message.class);
+		return message;
 	}
 	
-	public String getCompetitionName() {
-		Gson gson = new Gson();
+	public Message<List<MenuItem>> getCompetitionName() {
 		List<MenuItem> list = competitionDao.getCompetitionNameList();
 		Message<List<MenuItem>> message = new Message<List<MenuItem>>(Constant.QUERY_SUCCESS_RESPONSE_CODE, "", list);
-		return gson.toJson(message, Message.class);
+		return message;
 	}
 	
-	public String updateCompetition(Competition competition) {
+	public Message<String> updateCompetition(Competition competition) {
 		Message<String> message = null;
 		boolean isExist = competitionDao.isExistCompetitionName(competition.getName(),competition.getId()); //是否存在该赛事名称
 		if(isExist) {
@@ -58,6 +54,17 @@ public class CompetitionService {
 				message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, "修改赛事失败", "");
 			}
 		}
-		return JSONObject.fromObject(message).toString();
+		return message;
+	}
+	
+	public Message<Competition> getCompetitionById(String competition_id) {
+		Message<Competition> message = null;
+		Competition competition = competitionDao.getCompetitionById(competition_id);
+		if(competition!=null) {
+			message = new Message<Competition>(Constant.QUERY_SUCCESS_RESPONSE_CODE, "", competition);
+		}else {
+			message = new Message<Competition>(Constant.QUERY_FAILED_RESPONSE_CODE, "不存在该赛事", null);
+		}
+		return message;
 	}
 }

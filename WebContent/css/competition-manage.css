@@ -1,0 +1,29 @@
+@charset "UTF-8";
+
+body {
+  		margin-top: 50px;
+  		margin-bottom: 70px;
+  		background: #EBEBEB;
+  	}
+  	
+  	.content {
+  		background: white;
+  	  padding: 30px 40px;
+  	  border-radius: 5px;
+  	  margin-bottom: 20px;
+  	}
+  	    	
+  	.content table {
+  		background: white;
+  		text-align: center; 
+  	}
+  	
+  	.content table thead{
+  		background: #337AB7;
+  		color: white;
+  	}
+  	
+  	.content table thead tr th,td{
+  		text-align: center;
+  		vertical-align: middle!important;
+  	}

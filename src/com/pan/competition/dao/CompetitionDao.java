@@ -26,13 +26,14 @@ public class CompetitionDao {
 			con = DBUtil.getCon();
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, competition.getName());
-			pstmt.setString(2, competition.getLocation());
+			pstmt.setString(2, competition.getProvince()+","+competition.getCity());
 			pstmt.setDate(3, DateUtil.stringToDate(competition.getStartDate()));
 			pstmt.setDate(4,DateUtil.stringToDate(competition.getEndDate()));
 			pstmt.setString(5, competition.getStadium());
 			pstmt.setString(6, competition.getMascot());
 			pstmt.setString(7, competition.getSponsor());
 			result=pstmt.executeUpdate();
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{
@@ -48,6 +49,7 @@ public class CompetitionDao {
 	 */
 	public boolean isExistCompetitionName(String name) {
 		Connection con = null;
+		boolean result = false;
 		try {
 			con = DBUtil.getCon();
 			String sql = "select name from competition";
@@ -55,15 +57,15 @@ public class CompetitionDao {
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				if(name.equals(rs.getString("name")))
-					return true;
+					result = true;
 			}
-			return false;
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			DBUtil.closeCon(con);
 		}
-		return false;
+		return result;
 	}
 	
 	/**
@@ -74,6 +76,7 @@ public class CompetitionDao {
 	 */
 	public boolean isExistCompetitionName(String name,String competition_id) {
 		Connection con = null;
+		boolean result = false;
 		try {
 			con = DBUtil.getCon();
 			String sql = "select name,competition_id from competition";
@@ -81,15 +84,15 @@ public class CompetitionDao {
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				if(name.equals(rs.getString("name"))&&!competition_id.equals(rs.getInt("competition_id")+""))
-					return true;
+					result = true;
 			}
-			return false;
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			DBUtil.closeCon(con);
 		}
-		return false;
+		return result;
 	}
 	
 	/**
@@ -100,7 +103,7 @@ public class CompetitionDao {
 		List<Competition> list = new ArrayList<>();
 		Connection con = null;
 		try {
-			String sql = "select competition_id,name,location,start_date,end_date,stadium,mascot,sponsor from competition";
+			String sql = "select competition_id,name,location,start_date,end_date,stadium,mascot,sponsor from competition order by start_date desc,end_date desc";
 			con = DBUtil.getCon();
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
@@ -108,7 +111,9 @@ public class CompetitionDao {
 				Competition competition = new Competition();
 				competition.setId(rs.getInt("competition_id")+"");
 				competition.setName(rs.getString("name"));
-				competition.setLocation(rs.getString("location"));
+				String[] location = rs.getString("location").split(",");
+				competition.setProvince(location[0]);
+				competition.setCity(location[1]);
 				competition.setStartDate(rs.getDate("start_date").toString());
 				competition.setEndDate(rs.getDate("end_date").toString());
 				competition.setStadium(rs.getString("stadium"));
@@ -116,6 +121,7 @@ public class CompetitionDao {
 				competition.setSponsor(rs.getString("sponsor"));
 				list.add(competition);
 			}
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -134,7 +140,7 @@ public class CompetitionDao {
 		Connection con = null;
 		try {
 			con = DBUtil.getCon();
-			String sql = "select competition_id,name from competition";
+			String sql = "select competition_id,name from competition order by start_date desc,end_date desc";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
@@ -143,6 +149,7 @@ public class CompetitionDao {
 				item.setName(rs.getString("name"));
 				list.add(item);
 			}
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -164,7 +171,7 @@ public class CompetitionDao {
 			String sql = "update competition set name = ?,location =?,start_date=?,end_date=?,stadium=?,mascot=?,sponsor=? where competition_id = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, competition.getName());
-			pstmt.setString(2, competition.getLocation());
+			pstmt.setString(2, competition.getProvince()+","+competition.getCity());
 			pstmt.setDate(3, DateUtil.stringToDate(competition.getStartDate()));
 			pstmt.setDate(4,DateUtil.stringToDate(competition.getEndDate()));
 			pstmt.setString(5, competition.getStadium());
@@ -172,11 +179,48 @@ public class CompetitionDao {
 			pstmt.setString(7, competition.getSponsor());
 			pstmt.setInt(8, Integer.parseInt(competition.getId()));
 			result = pstmt.executeUpdate();
+			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
 			DBUtil.closeCon(con);
 		}
 		return result;
+	}
+	
+	/**
+	 * 根据赛事id查询赛事
+	 * @param competition_id
+	 * @return
+	 */
+	public Competition getCompetitionById(String competition_id) {
+		Competition competition = null;
+		Connection con =null;
+		try {
+			con = DBUtil.getCon();
+			String sql = "select * from competition where competition_id = ?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(competition_id));
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				competition = new Competition();
+				competition.setId(competition_id);
+				competition.setName(rs.getString("name"));
+				String[] location = rs.getString("location").split(",");
+				competition.setProvince(location[0]);
+				competition.setCity(location[1]);
+				competition.setStartDate(rs.getDate("start_date").toString());
+				competition.setEndDate(rs.getDate("end_date").toString());
+				competition.setStadium(rs.getString("stadium"));
+				competition.setMascot(rs.getString("mascot"));
+				competition.setSponsor(rs.getString("sponsor"));
+			}
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return competition;
 	}
 }

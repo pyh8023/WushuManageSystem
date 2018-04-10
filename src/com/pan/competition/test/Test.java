@@ -33,29 +33,6 @@ public class Test {
 		//System.out.println(service.getStageNameList("1"));
 		System.out.println(service.removeStage("5"));
 	}
-	static void getCompetitionListTest() {
-		CompetitionDao competitionDao = new CompetitionDao();
-		List<Competition> list = competitionDao.getCompetitionList();
-		for(Competition competition:list) {
-			System.out.println(competition.getId()+
-					","+competition.getName()+
-					","+competition.getLocation()
-					+","+competition.getStartDate()
-					+","+competition.getEndDate());
-		}
-	}
-
-	static void competitionUpdateTest() {
-		Competition competition = new Competition();
-		competition.setId("60");
-		competition.setName("第八届全运会武术套路比赛");
-		competition.setLocation("北京市,北京市市辖区");
-		competition.setStartDate("2018-01-25");
-		competition.setEndDate("2018-01-30");
-		competition.setStadium("北京朝阳区武术场馆");
-		CompetitionService service = new CompetitionService();
-		System.out.println(service.updateCompetition(competition));
-	}
 	
 	static void competitionServiceTest() {
 		CompetitionService service = new CompetitionService();
