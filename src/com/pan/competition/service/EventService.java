@@ -21,9 +21,9 @@ public class EventService {
 	
 	public Message<String> addEvent(Event event) {
 		Message<String> message = null;
-		boolean isExistName = eventDao.isExistEventName(event.getName(), event.getCompetition_id(),event.getId());
-		if(isExistName) {
-			message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, Constant.EVENT_NAME_IS_EXISTED, "");
+		String msg = eventDao.isExistEvent(event.getName(), event.getEvent_num(),event.getCompetition_id());
+		if(!Constant.NOT_EXISTED.equals(msg)) {
+			message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, msg, "");
 		}else {
 			int result = eventDao.addEvent(event);
 			if(result == 1) {
@@ -44,11 +44,16 @@ public class EventService {
 	
 	public Message<String> updateEvent(Event event) {
 		Message<String> message = null;
-		int status = eventDao.updateEvent(event);
-		if(status == 1) {
-			message = new Message<String>(Constant.QUERY_SUCCESS_RESPONSE_CODE, "项目修改成功", "");
+		String msg = eventDao.isExistEvent(event.getName(), event.getEvent_num(),event.getCompetition_id(),event.getId());
+		if(!Constant.NOT_EXISTED.equals(msg)) {
+			message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, msg, "");
 		}else {
-			message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, "项目修改失败", "");
+			int result = eventDao.updateEvent(event);
+			if(result == 1) {
+				message = new Message<String>(Constant.QUERY_SUCCESS_RESPONSE_CODE, "项目添加成功", "");
+			}else {
+				message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, "项目添加失败", "");
+			}
 		}
 		return message;
 	}

@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.pan.competition.bean.Event;
 import com.pan.competition.bean.MenuItem;
+import com.pan.competition.config.Constant;
 import com.pan.competition.util.DBUtil;
 
 public class EventDao {
@@ -87,54 +88,28 @@ public class EventDao {
 		return result;
 	}
 	
+
 	/**
-	 * 查询项目名称是否存在
-	 * @param name
-	 * @param competition_id
-	 * @return
-	 */
-	public boolean isExistEventName(String name,String competition_id) {
-		Connection con = null;
-		boolean result = false;
-		try {
-			con = DBUtil.getCon();
-			String sql = "select name from event where competition_id = ? and name = ?";
-			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, Integer.parseInt(competition_id));
-			pstmt.setString(2, name);
-			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
-				result = true;
-			}
-			pstmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally{
-			DBUtil.closeCon(con);
-		}
-		return result;
-	}
-	
-	/**
-	 * 查询是否存在另一个项目名称与name相同
+	 * 查询是否存在另一个项目名称或者项目编号相同
 	 * @param name
 	 * @param competition_id
 	 * @param event_id
 	 * @return
 	 */
-	public boolean isExistEventName(String name,String competition_id,String event_id) {
+	public String isExistEvent(String name,String num,String competition_id,String event_id) {
 		Connection con = null;
-		boolean result = false;
+		String result = Constant.NOT_EXISTED;
 		try {
 			con = DBUtil.getCon();
-			String sql = "select event_id from event where competition_id = ? and name = ?";
+			String sql = "select event_id,name,event_num from event where competition_id = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, Integer.parseInt(competition_id));
-			pstmt.setString(2, name);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
-				if(!event_id.equals(rs.getInt("event_id")+""))
-					result = true;
+				if(name.equals(rs.getString("name")) && !event_id.equals(rs.getInt("event_id")+""))
+					result = Constant.EVENT_NAME_IS_EXISTED;
+				else if(num.equals(rs.getString("event_num")) && !event_id.equals(rs.getInt("event_id")+""))
+					result = Constant.EVENT_NUM_IS_EXISTED;
 			}
 			pstmt.close();
 		} catch (Exception e) {
@@ -146,22 +121,24 @@ public class EventDao {
 	}
 	
 	/**
-	 * 查询项目编号是否存在
+	 * 查询是否存在另一个项目名称或者项目编号相同
 	 * @param num
 	 * @return
 	 */
-	public boolean isExistEventNum(String num,String competition_id) {
+	public String isExistEvent(String name,String num,String competition_id) {
 		Connection con = null;
-		boolean result = false;
+		String result = Constant.NOT_EXISTED;
 		try {
 			con = DBUtil.getCon();
-			String sql = "select name from event where event_num = ? and competition_id = ?";
+			String sql = "select event_num,name from event where competition_id = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, num);
-			pstmt.setInt(2, Integer.parseInt(competition_id));
+			pstmt.setString(1, competition_id);
 			ResultSet rs = pstmt.executeQuery();
-			if(rs.next()) {
-				result = true;
+			while(rs.next()) {
+				if(name.equals(rs.getString("name")))
+					result = Constant.EVENT_NAME_IS_EXISTED;
+				else if(num.equals(rs.getString("event_num")))
+					result = Constant.EVENT_NUM_IS_EXISTED;
 			}
 			pstmt.close();
 		} catch (Exception e) {

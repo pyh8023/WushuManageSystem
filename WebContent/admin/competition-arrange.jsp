@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
@@ -108,6 +110,7 @@
 	            <li><a href="../admin/stage-msg.html">晋级信息</a></li>
 	           </ul>
         	</li>
+	        <li><a href="../admin/statistic-query.html">统计查询</a></li>
 					<li><a href="../admin/print-report.html">打印报表</a></li>
 	      </ul>
 
@@ -267,9 +270,11 @@
 			function add(arg){
 				$(arg).parent().parent().after('<tr><td><a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>'
 				+' <a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a></td>'
-				+'<td><input class="form-control" type="number" placeholder="请输入第几组" /></td>'
+				+'<td><input class="form-control" type="text" placeholder="请输入项目名称"/></td>'
+				+'<td><select class="form-control"><option>上午场</option><option>下午场</option><option>晚上场</option></select></td>'
 				+'<td><form class="form-inline"><input class="form-control datetimepicker" placeholder="起始时间"/>&ensp;&ensp;到&ensp;&ensp;<input class="form-control datetimepicker" placeholder="结束时间"/></form></td>'
-				+'<td><input class="form-control" placeholder="请输入比赛场地"/></td>');
+				+'<td><input class="form-control" placeholder="请输入比赛场地"/></td>'
+				+'<td><a class="btn btn-primary btn-sm" href="competition-athlet-order.html">出场顺序</a> <a class="btn btn-primary btn-sm" href="competition-judge-arrange.html">裁判编排</a></td></tr>');
 			}
     </script>
  </body>

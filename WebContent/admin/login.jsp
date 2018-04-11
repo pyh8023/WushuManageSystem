@@ -13,8 +13,8 @@
     <title>登录</title>
 
     <!-- Bootstrap -->
-    <link href="${ basePath }/css/bootstrap.min.css" rel="stylesheet">
-    <link href="${ basePath }/css/login.css" rel="stylesheet">
+    <link href="/WushuManageSystem/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/WushuManageSystem/css/login.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -46,8 +46,8 @@
 	      </ul>
 	      
 	      <ul class="nav navbar-nav navbar-right">
-	        <li class="active"><a href="${ basePath }/admin/login.jsp">登录</a></li>
-	        <li><a href="${ basePath }/admin/register.jsp">注册</a></li>
+	        <li class="active"><a href="/WushuManageSystem/admin/login.jsp">登录</a></li>
+	        <li><a href="/WushuManageSystem/admin/register.jsp">注册</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
@@ -74,7 +74,7 @@
 		    <div class="form-inline">
 		    	<input type="number" class="form-control" name="verification_code" placeholder="请输入验证码" required>
 		    	&nbsp;&nbsp;
-		    	<img src="${ basePath }/image.jsp" id="identity" onclick="reloadImage()" title="看不清，点击换一张">
+		    	<img src="/WushuManageSystem/image.jsp" id="identity" onclick="reloadImage()" title="看不清，点击换一张">
 		    </div>
 		  </div>
 		  <div class="div_login_button">
@@ -84,10 +84,10 @@
 	</div>
 	
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="${ basePath }/js/jquery-1.8.2.js"></script>
+    <script src="/WushuManageSystem/js/jquery-1.8.2.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="${ basePath }/js/bootstrap.min.js"></script>
-    <%-- <script src="${ basePath }/customjs/login.js"></script> --%>
+    <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
+    <%-- <script src="/WushuManageSystem/customjs/login.js"></script> --%>
     <script type="text/javascript">
     	var msg = "${ login_msg }";
     	if(msg !=null && msg!=""){

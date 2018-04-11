@@ -50,34 +50,34 @@
 	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	      	<!--<li><a href="index.html">首页</a></li>-->
-	        <li><a href="${ basePath }/index.jsp">首页<span class="sr-only">(current)</span></a></li>
+	        <li><a href="/WushuManageSystem/index.jsp">首页<span class="sr-only">(current)</span></a></li>
 	        <li class="dropdown active">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-		            <li class="active"><a href="${ basePath }/admin/competition/competition-manage.jsp" target="_self">赛事管理</a></li>
-		            <li><a href="${ basePath }/admin/apply.jsp">报名报项</a></li>
-		            <li><a href="${ basePath }/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
-		            <li><a href="${ basePath }/admin/judge/judge-manage.jsp">裁判员管理</a></li>
+		            <li class="active"><a href="/WushuManageSystem/admin/competition/competition-manage.jsp" target="_self">赛事管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/apply.jsp">报名报项</a></li>
+		            <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/judge/judge-manage.jsp">裁判员管理</a></li>
 	          	</ul>
         	</li>
-	        <li><a href="${ basePath }/admin/competition-arrange.jsp">竞赛编排</a></li>
+	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
 	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	            <li><a href="${ basePath }/admin/judge/grade-list.jsp">录入成绩</a></li>
-	            <li><a href="${ basePath }/admin/stage-msg.jsp">阶段信息</a></li>
+	            <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">录入成绩</a></li>
+	            <li><a href="/WushuManageSystem/admin/stage-msg.jsp">阶段信息</a></li>
 	          	</ul>
         	</li>
-	        <li><a href="${ basePath }/admin/print-report.jsp">打印报表</a></li>
+	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
 	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
 	<ol class="breadcrumb">
-	  <li><a href="${ basePath }/index.html">首页</a></li>
+	  <li><a href="/WushuManageSystem/index.html">首页</a></li>
 	  <li><a href="#">赛前准备</a></li>
-	  <li><a href="${ basePath }/admin/competition/competition-manage.jsp">赛事管理</a></li>
+	  <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp">赛事管理</a></li>
 	  <li><a href="#">赛事项目信息</a></li>
 	</ol>
 	
@@ -103,7 +103,7 @@
 				<c:forEach var="event" items="${list }">
 					<tr>
 						<td>${event.event_num }</td>
-						<td><a href="competition-stage.jsp?event_id=${event.id }">${event.name }</a></td>
+						<td><a href="competition-stage.jsp?event_id=${event.id }&competition_id=${event.competition_id }">${event.name }</a></td>
 						<td>${event.type }</td>
 						<td>${event.event_group }</td>
 						<td>${event.sex }</td>
@@ -120,9 +120,9 @@
 	</div>
 	
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="${ basePath }/js/jquery-1.11.1.min.js"></script>
+    <script src="/WushuManageSystem/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="${ basePath }/js/bootstrap.min.js"></script>
+    <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
     <script type="text/javascript">
     	/*删除项目*/
     	function remove(event_id,competition_id){

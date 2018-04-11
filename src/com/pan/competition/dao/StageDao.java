@@ -59,7 +59,7 @@ public class StageDao {
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, stage.getName());
 			pstmt.setString(2, stage.getStage_num());
-			pstmt.setInt(3, Integer.parseInt(stage.getAttribute()));
+			pstmt.setString(3, stage.getAttribute());
 			pstmt.setInt(4, Integer.parseInt(stage.getEvent_id()));
 			result = pstmt.executeUpdate();
 			pstmt.close();
@@ -105,14 +105,14 @@ public class StageDao {
 	 * @param stage_id
 	 * @return
 	 */
-	public int removeStage(String stage_id) {
+	public int removeStage(String event_id) {
 		int result = 0;
 		Connection con = null;
 		try {
 			con = DBUtil.getCon();
-			String sql = "delete from stage where stage_id = ?";
+			String sql = "delete from stage where event_id = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, Integer.parseInt(stage_id));
+			pstmt.setInt(1, Integer.parseInt(event_id));
 			result = pstmt.executeUpdate();
 			pstmt.close();
 		} catch (Exception e) {
@@ -141,7 +141,7 @@ public class StageDao {
 					return Constant.STAGE_NAME_IS_EXISTED;
 				}else if(rs.getString("stage_num").equals(stage.getStage_num())) {
 					return Constant.STAGE_NUM_IS_EXISTED;
-				}else if(rs.getInt("attribute") == Integer.parseInt(stage.getAttribute())) {
+				}else if(rs.getString("attribute").equals(stage.getAttribute())) {
 					return Constant.STAGE_ATTRIBUTE_IS_EXISTED;
 				}
 			}

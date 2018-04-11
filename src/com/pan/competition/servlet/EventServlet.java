@@ -126,8 +126,9 @@ public class EventServlet extends HttpServlet {
 		}else {
 			event.setMin_female_num(num);
 		}
-		Message<String> message = eventService.updateEvent(event);
 		String competition_id = request.getParameter("competition_id");
+		event.setCompetition_id(competition_id);
+		Message<String> message = eventService.updateEvent(event);
 		if(message.getCode().equals("200")) {
 			response.sendRedirect( request.getContextPath()+ "/admin/competition/competition-msg.jsp?competition_id="+competition_id);
 		}else {
@@ -136,14 +137,15 @@ public class EventServlet extends HttpServlet {
 		}
 	}
 	
-	private void removeEvent(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private void removeEvent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String event_id = request.getParameter("event_id");
 		String competition_id = request.getParameter("competition_id");
 		Message<String> message = eventService.removeEvent(event_id);
 		if(!message.getCode().equals("200")) {
+			response.sendRedirect( request.getContextPath()+ "/admin/competition/competition-msg.jsp?competition_id="+competition_id);
+		}else {
 			request.setAttribute("msg",message.getMsg());
+			request.getRequestDispatcher("/admin/competition/competition-msg.jsp?competition_id="+competition_id).forward(request, response);
 		}
-		response.sendRedirect( request.getContextPath()+ "/admin/competition/competition-msg.jsp?competition_id="+competition_id);
 	}
-
 }
