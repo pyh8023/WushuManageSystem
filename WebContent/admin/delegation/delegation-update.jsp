@@ -1,7 +1,21 @@
+<%@page import="com.pan.competition.bean.Message"%>
+<%@page import="com.pan.competition.service.DelegationService"%>
+<%@page import="com.pan.competition.bean.Delegation"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
+<%
+	String delegation_id = request.getParameter("delegation_id");
+	DelegationService delegationService = new DelegationService();
+	Message<Delegation> message = delegationService.getDelegationById(delegation_id);
+	if(message.getCode().equals("200")){
+		Delegation delegation = message.getData();
+		request.setAttribute("delegation", delegation);
+	}else{
+		request.setAttribute("msg",message.getMsg());
+	}
+%>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,45 +79,45 @@
 	
 	<ol class="breadcrumb">
 	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
-	  <li><a href="#">赛前准备</a></li>
-	  <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团列表</a></li>
+	  <li><a href="#">赛事准备</a></li>
+	  <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
 	  <li><a href="#">代表团修改</a></li>
 	</ol>
 	
 	<div class="container content  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
 		<h4 class="text-center"><b>修改代表团</b></h4>
 		<div class="col-md-6 col-md-offset-3">
-	    	<form class="form">
+	    	<form class="form" action="/WushuManageSystem/servlet/DelegationServlet?action=update&delegation_id=${delegation.id }&competition_id=${delegation.competition_id }" method="post">
 			  <div class="form-group">
 			    <label for="delegation_name" class="control-label">代表团名称</label>
 			    <div>
-			    	<input type="text" class="form-control" id="delegation_name" placeholder="请输入代表团名称" required autofocus>
+			    	<input type="text" class="form-control" name="delegation_name" value="${delegation.name }" placeholder="请输入代表团名称" required autofocus>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="delegation_athlet_num" class="control-label">运动员人数</label>
 			    <div>
-			    	<input type="number" class="form-control" id="delegation_athlet_num" placeholder="请输入运动员人数" required readonly="readonly">
+			    	<input type="number" class="form-control" name="delegation_athlet_num" value="${delegation.athlet_num }" placeholder="请输入运动员人数" required readonly="readonly">
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="delegation_contact" class="control-label">联系方式</label>
 			    <div>
-			    	<input type="tel" class="form-control" maxlength="11" id="delegation_contact" placeholder="请输入联系方式" required>
+			    	<input type="tel" class="form-control" maxlength="11" name="delegation_phone" value="${delegation.phone }" placeholder="请输入联系方式" required>
 			    </div>
 			  </div>
 			  <div class="form-group form-inline" id="distpicker">
 			    <label for="delegation_area" class="control-label">所在地区</label>
 			    <div>
-			    	<select class="form-control" id="province"></select>
-			    	<select class="form-control" id="city"></select>
-			    	<select class="form-control" id="district"></select>
+			    	<select class="form-control" id="province"  name="province" data-province="${delegation.province }"></select>
+			    	<select class="form-control" id="city" name="city" data-city="${delegation.city }"></select>
+			    	<select class="form-control" id="district" name="district" data-district="${delegation.district }"></select>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="delegation_description" class="control-label">代表团介绍</label>
 			    <div>
-			    	<textarea  class="form-control" id="delegation_description" required></textarea>
+			    	<textarea  class="form-control" name="delegation_description" value="${delegation.introduction }"></textarea>
 			    </div>
 			  </div>
 			  <div class="form-group">
@@ -121,9 +135,14 @@
 	<script src="/WushuManageSystem/js/distpicker.js"></script>
 	<script src="/WushuManageSystem/js/main.js"></script>
     <script type="text/javascript">
+    
+     var msg = "${ msg }";
+	 if(msg !=null && msg!=""){
+		 alert(msg);
+	 }
     			
-		 /*省份城市选择器设置*/
-		 $('#distpicker').distpicker();
+	 /*省份城市选择器设置*/
+	 $('#distpicker').distpicker();
 	</script>
  </body>
 </html>

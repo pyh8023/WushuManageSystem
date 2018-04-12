@@ -11,14 +11,13 @@
 	CompetitionService competitionService = new CompetitionService();
 	List<MenuItem> competitionNameList = competitionService.getCompetitionName();
 	request.setAttribute("competitionNameList", competitionNameList);
-	String selected = (String)request.getParameter("selectd");
+	String selected = (String)request.getParameter("selected");
 	DelegationService delegationService = new DelegationService();
 	List<Delegation> delegationList = null;
 	if(selected == null){
-		delegationList = delegationService.getDelegationList(competitionNameList.get(0).getId());
-	}else{
-		delegationList = delegationService.getDelegationList(selected);
+		selected = competitionNameList.get(0).getId();
 	}
+	delegationList = delegationService.getDelegationList(selected);
 	request.setAttribute("delegationList", delegationList);
 	request.setAttribute("index", 0);
 %>
@@ -86,8 +85,8 @@
 	
 	<ol class="breadcrumb">
 	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
-	  <li><a href="#">赛前准备</a></li>
-	  <li><a href="#">代表团列表</a></li>
+	  <li><a href="#">赛事准备</a></li>
+	  <li><a href="#">代表团管理</a></li>
 	</ol>
 	
 	<div class="container content  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
@@ -122,9 +121,9 @@
 					<c:forEach var="delegation" items="${delegationList }">
 						<tr>
 							<td>${index=index+1 }</td>
-							<td>${delegation.name }</td>
+							<td><a href="/WushuManageSystem/admin/athlet/athlet-manage.jsp?delegation_id=${delegation.id }&competition_id=<%=selected %>">${delegation.name }</a></td>
 							<td>${delegation.athlet_num }</td>
-							<td>${delegation.province }${delegation.city }${delegation.district }</td>
+							<td>${delegation.province } ${delegation.city } ${delegation.district }</td>
 							<td>${delegation.phone }</td>
 							<td>
 								<a href="/WushuManageSystem/admin/delegation/delegation-update.jsp?delegation_id=${delegation.id }" class="btn btn-primary btn-xs">修改</a>
@@ -139,7 +138,7 @@
 			<a class="btn btn-primary disabled" href="/WushuManageSystem/admin/delegation/delegation-add.jsp">添加代表团</a>
 		</c:if>
 		<c:if test="${competitionNameList.size()!=0 }">
-			<a class="btn btn-primary" href="/WushuManageSystem/admin/delegation/delegation-add.jsp">添加代表团</a>
+			<a class="btn btn-primary" href="/WushuManageSystem/admin/delegation/delegation-add.jsp?competition_id=<%=selected %>">添加代表团</a>
 		</c:if>
 	</div>
 
@@ -154,11 +153,14 @@
     	}
     	
     	function remove(arg){
-    		$(arg).parent().parent().remove();
+    		$.post("/WushuManageSystem/servlet/DelegationServlet?action=remove",{delegation_id:arg},function(data){
+    			alert(data);
+    			window.location.reload();
+    		});
     	}
     	
     	$("#competition_name_select").change(function(){
-    		window.location.href = "/WushuManageSystem/admin/delegation/delegation-manage.jsp?selectd="+$(this).val();
+    		window.location.href = "/WushuManageSystem/admin/delegation/delegation-manage.jsp?selected="+$(this).val();
     	});
     </script>
  </body>

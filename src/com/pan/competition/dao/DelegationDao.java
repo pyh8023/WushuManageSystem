@@ -22,14 +22,13 @@ public class DelegationDao {
 		int result = 0;
 		try {
 			con = DBUtil.getCon();
-			String sql = "insert into delegation set name = ?,location = ?,athlet_num = ?,phone = ? ,competition_id = ?,introduction=?";
+			String sql = "insert into delegation set name = ?,location = ?,phone = ? ,competition_id = ?,introduction=?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, delegation.getName());
 			pstmt.setString(2, delegation.getProvince()+","+delegation.getCity()+","+delegation.getDistrict());
-			pstmt.setInt(3, Integer.parseInt(delegation.getAthlet_num()));
-			pstmt.setString(4,delegation.getPhone());
-			pstmt.setInt(5, Integer.parseInt(delegation.getCompetition_id()));
-			pstmt.setString(6, delegation.getIntroduction());
+			pstmt.setString(3,delegation.getPhone());
+			pstmt.setInt(4, Integer.parseInt(delegation.getCompetition_id()));
+			pstmt.setString(5, delegation.getIntroduction());
 			result = pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -104,15 +103,13 @@ public class DelegationDao {
 		int result = 0;
 		try {
 			con = DBUtil.getCon();
-			String sql = "update delegation set name = ?,location = ?,athlet_num = ?,phone = ? ,competition_id = ?,introduction=? where delegation_id = ?";
+			String sql = "update delegation set name = ?,location = ?,phone = ? ,introduction=? where delegation_id = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, delegation.getName());
 			pstmt.setString(2, delegation.getProvince()+","+delegation.getCity()+","+delegation.getDistrict());
-			pstmt.setInt(3, Integer.parseInt(delegation.getAthlet_num()));
-			pstmt.setString(4,delegation.getPhone());
-			pstmt.setInt(5, Integer.parseInt(delegation.getCompetition_id()));
-			pstmt.setString(6, delegation.getIntroduction());
-			pstmt.setInt(7, Integer.parseInt(delegation.getIntroduction()));
+			pstmt.setString(3,delegation.getPhone());
+			pstmt.setString(4, delegation.getIntroduction());
+			pstmt.setInt(5, Integer.parseInt(delegation.getId()));
 			result = pstmt.executeUpdate();
 			pstmt.close();
 		} catch (Exception e) {
@@ -244,7 +241,7 @@ public class DelegationDao {
 				}
 				delegation.setPhone(rs.getString("phone"));
 				delegation.setAthlet_num(rs.getInt("athlet_num")+"");
-				delegation.setCompetition_id(rs.getInt("comepetition_id")+"");
+				delegation.setCompetition_id(rs.getInt("competition_id")+"");
 				delegation.setIntroduction(rs.getString("introduction"));
 			}
 			pstmt.close();

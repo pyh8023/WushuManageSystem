@@ -76,8 +76,8 @@
 	</nav>
 	
 	<ol class="breadcrumb">
-	  <li><a href="/WushuManageSystem/index.html">首页</a></li>
-	  <li><a href="#">赛前准备</a></li>
+	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
+	  <li><a href="#">赛事准备</a></li>
 	  <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp">赛事管理</a></li>
 	  <li><a href="/WushuManageSystem/admin/competition/competition-msg.jsp?competition_id=<%= competition_id%>">赛事项目信息</a></li>
 	  <li><a href="#">比赛阶段信息</a></li>

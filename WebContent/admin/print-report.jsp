@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
@@ -8,7 +10,8 @@
     <title>打印报表</title>
 
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="/WushuManageSystem/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/WushuManageSystem/css/table-simple.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -17,47 +20,9 @@
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-    <style type="text/css">
-    body {
-    		margin-top: 50px;
-    		margin-bottom: 70px;
-    		background: #EBEBEB;
-    	}
-    	
-    	.content {
-    		background: white;
-    	  padding: 30px 40px;
-    	  border-radius: 5px;
-    	  margin-bottom: 20px;
-    	  min-height: 500px;
-    	}
-    	
-    	.content form {
-    		text-align: center;
-    		margin-bottom: 20px;
-    	}
-    	    	
-    	.content table {
-    		background: white;
-    		text-align: center; 
-    	}
-    	
-    	.content table thead{
-    		background: #337AB7;
-    		color: white;
-    	}
-    	
-    	.content table thead tr th,td{
-    		text-align: center;
-    		vertical-align: middle!important;
-    	}
-
-    </style>
   </head>
   <body>
-    
-	   
-	 <!--导航条-->
+     <!--导航条-->
 	  <nav class="navbar navbar-fixed-top navbar-inverse">
 	  <div class="container">
 	    <!-- Brand and toggle get grouped for better mobile display -->
@@ -68,39 +33,40 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </button>
+	      <!--<a class="navbar-brand" href="#">武术赛事系统</a>-->
 	    </div>
 	
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	      	<!--<li><a href="index.html">首页</a></li>-->
-	        <li><a href="../index.html">首页<span class="sr-only">(current)</span></a></li>
+	        <li><a href="/WushuManageSystem/index.jsp">首页<span class="sr-only">(current)</span></a></li>
 	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	            <li><a href="../admin/competition-manage.html">赛事管理</a></li>
-	            <li><a href="../admin/apply.html">报名报项</a></li>
-	            <li><a href="../delegation/delegation-manage.html">代表团管理</a></li>
-	            <li><a href="../judge/judge-manage.html">裁判员管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp" target="_self">赛事管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/apply.jsp">报名报项</a></li>
+		            <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/judge/judge-manage.jsp">裁判员管理</a></li>
 	          	</ul>
         	</li>
-	        <li><a href="../admin/competition-arrange-list.html">竞赛编排</a></li>
+	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
 	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	             <li><a href="../judge/grade-list.html">录入成绩</a></li>
-	            <li><a href="../admin/stage-msg.html">晋级信息</a></li>
-	           </ul>
+	            <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">录入成绩</a></li>
+	            <li><a href="/WushuManageSystem/admin/stage-msg.jsp">阶段信息</a></li>
+	          	</ul>
         	</li>
-					<li class="active"><a href="../admin/print-report.html">打印报表</a></li>
-	      </ul>
+	        <li class="active"><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
+	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
 	<ol class="breadcrumb">
-	  <li><a href="../index.html">首页</a></li>
-	  <li><a href="print-report.html">打印报表</a></li>
+	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
+	  <li><a href="#">打印报表</a></li>
 	</ol>
 
 	<div class="container content col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
@@ -129,6 +95,8 @@
 		    </select>
 		  </div>
 		 </form>
+		 
+		 <hr/>
 		 
 		 <table class="table table-bordered">
     		<thead>
@@ -208,9 +176,9 @@
 	</div>
 
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="/WushuManageSystem/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../js/bootstrap.min.js"></script>
+    <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
 
  </body>
 </html>

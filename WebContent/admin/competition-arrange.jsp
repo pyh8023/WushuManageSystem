@@ -10,11 +10,11 @@
     <title>竞赛编排</title>
 
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/bootstrap-datetimepicker.min.css" />
-    <script src="../js/jquery-1.11.1.min.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-
+    <link href="/WushuManageSystem/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/WushuManageSystem/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" href="/WushuManageSystem/css/competition-arrange.css" />
+    <script src="/WushuManageSystem/js/jquery-1.11.1.min.js"></script>
+    <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,60 +22,9 @@
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
-    <style type="text/css">
-    	body{
-    		margin-bottom: 70px;
-    		background: #EBEBEB;
-    	}
-    	
-    	.competition_arrange_div{
-				background: white;
-    	  padding: 30px 20px;
-    	  border-radius: 5px;
-    	  margin-bottom: 20px;
-    	  min-height: 500px;
-			}
-			
-			.competition_arrange_div form{
-				text-align: center;
-			}
-			
-			.competition_arrange_div table {
-				margin-top: 20px;
-				text-align: center;
-			}
-    	
-    	.competition_arrange_div table th,td {
-    		text-align: center;
-	      vertical-align: middle!important;
-    	}
-    	
-      .competition_arrange_div table thead{
-    		/*background: #DDDDDD;*/
-    		background: #337AB7; 
-    		color: white;
-    	}
-    	
-    	table input {
-    		text-align: center;
-    	}
-    	
-    	.div_plus_icon,.div_minus_icon{
-    		color: #707070;
-    		padding: 10px 0px;
-    		margin: 0px;
-    		width: 20px;
-    	}
-    	
-    	.breadcrumb{
-    		margin-top: 50px;
-    	}
-    </style>
   </head>
   <body>
-    
-	 <!--导航条-->
+    <!--导航条-->
 	  <nav class="navbar navbar-fixed-top navbar-inverse">
 	  <div class="container">
 	    <!-- Brand and toggle get grouped for better mobile display -->
@@ -86,48 +35,46 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </button>
+	      <!--<a class="navbar-brand" href="#">武术赛事系统</a>-->
 	    </div>
 	
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	      	<!--<li><a href="index.html">首页</a></li>-->
-	        <li><a href="../index.html">首页<span class="sr-only">(current)</span></a></li>
+	        <li><a href="/WushuManageSystem/index.jsp">首页<span class="sr-only">(current)</span></a></li>
 	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	            <li><a href="../admin/competition-manage.html">赛事管理</a></li>
-	            <li><a href="../admin/apply.html">报名报项</a></li>
-	            <li><a href="../delegation/delegation-manage.html">代表团管理</a></li>
-	            <li><a href="../judge/judge-manage.html">裁判员管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp" target="_self">赛事管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/apply.jsp">报名报项</a></li>
+		            <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/judge/judge-manage.jsp">裁判员管理</a></li>
 	          	</ul>
         	</li>
-	        <li class="active"><a href="../admin/competition-arrange-list.html">竞赛编排</a></li>
-	       	<li class="dropdown">
+	        <li class="active"><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
+	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	             <li><a href="../judge/grade-list.html">录入成绩</a></li>
-	            <li><a href="../admin/stage-msg.html">晋级信息</a></li>
-	           </ul>
+	            <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">录入成绩</a></li>
+	            <li><a href="/WushuManageSystem/admin/stage-msg.jsp">阶段信息</a></li>
+	          	</ul>
         	</li>
-	        <li><a href="../admin/statistic-query.html">统计查询</a></li>
-					<li><a href="../admin/print-report.html">打印报表</a></li>
-	      </ul>
-
+	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
+	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
 	<ol class="breadcrumb">
-	  <li><a href="../index.html">首页</a></li>
-	  <li><a href="competition-arrange-list.html">竞赛编排列表</a></li>
+	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
 	  <li><a href="#">竞赛编排</a></li>
 	</ol>
 	
 	<div class="container competition_arrange_div  col-md-8 col-md-offset-2">
 		
 		<form class="form form-inline">
-				<label for="competition_name" class="control-label">赛事名称</label>&ensp;
+			<label for="competition_name" class="control-label">赛事名称</label>&ensp;
 		   	<select class="form-control" id="competition_name">
 	    		<option>第十三届全运会武术套路比赛</option>
 		  		<option>第十二届全运会武术套路比赛</option>
@@ -175,7 +122,7 @@
 			  		<td>
 			  			<form class="form-inline">
 			  				<input class="form-control datetimepicker" placeholder="起始时间"/>
-			  				&ensp;&ensp;到&ensp;&ensp;
+			  				&ensp;到&ensp;
 			  				<input class="form-control datetimepicker" placeholder="结束时间"/>
 			  			</form>
 			  		</td>
@@ -190,7 +137,7 @@
 			  		<td>
 			  			<form class="form-inline">
 			  				<input class="form-control datetimepicker" placeholder="起始时间"/>
-			  				&ensp;&ensp;到&ensp;&ensp;
+			  				&ensp;到&ensp;
 			  				<input class="form-control datetimepicker" placeholder="结束时间"/>
 			  			</form>
 			  		</td>
@@ -243,8 +190,8 @@
 		  <button class="btn btn-primary">抽签</button>
 	  </div>
 	    
-		<script src="../js/bootstrap-datetimepicker.min.js"></script>
-    <script src="../js/bootstrap-datetimepicker.zh-CN.js"></script>
+	<script src="/WushuManageSystem/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/WushuManageSystem/js/bootstrap-datetimepicker.zh-CN.js"></script>
     
     <script type="text/javascript">
     	$(document).ready(function(){

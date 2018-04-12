@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
@@ -8,7 +10,8 @@
     <title>裁判员管理</title>
 
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="/WushuManageSystem/css/bootstrap.min.css" rel="stylesheet">
+     <link href="/WushuManageSystem/css/judge-manage.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -16,56 +19,9 @@
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
-    <style type="text/css">
-    	body{
-    		background: #EBEBEB;
-    		margin-bottom: 70px;
-    	}
-    	
-    	.div_judge_manage {
-    		background: white;
-    	  padding: 30px 40px;
-    	  border-radius: 5px;
-    	  margin-bottom: 20px;
-    	  min-height: 500px;
-    	}
-    	
-    	#judge_list th{
-	      	background: #337AB7;
-	      	color: white;
-      	}
-      
-	    #judge_list th,td{
-	      	text-align: center;
-	    }
-	    
-	     #judge_list td input{
-	     	text-align: center;
-	     }
-    	
-    	.breadcrumb{
-    		margin-top: 50px;
-    	}
-    	
-    	h4{
-    		margin: 20px 0px;
-    	}
-    	
-    		.div_plus_icon,.div_minus_icon{
-    		color: #707070;
-    		padding: 10px 0px;
-    		margin: 0px;
-    		width: 20px;
-    	}
-    	
- 			
-    	
-    </style>
   </head>
   <body>
-    
-	 <!--导航条-->
+    <!--导航条-->
 	  <nav class="navbar navbar-fixed-top navbar-inverse">
 	  <div class="container">
 	    <!-- Brand and toggle get grouped for better mobile display -->
@@ -76,41 +32,41 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </button>
+	      <!--<a class="navbar-brand" href="#">武术赛事系统</a>-->
 	    </div>
 	
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	      	<!--<li><a href="index.html">首页</a></li>-->
-	        <li><a href="../index.html">首页<span class="sr-only">(current)</span></a></li>
+	        <li><a href="/WushuManageSystem/index.jsp">首页<span class="sr-only">(current)</span></a></li>
 	        <li class="dropdown active">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	            <li><a href="../admin/competition-manage.html">赛事管理</a></li>
-	            <li><a href="../admin/apply.html">报名报项</a></li>
-	            <li><a href="../delegation/delegation-manage.html">代表团管理</a></li>
-	            <li class="active"><a href="../admin/judge-manage.html">裁判员管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp" target="_self">赛事管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/apply.jsp">报名报项</a></li>
+		            <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
+		            <li class="active"><a href="/WushuManageSystem/admin/judge/judge-manage.jsp">裁判员管理</a></li>
 	          	</ul>
         	</li>
-	        <li><a href="../admin/competition-arrange-list.html">竞赛编排</a></li>
+	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
 	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	             <li><a href="../judge/grade-list.html">录入成绩</a></li>
-	            <li><a href="../admin/stage-msg.html">阶段信息</a></li>
-	            <li><a href="../admin/print-report.html">打印报表</a></li>
-	           </ul>
+	            <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">录入成绩</a></li>
+	            <li><a href="/WushuManageSystem/admin/stage-msg.jsp">阶段信息</a></li>
+	          	</ul>
         	</li>
-	        <li><a href="../admin/statistic-query.html">统计查询</a></li>
-	      </ul>
+	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
+	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
 	<ol class="breadcrumb">
-	  <li><a href="../index.html">首页</a></li>
+	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
 	  <li><a href="#">赛事准备</a></li>
-	  <li><a href="judge-manage.html">裁判员管理</a></li>
+	  <li><a href="#">裁判员管理</a></li>
 	</ol>
 	
 		<div class="container div_judge_manage  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
@@ -127,8 +83,8 @@
 			  		<option>第七届全运会武术套路比赛</option>
 			  	</select>
 			  	&ensp;&ensp;
-						<label for="competition_event_name" class="control-label">比赛项目</label>
-				   	<select class="form-control" id="competition_event_name">
+						<label for="event_name" class="control-label">比赛项目</label>
+				   	<select class="form-control" id="event_name">
 			    		<option>长拳青少年组女子单项</option>
 				  		<option>长拳青少年组男子单项</option>
 				  		<option>长拳成年组集体项目</option>
@@ -326,9 +282,9 @@
 		
 
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="/WushuManageSystem/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../js/bootstrap.min.js"></script>
+    <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
     <script type="text/javascript">
     	/*删除成员*/
     	$(".remove_judge").click(function(){

@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
@@ -8,7 +10,8 @@
     <title>代表团成员</title>
 
     <!-- Bootstrap -->
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="/WushuManageSystem/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/WushuManageSystem/css/table.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -16,46 +19,9 @@
       <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
       <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
-    <style type="text/css">
-    	body{
-    		margin-bottom: 70px;
-    	}
-    	
-    	#delegation_manage{
-    		margin-top: 80px;
-    	}
-    	
-    	.sidebar nav{
-    		position: fixed;
-    	}
-    	
-    	#delegation_manage .sidebar #active_li {
-    		background: #337AB7;
-    	}
-    	
-    	#delegation_manage .sidebar #active_li a {
-    		color: white;
-    	}
-    	
-    	#delegation_manage .sidebar #active_li a:hover{
-    		background: #337AB7;
-    	}
-    	
-    	#delegation_manage table th{
-	      	background: #337AB7;
-	      	color: white;
-      	}
-      
-	    #delegation_manage table th,td{
-	      	text-align: center;
-	    }
-    	
-    </style>
   </head>
   <body>
-    
-	 <!--导航条-->
+    <!--导航条-->
 	  <nav class="navbar navbar-fixed-top navbar-inverse">
 	  <div class="container">
 	    <!-- Brand and toggle get grouped for better mobile display -->
@@ -66,51 +32,45 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </button>
+	      <!--<a class="navbar-brand" href="#">武术赛事系统</a>-->
 	    </div>
 	
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	      	<!--<li><a href="index.html">首页</a></li>-->
-	        <li><a href="../index.html">首页<span class="sr-only">(current)</span></a></li>
+	        <li><a href="/WushuManageSystem/index.jsp">首页<span class="sr-only">(current)</span></a></li>
 	        <li class="dropdown active">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	            <li><a href="../admin/competition-manage.html">赛事管理</a></li>
-	            <li><a href="../admin/apply.html">报名报项</a></li>
-	            <li class="active"><a href="../delegation/delegation-manage.html">代表团管理</a></li>
-	            <li><a href="../judge/judge-manage.html">裁判员管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp">赛事管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/apply.jsp">报名报项</a></li>
+		            <li class="active"><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/judge/judge-manage.jsp">裁判员管理</a></li>
 	          	</ul>
         	</li>
-	        <li><a href="../admin/competition-arrange-list.html">竞赛编排</a></li>
+	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
 	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-	             <li><a href="../judge/grade-list.html">录入成绩</a></li>
-	            <li><a href="../admin/stage-msg.html">晋级信息</a></li>
-	           </ul>
+	            <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">录入成绩</a></li>
+	            <li><a href="/WushuManageSystem/admin/stage-msg.jsp">阶段信息</a></li>
+	          	</ul>
         	</li>
-					<li><a href="../admin/print-report.html">打印报表</a></li>
-	      </ul>
+	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
+	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
-	<div class="container bs-docs-container" id="delegation_manage">
-
-    <div class="row">
+	<ol class="breadcrumb">
+	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
+	  <li><a href="#">赛事准备</a></li>
+	  <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp">赛事管理</a></li>
+	  <li><a href="#"></a></li>
+	</ol>
 	
-		<div class="col-md-2 col-md-offset-1 sidebar" role="complementary">
-	    <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
-	      <ul class="nav bs-docs-sidenav sidebar_ul">
-	      	<li><a href="delegation-info.html">代表团信息</a></li>
-	      	<li id="active_li"><a href="delegation-member.html">代表团成员</a></li>
-	      	<li><a href="delegation-competition-info.html">参赛项目</a></li>
-	      </ul>
-	    </nav>
-	 	</div>
-			
-		<div class="col-md-8" role="main" id="content">
+	<div class="container content  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
 			<h4 class="text-center"><b>成员列表</b></h4>
 			<table class="table table-bordered">
 				<thead>
@@ -182,15 +142,12 @@
 				</tbody>
 			</table>
 			<a href="delegation-member-add.html"><button id="delegation_add_member" class="btn btn-primary">添加成员</button></a>
-		</div>
-			
-		</div>
 	</div>
 
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="../js/jquery-1.11.1.min.js"></script>
+    <script src="/WushuManageSystem/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../js/bootstrap.min.js"></script>
+    <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
     <script type="text/javascript">
     	/*删除成员*/
     	$(".remove_member").click(function(){

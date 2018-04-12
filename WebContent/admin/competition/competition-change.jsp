@@ -77,10 +77,9 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
-	
 	<ol class="breadcrumb">
-	  <li><a href="/WushuManageSystem/index.html">首页</a></li>
-	  <li><a href="#">赛前准备</a></li>
+	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
+	  <li><a href="#">赛事准备</a></li>
 	  <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp">赛事管理</a></li>
 	  <li><a href="#">赛事修改</a></li>
 	</ol>

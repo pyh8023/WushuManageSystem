@@ -1,11 +1,13 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>代表团成员添加</title>
+    <title>代表团成员修改</title>
 
     <!-- Bootstrap -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -81,7 +83,6 @@
 	            <li><a href="../admin/stage-msg.html">晋级信息</a></li>
 	           </ul>
         	</li>
-	        <li><a href="../admin/statistic-query.html">统计查询</a></li>
 					<li><a href="../admin/print-report.html">打印报表</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
@@ -103,12 +104,12 @@
 	 	</div>
 			
 		<div class="col-md-offset-1 col-md-5" role="main" id="content">
-			<h4 class="text-center"><b>添加代表团成员</b></h4>
+			<h4 class="text-center"><b>修改成员信息</b></h4>
 			<form class="form">
 				<div class="form-group">
 					   <label for="delegation_member_name" class="control-label">姓名</label>
 					    <div>
-					    	<input type="text" class="form-control" id="delegation_member_name" placeholder="请输入成员姓名" required autofocus>
+					    	<input type="text" class="form-control" id="delegation_member_name" placeholder="请输入成员姓名" value="张三" required autofocus>
 					    </div>
 					  </div>
 					  <div class="form-group">
@@ -123,7 +124,7 @@
 					  <div class="form-group">
 					    <label for="delegation_contact" class="control-label">年龄</label>
 					    <div>
-					    	<input type="number" class="form-control" maxlength="11" id="delegation_contact" placeholder="请输入年龄" required>
+					    	<input type="number" class="form-control" id="delegation_contact" placeholder="请输入年龄" value="40" required>
 					    </div>
 					  </div>
 					  <div class="form-group">
@@ -131,13 +132,13 @@
 					    <div>
 					    	<select class="form-control">
 					    		<option>运动员</option>
-					    		<option>教练</option>
+					    		<option selected="selected">教练</option>
 					    		<option>领队</option>
 					    	</select>
 					    </div>
 					  </div>
 					  <div class="form-group">
-					    <button class="btn btn-primary col-md-12">保存</button>
+					    <button class="btn btn-primary col-md-12">修改</button>
 					  </div>
 			</form>
 		</div>

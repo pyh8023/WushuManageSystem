@@ -1,11 +1,13 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>运动员管理</title>
+    <title>代表团成员添加</title>
 
     <!-- Bootstrap -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -19,45 +21,34 @@
     
     <style type="text/css">
     	body{
-    		background: #EBEBEB;
     		margin-bottom: 70px;
     	}
     	
-    	.div_athlet_manage {
-    		background: white;
-    	  padding: 30px 40px;
-    	  border-radius: 5px;
-    	  margin-bottom: 20px;
+    	#delegation_manage{
+    		margin-top: 80px;
     	}
     	
-    	#apply_competition th{
-	      	background: #337AB7;
-	      	color: white;
-      	}
-      
-	    #apply_competition th,td{
-	      	text-align: center;
-	    }
-    	
-    	.breadcrumb{
-    		margin-top: 50px;
+    	.sidebar nav{
+    		position: fixed;
     	}
     	
-    	h4{
-    		margin: 20px 0px;
+    	#delegation_manage .sidebar #active_li {
+    		background: #337AB7;
     	}
     	
-    	#athlet_msg{
-    		width: 400px;
+    	#delegation_manage .sidebar #active_li a {
+    		color: white;
     	}
     	
- 
+    	#delegation_manage .sidebar #active_li a:hover{
+    		background: #337AB7;
+    	}
     	
     </style>
   </head>
   <body>
     
-	  <!--导航条-->
+	 <!--导航条-->
 	  <nav class="navbar navbar-fixed-top navbar-inverse">
 	  <div class="container">
 	    <!-- Brand and toggle get grouped for better mobile display -->
@@ -80,9 +71,8 @@
 	          	<ul class="dropdown-menu">
 	            <li><a href="../admin/competition-manage.html">赛事管理</a></li>
 	            <li><a href="../admin/apply.html">报名报项</a></li>
-	            <li><a href="../delegation/delegation-manage.html">代表团管理</a></li>
-	            <li class="active"><a href="../athlet/athlet-manage.html">运动员管理</a></li>
-	             <li><a href="../judge/judge-manage.html">裁判员管理</a></li>
+	            <li class="active"><a href="../delegation/delegation-manage.html">代表团管理</a></li>
+	            <li><a href="../judge/judge-manage.html">裁判员管理</a></li>
 	          	</ul>
         	</li>
 	        <li><a href="../admin/competition-arrange-list.html">竞赛编排</a></li>
@@ -90,69 +80,73 @@
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
 	             <li><a href="../judge/grade-list.html">录入成绩</a></li>
-	            <li><a href="../admin/stage-msg.html">阶段信息</a></li>
-	            <li><a href="../admin/print-report.html">打印报表</a></li>
+	            <li><a href="../admin/stage-msg.html">晋级信息</a></li>
 	           </ul>
         	</li>
 	        <li><a href="../admin/statistic-query.html">统计查询</a></li>
+					<li><a href="../admin/print-report.html">打印报表</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
-	<ol class="breadcrumb">
-	  <li><a href="../index.html">首页</a></li>
-	  <li><a href="#">赛事准备</a></li>
-	  <li><a href="athlet-manage.html">运动员管理</a></li>
-	</ol>
-	
-		<div class="container div_athlet_manage  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-			 <h4><b>已报名赛事</b></h4>
-			 <table class="table table-bordered" id="apply_competition">
-				<thead>
-					<tr>
-						<th>编号</th>
-						<th>赛事名称</th>
-						<th>比赛状态</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>1</td>
-						<td>第十三届全国学生运动会武术比赛</td>
-						<td>报名中</td>
-						<td><a class="btn btn-primary btn-xs">查看详情</a></td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>第十三届全国学生运动会武术比赛</td>
-						<td>已结束</td>
-						<td><a class="btn btn-primary btn-xs">查看详情</a></td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>第十三届全国学生运动会武术比赛</td>
-						<td>已结束</td>
-						<td><a class="btn btn-primary btn-xs">查看详情</a></td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td>第十三届全国学生运动会武术比赛</td>
-						<td>已结束</td>
-						<td><a class="btn btn-primary btn-xs">查看详情</a></td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>第十三届全国学生运动会武术比赛</td>
-						<td>已结束</td>
-						<td><a class="btn btn-primary btn-xs">查看详情</a></td>
-					</tr>
-				</tbody>
-			</table>
+	<div class="container bs-docs-container" id="delegation_manage">
 
+    <div class="row">
+	
+		<div class="col-md-2 col-md-offset-1 sidebar" role="complementary">
+	    <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+	      <ul class="nav bs-docs-sidenav sidebar_ul">
+	      	<li><a href="delegation-manage.html">代表团信息</a></li>
+	      	<li id="active_li"><a href="delegation-member.html">代表团成员</a></li>
+	      	<li><a href="delegation-competition-info.html">参赛项目</a></li>
+	      </ul>
+	    </nav>
+	 	</div>
 			
+		<div class="col-md-offset-1 col-md-5" role="main" id="content">
+			<h4 class="text-center"><b>添加代表团成员</b></h4>
+			<form class="form">
+				<div class="form-group">
+					   <label for="delegation_member_name" class="control-label">姓名</label>
+					    <div>
+					    	<input type="text" class="form-control" id="delegation_member_name" placeholder="请输入成员姓名" required autofocus>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label for="delegation_member_sex" class="control-label">性别</label>
+					    <div>
+					    	<select class="form-control" id="delegation_member_sex">
+					    		<option>男</option>
+					    		<option>女</option>
+					    	</select>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label for="delegation_contact" class="control-label">年龄</label>
+					    <div>
+					    	<input type="number" class="form-control" maxlength="11" id="delegation_contact" placeholder="请输入年龄" required>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label for="delegation_member_type" class="control-label">成员类型</label>
+					    <div>
+					    	<select class="form-control">
+					    		<option>运动员</option>
+					    		<option>教练</option>
+					    		<option>领队</option>
+					    	</select>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <button class="btn btn-primary col-md-12">保存</button>
+					  </div>
+			</form>
 		</div>
+			
+
+		</div>
+	</div>
 
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="../js/jquery-1.11.1.min.js"></script>

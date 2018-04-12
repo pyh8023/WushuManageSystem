@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
+<%
+	String competition_id = request.getParameter("competition_id");
+%>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,19 +68,19 @@
 	
 	<ol class="breadcrumb">
 	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
-	  <li><a href="#">赛前准备</a></li>
-	  <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团列表</a></li>
+	  <li><a href="#">赛事准备</a></li>
+	  <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
 	  <li><a href="#">代表团添加</a></li>
 	</ol>
 	
 	<div class="container content  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
 		<h4 class="text-center"><b>添加代表团</b></h4>
 		<div class="col-md-6 col-md-offset-3">
-	    	<form class="form">
+	    	<form class="form" action="/WushuManageSystem/servlet/DelegationServlet?action=add&competition_id=<%=competition_id %>" method="post">
 			  <div class="form-group">
 			    <label for="delegation_name" class="control-label">代表团名称</label>
 			    <div>
-			    	<input type="text" class="form-control" id="delegation_name" placeholder="请输入代表团名称" required autofocus>
+			    	<input type="text" class="form-control" name="delegation_name" placeholder="请输入代表团名称" required autofocus>
 			    </div>
 			  </div>
 			  <!-- <div class="form-group">
@@ -101,21 +104,21 @@
 			  <div class="form-group">
 			    <label for="delegation_contact" class="control-label">联系方式</label>
 			    <div>
-			    	<input type="tel" class="form-control" maxlength="11" id="delegation_contact" placeholder="请输入联系方式" required>
+			    	<input type="tel" class="form-control" maxlength="11" name="delegation_phone" placeholder="请输入联系方式" required>
 			    </div>
 			  </div>
 			  <div class="form-group form-inline" id="distpicker">
 			    <label for="delegation_area" class="control-label">所在地区</label>
 			    <div>
-			    	<select class="form-control" id="province"></select>
-			    	<select class="form-control" id="city"></select>
-			    	<select class="form-control" id="district"></select>
+			    	<select class="form-control" id="province" name="province"></select>
+			    	<select class="form-control" id="city" name="city"></select>
+			    	<select class="form-control" id="district" name="district"></select>
 			    </div>
 			  </div>
 			  <div class="form-group">
 			    <label for="delegation_description" class="control-label">代表团介绍</label>
 			    <div>
-			    	<textarea  class="form-control" id="delegation_description"></textarea>
+			    	<textarea  class="form-control" name="delegation_description"></textarea>
 			    </div>
 			  </div>
 			  <div class="form-group">
