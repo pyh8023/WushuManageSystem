@@ -1,24 +1,34 @@
-<%@page import="com.pan.competition.bean.*"%>
+<%@page import="com.pan.competition.service.DelegationService"%>
+<%@page import="com.pan.competition.bean.Delegation"%>
+<%@page import="com.pan.competition.bean.MenuItem"%>
 <%@page import="java.util.List"%>
-<%@page import="com.pan.competition.service.EventService"%>
+<%@page import="com.pan.competition.service.CompetitionService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="zh-CN">
 <%
-	String competition_id = request.getParameter("competition_id");
-	EventService eventService = new EventService();
-	Message<List<Event>> message = eventService.getEventList(competition_id);
-	List<Event> list = message.getData();
-	request.setAttribute("list", list);
+	CompetitionService competitionService = new CompetitionService();
+	List<MenuItem> competitionNameList = competitionService.getCompetitionName();
+	request.setAttribute("competitionNameList", competitionNameList);
+	String selected = (String)request.getParameter("selectd");
+	DelegationService delegationService = new DelegationService();
+	List<Delegation> delegationList = null;
+	if(selected == null){
+		delegationList = delegationService.getDelegationList(competitionNameList.get(0).getId());
+	}else{
+		delegationList = delegationService.getDelegationList(selected);
+	}
+	request.setAttribute("delegationList", delegationList);
+	request.setAttribute("index", 0);
 %>
+<html lang="zh-CN">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>赛事项目信息</title>
+    <title>代表团管理</title>
 
     <!-- Bootstrap -->
     <link href="/WushuManageSystem/css/bootstrap.min.css" rel="stylesheet">
@@ -32,7 +42,7 @@
     <![endif]-->
   </head>
   <body>
-  	 <!--导航条-->
+    <!--导航条-->
 	  <nav class="navbar navbar-fixed-top navbar-inverse">
 	  <div class="container">
 	    <!-- Brand and toggle get grouped for better mobile display -->
@@ -54,9 +64,9 @@
 	        <li class="dropdown active">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
-		            <li class="active"><a href="/WushuManageSystem/admin/competition/competition-manage.jsp" target="_self">赛事管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp">赛事管理</a></li>
 		            <li><a href="/WushuManageSystem/admin/apply.jsp">报名报项</a></li>
-		            <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
+		            <li class="active"><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
 		            <li><a href="/WushuManageSystem/admin/judge/judge-manage.jsp">裁判员管理</a></li>
 	          	</ul>
         	</li>
@@ -75,64 +85,81 @@
 	</nav>
 	
 	<ol class="breadcrumb">
-	  <li><a href="/WushuManageSystem/index.html">首页</a></li>
+	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
 	  <li><a href="#">赛前准备</a></li>
-	  <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp">赛事管理</a></li>
-	  <li><a href="#">赛事项目信息</a></li>
+	  <li><a href="#">代表团列表</a></li>
 	</ol>
 	
 	<div class="container content  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-		<h4><b>赛事项目列表</b></h4>
-		<c:if test="${list.size()==0}">
-			<hr>
-			<p>赛事项目为空</p>
+		<form class="form form-inline">
+			<label for="competition_name" class="control-label">赛事名称</label>
+	   	<select class="form-control" id="competition_name_select">
+    		<c:forEach var="competition" items="${competitionNameList }">
+    			<option value="${competition.id }">${competition.name }</option>
+    		</c:forEach>
+	  	</select>
+		</form>
+		
+		<hr />
+		
+		<c:if test="${competitionNameList.size() ==0 || delegationList.size()==0 }">
+			<p>代表团为空</p>
 		</c:if>
-		<c:if test="${list.size()!=0}">
+		
+		<c:if test="${delegationList.size()!=0 }">
 			<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th>编号</th>
-					<th>名称</th>
-					<th>类别</th>
-					<th>组别</th>
-					<th>性别</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="event" items="${list }">
+				<thead>
 					<tr>
-						<td>${event.event_num }</td>
-						<td><a href="competition-stage.jsp?event_id=${event.id }&competition_id=${event.competition_id }">${event.name }</a></td>
-						<td>${event.type }</td>
-						<td>${event.event_group }</td>
-						<td>${event.sex }</td>
-						<td>
-							<a href="competition-event-change.jsp?event_id=${event.id }" class="btn btn-primary btn-xs">修改</a>
-							<a class="btn btn-primary btn-xs remove" onclick="remove(${event.id },${event.competition_id })">删除</a>
-						</td>
+						<th>序号</th>
+						<th>名称</th>
+						<th>运动员数量</th>
+						<th>所在地</th>
+						<th>联系方式</th>
+						<th>操作</th>
 					</tr>
-				</c:forEach>
-			</tbody>
-		</table>		
+				</thead>
+				<tbody>
+					<c:forEach var="delegation" items="${delegationList }">
+						<tr>
+							<td>${index=index+1 }</td>
+							<td>${delegation.name }</td>
+							<td>${delegation.athlet_num }</td>
+							<td>${delegation.province }${delegation.city }${delegation.district }</td>
+							<td>${delegation.phone }</td>
+							<td>
+								<a href="/WushuManageSystem/admin/delegation/delegation-update.jsp?delegation_id=${delegation.id }" class="btn btn-primary btn-xs">修改</a>
+								<a class="btn btn-primary btn-xs" onclick="remove(${delegation.id })">删除</a>
+							</td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
 		</c:if>
-		<a class="btn btn-primary" href="competition-event-add.jsp?competition_id=<%=competition_id %>">添加项目</a>
+		<c:if test="${competitionNameList.size()==0 }">
+			<a class="btn btn-primary disabled" href="/WushuManageSystem/admin/delegation/delegation-add.jsp">添加代表团</a>
+		</c:if>
+		<c:if test="${competitionNameList.size()!=0 }">
+			<a class="btn btn-primary" href="/WushuManageSystem/admin/delegation/delegation-add.jsp">添加代表团</a>
+		</c:if>
 	</div>
-	
+
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="/WushuManageSystem/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-    	/*删除项目*/
-    	function remove(event_id,competition_id){
-    		window.location.href="/WushuManageSystem/servlet/EventServlet?action=remove&event_id="+event_id+"&competition_id="+competition_id;
+    	
+    	if("<%=selected%>" != ""){
+        	$("#competition_name_select option[value='<%=selected%>']").attr("selected",true);
     	}
     	
-    	var msg = "${ msg }";
-		 if(msg !=null && msg!=""){
-			 alert(msg);
-		 }
+    	function remove(arg){
+    		$(arg).parent().parent().remove();
+    	}
+    	
+    	$("#competition_name_select").change(function(){
+    		window.location.href = "/WushuManageSystem/admin/delegation/delegation-manage.jsp?selectd="+$(this).val();
+    	});
     </script>
  </body>
 </html>

@@ -37,4 +37,12 @@
     <servlet-name>StageServlet</servlet-name>
     <url-pattern>/servlet/StageServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>DelegationServlet</servlet-name>
+    <servlet-class>com.pan.competition.servlet.DelegationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DelegationServlet</servlet-name>
+    <url-pattern>/servlet/DelegationServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

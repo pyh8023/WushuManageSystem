@@ -58,7 +58,6 @@ public class StageServlet extends HttpServlet {
 		}
 		if(msg == null) 
 			msg = "保存成功";
-		System.out.println(msg);
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();
 		out.write(msg);

@@ -147,11 +147,6 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-	    var msg = "${ stage_msg }";
-		 if(msg !=null && msg!=""){
-			 alert(msg);
-		 }	
-    
     	/*添加比赛阶段*/
     	function add_stage(arg){
     		$(arg).parent().parent().after('<tr>'

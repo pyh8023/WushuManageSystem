@@ -3,7 +3,9 @@ package com.pan.competition.bean;
 public class Delegation {
 	private String id;
 	private String name;
-	private String location;
+	private String province;
+	private String city;
+	private String district;
 	private String athlet_num;
 	private String phone;
 	private String competition_id;
@@ -26,11 +28,23 @@ public class Delegation {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getLocation() {
-		return location;
+	public String getProvince() {
+		return province;
 	}
-	public void setLocation(String location) {
-		this.location = location;
+	public void setProvince(String province) {
+		this.province = province;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 	public String getAthlet_num() {
 		return athlet_num;

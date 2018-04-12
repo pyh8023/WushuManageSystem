@@ -1,11 +1,12 @@
 package com.pan.competition.service;
 
+import java.util.List;
+
 import com.pan.competition.bean.Delegation;
+import com.pan.competition.bean.MenuItem;
 import com.pan.competition.bean.Message;
 import com.pan.competition.config.Constant;
 import com.pan.competition.dao.DelegationDao;
-
-import net.sf.json.JSONObject;
 
 public class DelegationService {
 	
@@ -16,7 +17,7 @@ public class DelegationService {
 	 * @param delegation
 	 * @return
 	 */
-	public String addDelegation(Delegation delegation) {
+	public Message<String> addDelegation(Delegation delegation) {
 		Message<String> message = null;
 		boolean isExist = delegationDao.isExistDelegationName(delegation.getName(),delegation.getCompetition_id());
 		if(isExist) {
@@ -29,10 +30,10 @@ public class DelegationService {
 				message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, "代表团添加失败", "");
 			}
 		}
-		return JSONObject.fromObject(message).toString();
+		return message;
 	}
 	
-	public String updateDelegation(Delegation delegation) {
+	public Message<String> updateDelegation(Delegation delegation) {
 		Message<String> message = null;
 		boolean isExist = delegationDao.isExistDelegationName(delegation.getName(), delegation.getId(),delegation.getCompetition_id());
 		if(isExist) {
@@ -44,6 +45,36 @@ public class DelegationService {
 			else
 				message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, "修改代表团失败", "");
 		}
-		return JSONObject.fromObject(message).toString();
+		return message;
+	}
+	
+	public List<Delegation> getDelegationList(String competition_id){
+		List<Delegation> list = delegationDao.getDelegationList(competition_id);
+		return list;
+	}
+	
+	public List<MenuItem> getDelegationNameList(String competition_id){
+		List<MenuItem> list = delegationDao.getDelegationNameList(competition_id);
+		return list;
+	}
+	
+	public String removeDelegation(String delegation_id){
+		int status = delegationDao.removeDelegation(delegation_id);
+		if(status == 1) {
+			return "代表团删除成功";
+		}else {
+			return "代表团删除失败";
+		}
+	}
+	
+	public Message<Delegation> getDelegationById(String delegation_id){
+		Message<Delegation> message = null;
+		Delegation delegation = delegationDao.getDelegationById(delegation_id);
+		if(delegation != null) {
+			message = new Message<Delegation>(Constant.QUERY_SUCCESS_RESPONSE_CODE, "", delegation);
+		}else {
+			message = new Message<Delegation>(Constant.QUERY_FAILED_RESPONSE_CODE, "不存在该代表团", null);
+		}
+		return message;
 	}
 }

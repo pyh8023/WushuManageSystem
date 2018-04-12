@@ -11,7 +11,7 @@ body {
    	  padding: 30px 40px;
    	  border-radius: 5px;
    	  margin-bottom: 20px;
-   	  min-height:500px;
+   	  min-height: 500px;
    	}
    	    	
    	.content table {
@@ -29,7 +29,6 @@ body {
    		vertical-align: middle!important;
    	}
    	
-   	.div_plus_icon,.div_minus_icon{
-   		color: #707070;
+   	#distpicker select {
+   		width:30%;
    	}
-}

@@ -35,10 +35,9 @@ public class CompetitionService {
 		return message;
 	}
 	
-	public Message<List<MenuItem>> getCompetitionName() {
+	public List<MenuItem> getCompetitionName() {
 		List<MenuItem> list = competitionDao.getCompetitionNameList();
-		Message<List<MenuItem>> message = new Message<List<MenuItem>>(Constant.QUERY_SUCCESS_RESPONSE_CODE, "", list);
-		return message;
+		return list;
 	}
 	
 	public Message<String> updateCompetition(Competition competition) {

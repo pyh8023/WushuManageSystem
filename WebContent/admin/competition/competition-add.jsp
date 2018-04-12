@@ -165,6 +165,12 @@
 					alert("开始日期不能大于结束日期！");
 					return false;
 				}
+				var province = $("#province").val();
+				var city = $("#city").val();
+				if(province=="" || city==""){
+					alert("请选择地点！");
+					return false;
+				}
 			 });
 		</script>
  </body>

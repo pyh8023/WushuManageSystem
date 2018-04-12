@@ -25,7 +25,7 @@ public class DelegationDao {
 			String sql = "insert into delegation set name = ?,location = ?,athlet_num = ?,phone = ? ,competition_id = ?,introduction=?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, delegation.getName());
-			pstmt.setString(2, delegation.getLocation());
+			pstmt.setString(2, delegation.getProvince()+","+delegation.getCity()+","+delegation.getDistrict());
 			pstmt.setInt(3, Integer.parseInt(delegation.getAthlet_num()));
 			pstmt.setString(4,delegation.getPhone());
 			pstmt.setInt(5, Integer.parseInt(delegation.getCompetition_id()));
@@ -107,7 +107,7 @@ public class DelegationDao {
 			String sql = "update delegation set name = ?,location = ?,athlet_num = ?,phone = ? ,competition_id = ?,introduction=? where delegation_id = ?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, delegation.getName());
-			pstmt.setString(2, delegation.getLocation());
+			pstmt.setString(2, delegation.getProvince()+","+delegation.getCity()+","+delegation.getDistrict());
 			pstmt.setInt(3, Integer.parseInt(delegation.getAthlet_num()));
 			pstmt.setString(4,delegation.getPhone());
 			pstmt.setInt(5, Integer.parseInt(delegation.getCompetition_id()));
@@ -164,7 +164,14 @@ public class DelegationDao {
 				Delegation delegation = new Delegation();
 				delegation.setId(rs.getInt("delegation_id")+"");
 				delegation.setName(rs.getString("name"));
-				delegation.setLocation(rs.getString("location"));
+				String[] location = rs.getString("location").split(",");
+				delegation.setProvince(location[0]);
+				delegation.setCity(location[1]);
+				if(location.length==3) {
+					delegation.setDistrict(location[2]);
+				}else {
+					delegation.setDistrict("");
+				}
 				delegation.setPhone(rs.getString("phone"));
 				delegation.setAthlet_num(rs.getInt("athlet_num")+"");
 				delegation.setCompetition_id(competition_id);
@@ -227,7 +234,14 @@ public class DelegationDao {
 				delegation = new Delegation();
 				delegation.setId(delegation_id);
 				delegation.setName(rs.getString("name"));
-				delegation.setLocation(rs.getString("location"));
+				String[] location = rs.getString("location").split(",");
+				delegation.setProvince(location[0]);
+				delegation.setCity(location[1]);
+				if(location.length==3) {
+					delegation.setDistrict(location[2]);
+				}else {
+					delegation.setDistrict("");
+				}
 				delegation.setPhone(rs.getString("phone"));
 				delegation.setAthlet_num(rs.getInt("athlet_num")+"");
 				delegation.setCompetition_id(rs.getInt("comepetition_id")+"");
