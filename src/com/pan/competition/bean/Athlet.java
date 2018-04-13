@@ -5,7 +5,7 @@ public class Athlet {
 	private String name;
 	private String sex;
 	private String age;
-	private String delegation;
+	private String delegation_id;
 	public String getId() {
 		return id;
 	}
@@ -30,10 +30,10 @@ public class Athlet {
 	public void setAge(String age) {
 		this.age = age;
 	}
-	public String getDelegation() {
-		return delegation;
+	public String getDelegation_id() {
+		return delegation_id;
 	}
-	public void setDelegation(String delegation) {
-		this.delegation = delegation;
+	public void setDelegation_id(String delegation_id) {
+		this.delegation_id = delegation_id;
 	}
 }

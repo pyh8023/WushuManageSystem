@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.pan.competition.service.DelegationService"%>
 <%@page import="com.pan.competition.bean.Delegation"%>
 <%@page import="com.pan.competition.bean.MenuItem"%>
@@ -14,7 +15,7 @@
 	String selected = (String)request.getParameter("selected");
 	DelegationService delegationService = new DelegationService();
 	List<Delegation> delegationList = null;
-	if(selected == null){
+	if(competitionNameList.size()!=0 && (selected == null||selected.equals(""))){
 		selected = competitionNameList.get(0).getId();
 	}
 	delegationList = delegationService.getDelegationList(selected);

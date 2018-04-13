@@ -45,4 +45,12 @@
     <servlet-name>DelegationServlet</servlet-name>
     <url-pattern>/servlet/DelegationServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>AthletServlet</servlet-name>
+    <servlet-class>com.pan.competition.servlet.AthletServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AthletServlet</servlet-name>
+    <url-pattern>/servlet/AthletServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

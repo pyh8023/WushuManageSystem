@@ -12,7 +12,7 @@
     <!-- Bootstrap -->
     <link href="/WushuManageSystem/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/WushuManageSystem/css/bootstrap-datetimepicker.min.css" />
-    <link rel="stylesheet" href="/WushuManageSystem/css/table-simple.css" />
+    <link rel="stylesheet" href="/WushuManageSystem/css/stage-msg.css" />
     <script src="/WushuManageSystem/js/jquery-1.11.1.min.js"></script>
     <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
 	

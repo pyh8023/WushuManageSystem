@@ -1,6 +1,5 @@
 @charset "UTF-8";
-
-body {
+ body {
    		margin-top: 50px;
    		margin-bottom: 70px;
    		background: #EBEBEB;
@@ -11,7 +10,11 @@ body {
    	  padding: 30px 40px;
    	  border-radius: 5px;
    	  margin-bottom: 20px;
-   	  min-height:500px;
+   	  min-height: 500px;
+   	}
+   	
+   	.content form {
+   		text-align: center;
    	}
    	    	
    	.content table {
@@ -27,8 +30,4 @@ body {
    	.content table thead tr th,td{
    		text-align: center;
    		vertical-align: middle!important;
-   	}
-   	
-   	.div_plus_icon,.div_minus_icon{
-   		color: #707070;
    	}

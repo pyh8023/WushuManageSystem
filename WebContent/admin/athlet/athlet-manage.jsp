@@ -1,13 +1,27 @@
+<%@page import="com.pan.competition.bean.Athlet"%>
+<%@page import="java.util.List"%>
+<%@page import="com.pan.competition.service.AthletService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
+<%
+	String delegation_id = request.getParameter("delegation_id");
+	String competition_id = request.getParameter("competition_id");
+	AthletService athletService = new AthletService();
+	List<Athlet> list = athletService.getAthletList(delegation_id);
+	request.setAttribute("delegation_id", delegation_id);
+	request.setAttribute("competition_id", competition_id);
+	request.setAttribute("list", list);
+	request.setAttribute("index", 0);
+%>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>代表团成员</title>
+    <title>运动员管理</title>
 
     <!-- Bootstrap -->
     <link href="/WushuManageSystem/css/bootstrap.min.css" rel="stylesheet">
@@ -66,12 +80,17 @@
 	<ol class="breadcrumb">
 	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
 	  <li><a href="#">赛事准备</a></li>
-	  <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp">赛事管理</a></li>
-	  <li><a href="#"></a></li>
+	  <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp?selected=${competition_id }">代表团管理</a></li>
+	  <li><a href="#">运动员管理</a></li>
 	</ol>
 	
 	<div class="container content  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-			<h4 class="text-center"><b>成员列表</b></h4>
+		<h4><b>运动员列表</b></h4>
+		<hr>
+		<c:if test="${list.size() ==0 }">
+			<p>运动员为空</p>
+		</c:if>
+		<c:if test="${list.size() !=0 }">
 			<table class="table table-bordered">
 				<thead>
 					<tr>
@@ -79,69 +98,26 @@
 						<th>姓名</th>
 						<th>性别</th>
 						<th>年龄</th>
-						<th>类别</th>
 						<th>操作</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>1</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>40</td>
-						<td>教练</td>
-						<td>
-							<a href="delegation-member-change.html"><button class="btn btn-xs btn-primary">修改</button></a>
-							<button class="btn btn-xs btn-primary remove_member">删除</button>
-						</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>18</td>
-						<td>运动员</td>
-						<td>
-							<a href="delegation-member-change.html"><button class="btn btn-xs btn-primary">修改</button></a>
-							<button class="btn btn-xs btn-primary remove_member">删除</button>
-						</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>40</td>
-						<td>运动员</td>
-						<td>
-							<a href="delegation-member-change.html"><button class="btn btn-xs btn-primary">修改</button></a>
-							<button class="btn btn-xs btn-primary remove_member">删除</button>
-						</td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>40</td>
-						<td>运动员</td>
-						<td>
-							<a href="delegation-member-change.html"><button class="btn btn-xs btn-primary">修改</button></a>
-							<button class="btn btn-xs btn-primary remove_member">删除</button>
-						</td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>40</td>
-						<td>教练</td>
-						<td>
-							<a href="delegation-member-change.html"><button class="btn btn-xs btn-primary">修改</button></a>
-							<button class="btn btn-xs btn-primary remove_member">删除</button>
-						</td>
-					</tr>
+					<c:forEach var="athlet" items="${list }">
+						<tr>
+							<td>${index=index+1 }</td>
+							<td>${athlet.name }</td>
+							<td>${athlet.sex }</td>
+							<td>${athlet.age }</td>
+							<td>
+								<a href="/WushuManageSystem/admin/athlet/athlet-update.jsp?athlet_id=${athlet.id }&competition_id=${competition_id}" class="btn btn-xs btn-primary">修改</a>
+								<button class="btn btn-xs btn-primary" onclick="remove(${athlet.id })">删除</button>
+							</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
-			<a href="delegation-member-add.html"><button id="delegation_add_member" class="btn btn-primary">添加成员</button></a>
+		</c:if>
+		<a href="/WushuManageSystem/admin/athlet/athlet-add.jsp?delegation_id=${delegation_id }&competition_id=${competition_id }" class="btn btn-primary">添加运动员</a>
 	</div>
 
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -149,10 +125,12 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-    	/*删除成员*/
-    	$(".remove_member").click(function(){
-    		$(this).parent().parent().remove();
-    	});
+    	function remove(athlet_id){
+    		$.post("/WushuManageSystem/servlet/AthletServlet?action=remove",{athlet_id:athlet_id},function(data){
+    			alert(data);
+    			window.location.reload();
+    		});
+    	}
     </script>
  </body>
 </html>

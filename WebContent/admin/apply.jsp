@@ -71,7 +71,6 @@
     		text-align: center;
     		vertical-align: middle!important;
     	}
-
     	#sex_div ,#sex_select{
     		display: inline-block;
     	}

@@ -80,7 +80,7 @@
 	<ol class="breadcrumb">
 	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
 	  <li><a href="#">赛事准备</a></li>
-	  <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
+	  <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp?selected=${delegation.competition_id }">代表团管理</a></li>
 	  <li><a href="#">代表团修改</a></li>
 	</ol>
 	
