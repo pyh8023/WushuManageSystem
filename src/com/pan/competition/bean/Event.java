@@ -5,7 +5,7 @@ public class Event {
 	private String name;
 	private String event_num;  //项目编号
 	private String type; //项目类别
-	private String event_group; //项目组别
+	private String event_group; //项目组别,分成年组（大于18），青少年组（12-18）和儿童组（小于12）
 	private String sex;
 	private String max_athlet_num;
 	private String min_athlet_num;

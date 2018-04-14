@@ -107,7 +107,6 @@
 				    	<select class="form-control" id="event_type" name="event_type">
 				    		<option>单人单项</option>
 				    		<option>集体项目</option>
-				    		<option>团体项目</option>
 				    		<option>全能</option>
 				    	</select>
 				    </div>

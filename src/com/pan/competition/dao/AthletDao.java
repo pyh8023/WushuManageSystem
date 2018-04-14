@@ -135,12 +135,33 @@ public class AthletDao {
 		Connection con = null;
 		int result = 0;
 		try {
-			String sql = "delete from athlet where athlet_id = ?";
+			String sql = "SELECT delegation.athlet_num,athlet.delegation_id FROM delegation,athlet WHERE athlet.delegation_id = delegation.delegation_id AND athlet.athlet_id=?";
 			con = DBUtil.getCon();
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, Integer.parseInt(athlet_id));
+			ResultSet rs = pstmt.executeQuery();
+			int athlet_num = -1;
+			int delegation_id = -1;
+			if(rs.next()) {
+				athlet_num = rs.getInt("athlet_num");
+				delegation_id =  rs.getInt("delegation_id");
+			}
+			pstmt.close();
+			
+			sql = "delete from athlet where athlet_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(athlet_id));
 			result = pstmt.executeUpdate();
 			pstmt.close();
+			
+			if(athlet_num!=-1) {
+				sql = "update delegation set athlet_num = ? where delegation_id = ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, athlet_num-1);
+				pstmt.setInt(2, delegation_id);
+				pstmt.executeUpdate();
+				pstmt.close();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -162,6 +183,23 @@ public class AthletDao {
 			pstmt.setInt(4, Integer.parseInt(athlet.getDelegation_id()));
 			result = pstmt.executeUpdate();
 			pstmt.close();
+			sql = "select athlet_num from delegation where delegation_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(athlet.getDelegation_id()));
+			ResultSet rs = pstmt.executeQuery();
+			int athlet_num = -1;
+			if(rs.next()) {
+				athlet_num = rs.getInt("athlet_num");
+			}
+			pstmt.close();
+			if(athlet_num!=-1) {
+				sql = "update delegation set athlet_num = ? where delegation_id = ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, athlet_num+1);
+				pstmt.setInt(2, Integer.parseInt(athlet.getDelegation_id()));
+				pstmt.executeUpdate();
+				pstmt.close();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {

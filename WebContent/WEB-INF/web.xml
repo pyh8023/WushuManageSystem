@@ -53,4 +53,12 @@
     <servlet-name>AthletServlet</servlet-name>
     <url-pattern>/servlet/AthletServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>ApplyServlet</servlet-name>
+    <servlet-class>com.pan.competition.servlet.ApplyServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ApplyServlet</servlet-name>
+    <url-pattern>/servlet/ApplyServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
