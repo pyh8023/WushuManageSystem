@@ -18,7 +18,7 @@ public class Test {
 		//getCompetitionNameList();
 		//eventServiceTest();
 		//addEventTest();
-		stageServiceTest();
+		//stageServiceTest();
 	}
 	
 	static void stageServiceTest() {

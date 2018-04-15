@@ -39,7 +39,7 @@ public class EventDao {
 				event.setMin_athlet_num(rs.getString("min_athlet_num"));
 				event.setMax_female_num(rs.getString("max_female_num"));
 				event.setMin_female_num(rs.getString("min_female_num"));
-				event.setMax_male_num(rs.getString("min_male_num"));
+				event.setMax_male_num(rs.getString("max_male_num"));
 				event.setMin_male_num(rs.getString("min_male_num"));
 				event.setCompetition_id(competition_id);
 				list.add(event);

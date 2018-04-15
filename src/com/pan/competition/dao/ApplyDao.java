@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pan.competition.bean.Apply;
+import com.pan.competition.bean.Athlet;
+import com.pan.competition.bean.Event;
 import com.pan.competition.util.DBUtil;
 
 public class ApplyDao {
@@ -51,6 +53,14 @@ public class ApplyDao {
 			pstmt.setString(4, apply.getRemark());
 		    result = pstmt.executeUpdate();
 			pstmt.close();
+			for(String athlet_id : apply.getAthlets().split(",")) {
+				sql = "insert into apply_event_athlet set event_id = ?,athlet_id=?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setInt(1, Integer.parseInt(apply.getEvent_id()));
+				pstmt.setInt(2, Integer.parseInt(athlet_id));
+			    result = pstmt.executeUpdate();
+				pstmt.close();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -58,4 +68,95 @@ public class ApplyDao {
 		}
 		return result;
 	}
+	
+	public boolean removeApply(String apply_id) {
+		Connection con = null;
+		try {
+			String sql = "select athlets,event_id from apply where apply_event_id = ?";
+			con = DBUtil.getCon();
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(apply_id));
+			ResultSet rs = pstmt.executeQuery();
+			String athlets = null,event_id = "-1";
+			if (rs.next()) {
+				athlets = rs.getString("athlets");
+				event_id = rs.getString("event_id");
+			}
+			pstmt.close();
+			sql = "delete from apply where apply_event_id = ?";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(apply_id));
+			int result = pstmt.executeUpdate();
+			pstmt.close();
+			if(result == 1) {
+				for(String athlet_id : athlets.split(",")) {
+					sql = "delete from apply_event_athlet where athlet_id = ? and event_id = ?";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setInt(1, Integer.parseInt(athlet_id));
+					pstmt.setInt(2, Integer.parseInt(event_id));
+					int i = pstmt.executeUpdate();
+					pstmt.close();
+					if(i != 1)
+						return false;
+				}
+				return true;
+			}
+			else
+				return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return false;
+	}
+	
+	public List<Athlet> getApplyAthletList(String delegation_id,String event_id){
+		List<Athlet> list = new ArrayList<Athlet>();
+		Connection con = null;
+		try {
+			String sql = "SELECT * FROM athlet WHERE athlet_id NOT IN (SELECT athlet_id FROM apply_event_athlet WHERE event_id=?) AND delegation_id = ?";
+			con = DBUtil.getCon();
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(event_id));
+			pstmt.setInt(2, Integer.parseInt(delegation_id));
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Athlet athlet = new Athlet();
+				athlet.setId(rs.getString("athlet_id"));
+				athlet.setName(rs.getString("name"));
+				athlet.setSex(rs.getString("sex"));
+				athlet.setDelegation_id(delegation_id);
+				athlet.setAge(rs.getString("age"));
+				list.add(athlet);
+			}
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return list;
+	}
+	
+	public int updateApply(Apply apply) {
+		int result = 0;
+		Connection con = null;
+		try {
+			con = DBUtil.getCon();
+			String sql = "update apply set apply_name = ?,remark = ? where apply_event_id = ?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, apply.getApply_name());
+			pstmt.setString(2, apply.getRemark());
+			pstmt.setInt(3, Integer.parseInt(apply.getId()));
+		    result = pstmt.executeUpdate();
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return result;
+	}
+	
 }

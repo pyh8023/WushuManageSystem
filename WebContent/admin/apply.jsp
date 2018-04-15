@@ -50,19 +50,18 @@
 			String event_id = events.get(Integer.parseInt(event_index)).getId();
 			List<Apply> applyList = applyService.getApplyList(event_id);
 			request.setAttribute("applyList", applyList);
-		}
-		//获取代表团列表
-		DelegationService delegationService = new DelegationService();
-		List<MenuItem> delegationNames = delegationService.getDelegationNameList(competition_id);
-		request.setAttribute("delegationNames", delegationNames);
-		if(delegationNames.size()!=0){
-			if(delegation_id == null||"null".equals(delegation_id)){
-				delegation_id = delegationNames.get(0).getId();
+			//获取代表团列表
+			DelegationService delegationService = new DelegationService();
+			List<MenuItem> delegationNames = delegationService.getDelegationNameList(competition_id);
+			request.setAttribute("delegationNames", delegationNames);
+			if(delegationNames.size()!=0){
+				if(delegation_id == null||"null".equals(delegation_id)){
+					delegation_id = delegationNames.get(0).getId();
+				}
+				request.setAttribute("delegation_id", delegation_id);
+				List<Athlet> athlets = applyService.getApplyAthletList(delegation_id, event_id);
+				request.setAttribute("athlets", athlets);
 			}
-			request.setAttribute("delegation_id", delegation_id);
-			AthletService athletService = new AthletService();
-			List<Athlet> athlets = athletService.getAthletList(delegation_id);
-			request.setAttribute("athlets", athlets);
 		}
 	}
 	request.setAttribute("sex_selected", sex_selected);
@@ -174,20 +173,19 @@
 							<td><input type="text" class="form-control" value="${apply.apply_name }"/></td>
 							<td><input type="text" class="form-control" value="${apply.remark }"/></td>
 							<td>
-								<button class="btn btn-primary btn-xs" onclick="remove(this)">删除</button>
+								<button class="btn btn-primary btn-xs" onclick="remove(${apply.id })">删除</button>
 							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		
-			<%-- <c:if test="${applyList.size()==0 }">
+			<c:if test="${applyList.size()==0 }">
 				<p>该项目报项为空</p>
-			</c:if> --%>
-			
-			<button class="btn btn-primary <c:if test="${events.size()==0 || delegationNames.size()==0} ">disabled</c:if>">提交</button>
+			</c:if>
+	
+			<button id="submit_apply_btn" class="btn btn-primary <c:if test="${applyList.size() == 0 || events.size()==0 || delegationNames.size()==0}">disabled</c:if>">提交</button>
 		</div>
-			
 			
 			<div id="add_athlet_div" class="container col-md-5 col-sm-12"> 
 				<form class="form-inline">
@@ -219,10 +217,10 @@
 					</tr>
 				</thead>
 				<tbody id="athlet_apply_item_tb">
-					<c:forEach var="athlet" items="${athlets }">
+				<c:set var="event_sex" value="${events[event_index].sex }"></c:set>
+				<c:set var="event_group" value="${events[event_index].event_group }"></c:set>
+						<c:forEach var="athlet" items="${athlets }">
 						<fmt:parseNumber var="age" type="number" value="${athlet.age }" />
-						<c:set var="event_sex" value="${events[event_index].sex }"></c:set>
-						<c:set var="event_group" value="${events[event_index].event_group }"></c:set>
 						<c:set var="flag" value="${(event_group eq '儿童组' && age < 12) || (event_group eq '青少年组' && age>=12 && age < 18) ||(event_group eq '成年组' && age >= 18)}"></c:set>
 						<c:if test="${flag eq 'true' && event_sex eq '男子' && athlet.sex eq '男' }">
 							<tr id="${athlet.id }">
@@ -270,9 +268,6 @@
 					</c:forEach>
 				</tbody>
 			</table>
-			<c:if test="${athlets.size()==0 }">
-				<p>代表团运动员为空</p>
-			</c:if>
 			<button class="btn btn-primary <c:if test="${events.size()==0 || delegationNames.size()==0 ||athlets.size()==0}">disabled</c:if>" id="add_apply_btn">添加</button>
 			</div>
 		</div>
@@ -334,12 +329,32 @@
     	}
      }
     
+    $("#submit_apply_btn").click(function() {
+    	var json = "[]";
+    	$("#apply_tb").children().each(function() {
+			var id = $(this).attr("id");
+			var name = $(this).children().eq(1).children().eq(0).val();
+			var remark = $(this).children().eq(2).children().eq(0).val();
+			if(json == "[]")
+				json = "[{\"id\":\""+id+"\",\"apply_name\":\""+name+"\",\"remark\":\""+remark+"\"}]";
+			else
+				json = json.substring(0,json.length-1)+ ",{\"id\":\""+id+"\",\"apply_name\":\""+name+"\",\"remark\":\""+remark+"\"}]";
+		});
+    	 $.post("/WushuManageSystem/servlet/ApplyServlet?action=update",{data:json},function(data){
+			if(data == "200")
+   				alert("提交成功");
+			else{
+				alert("提交失败");
+				window.location.reload();
+			}
+		});
+	});
+    
     $("#competition_name_select").change(function(){
     	$.cookie('competition_id', $(this).val());
     	$.cookie('event_index', null);
     	$.cookie('delegation_id', null);
     	$.cookie('sex_selected', null);
-    	$.cookie('json',"[]");
     	window.location.reload();
     });
     
@@ -347,7 +362,6 @@
     	$.cookie('event_index', $(this).val());
     	$.cookie('delegation_id', null);
     	$.cookie('sex_selected', null);
-    	$.cookie('json',"[]");
     	window.location.reload();
     });
     
@@ -356,37 +370,109 @@
     	window.location.reload();
     });
     
-    	$("#add_apply_btn").click(function(){
-    		var applyIndex = ${applyIndex};
-    		var json = $.cookie('json');
-    		if(json == null)
-    			$.cookie('json',"[]");
-    		if("${events[event_index].type}" == "单人单项" ||"${events[event_index].type}" == "全能"){
-    			$("#athlet_apply_item_tb").children().each(function(){
-    				var name = $(this).children().eq(1).html();
-    				if($(this).children().eq(4).find("div input").is(':checked')){
-    					if(json == "[]")
-    						json = "[{\"apply_name\":\""+name+"\",\"remark\":\"\"}]";
-    					else 
-    						json = json.substring(0,json.length-1)+ ",{\"apply_name\":\""+name+"\",\"remark\":\"\"}]";
-    					/* $("#apply_tb").after("<tr><td>"+(++applyIndex)+"</td>"+
-            					"<td> <input type='text' class='form-control' value='"+name+"'/> </td>"
-            					+"<td> <input type='text' class='form-control'/> </td>"
-            					+"<td><button class='btn btn-primary btn-xs' onclick='remove(this)'>删除</button></td></tr>"); */
-    				}
-    			});
-    			$.cookie('json',json);
-			}else{
-				
+   	/* 点击添加按钮，添加报项 */
+   	$("#add_apply_btn").click(function(){
+   		var applyIndex = ${applyIndex};
+   		var apply_data = $.cookie('apply_data');
+   		if(apply_data == null)
+   			apply_data = "[]";
+   		var json = "[]";
+   		var event_type = "${events[event_index].type}";
+   		var event_id = "${events[event_index].id}";
+   		if( event_type == "单人单项" || event_type == "全能"){
+   			$("#athlet_apply_item_tb").children().each(function(){
+   				if($(this).children().eq(4).find("div input").is(':checked')){
+   					var name = $(this).children().eq(1).html();
+   					var id = $(this).attr("id");
+   					if(json == "[]")
+   						json = "[{\"athlets\":\""+id+"\",\"event_id\":\""+event_id+"\",\"apply_name\":\""+name+"\",\"remark\":\"\"}]";
+   					else 
+   						json = json.substring(0,json.length-1)+ ",{\"athlets\":\""+id+"\",\"event_id\":\""+event_id+"\",\"apply_name\":\""+name+"\",\"remark\":\"\"}]";
+   				}
+   			});
+		}else{
+			//检查运动员人数是否符合要求
+			if(!checkAthletNum())
+				return false;
+			var ids = "";
+			var names = ""; 
+			$("#athlet_apply_item_tb").children().each(function(){
+   				if($(this).children().eq(4).find("div input").is(':checked')){
+   					var name = $(this).children().eq(1).html();
+   					var id = $(this).attr("id");
+   					ids += id +",";
+   					names += name +",";
+   				}
+   			});
+			ids = ids.substring(0,ids.length-1);
+			names = names.substring(0,names.length-1);
+			json = "[{\"athlets\":\""+ids+"\",\"event_id\":\""+event_id+"\",\"apply_name\":\""+names+"\",\"remark\":\"\"}]";
+		}
+   		$.post("/WushuManageSystem/servlet/ApplyServlet?action=add",{data:json},function(data){
+			if(data != "200")
+   				alert("添加报项失败");
+			window.location.reload();
+		});
+   	});
+   	
+   	
+   	function checkAthletNum(){
+   		//计算选择人数
+		var athlet_num = 0;
+		var female_num = 0;
+		var male_num = 0;
+		$("#athlet_apply_item_tb").children().each(function(){
+			if($(this).children().eq(4).find("div input").is(':checked')){
+				var sex = $(this).children().eq(2).html();
+				if(sex == "男"){
+					male_num++;
+				}else{
+					female_num++;
+				}
+				athlet_num++;
 			}
-    	});
+		});
+		var event_min_athlet_num = parseInt("${events[event_index].min_athlet_num}");
+		var event_max_athlet_num = parseInt("${events[event_index].max_athlet_num}");
+		if(athlet_num < event_min_athlet_num || athlet_num > event_max_athlet_num){
+			if(event_min_athlet_num != event_max_athlet_num)
+				alert("运动员人数不能小于"+event_min_athlet_num+",或者大于"+event_max_athlet_num);
+			else
+				alert("运动员人数应等于"+event_max_athlet_num);
+			return false;
+		}else if("${event_sex}" == "男女混合"){
+			var event_min_female_num = parseInt("${events[event_index].min_female_num}");
+			var event_max_female_num = parseInt("${events[event_index].max_female_num}");
+			var event_min_male_num = parseInt("${events[event_index].min_male_num}");
+			var event_max_male_num = parseInt("${events[event_index].max_male_num}");
+			if(male_num< event_min_male_num ||male_num > event_max_male_num ){
+				if(event_min_male_num != event_max_male_num)
+					alert("男运动员人数不能小于"+event_min_male_num+",或者大于"+event_max_male_num);
+				else
+					alert("男运动员人数应等于"+event_max_male_num);
+				return false;
+			}
+			if(female_num< event_min_female_num ||female_num > event_max_female_num ){
+				if(event_min_female_num != event_max_female_num)
+					alert("女运动员人数不能小于"+event_min_female_num+",或者大于"+event_max_female_num);
+				else
+					alert("女运动员人数应等于"+event_min_female_num);
+				return false;
+			}
+		}else{
+			return true;
+		}
+   	}
     	
-    	
-    
-    	function remove(arg){
-    		$(arg).parent().parent().remove();
-    	}
-    
+   	/* 删除报项 */
+   	function remove(apply_id){
+   		$.post("/WushuManageSystem/servlet/ApplyServlet?action=remove",{data:apply_id},function(data){
+			if(data != "200")
+   				alert("删除失败");
+			else
+				window.location.reload();
+		});
+   	}
     	
     </script>
  </body>
