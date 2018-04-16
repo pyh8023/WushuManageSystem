@@ -12,6 +12,7 @@ body {
    	  border-radius: 5px;
    	  margin-bottom: 20px;
    	  min-height:500px;
+   	  text-align: center; 
    	}
    	    	
    	.content table {
@@ -31,4 +32,8 @@ body {
    	
    	.div_plus_icon,.div_minus_icon{
    		color: #707070;
+   	}
+   	
+   	table input {
+   		text-align: center;
    	}

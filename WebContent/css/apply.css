@@ -17,6 +17,10 @@ body{
    	select {
    		max-width:220px;
    	}
+   	
+   	table input {
+   		text-align: center;
+   	}
    
    	
    	#competition_name,#competition_event_name{

@@ -114,17 +114,11 @@
 		            <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp" target="_self">赛事管理</a></li>
 		            <li class="active"><a href="/WushuManageSystem/admin/apply.jsp">报名报项</a></li>
 		            <li><a href="/WushuManageSystem/admin/delegation/delegation-manage.jsp">代表团管理</a></li>
-		            <li><a href="/WushuManageSystem/admin/judge/judge-manage.html">裁判员管理</a></li>
+		            <li><a href="/WushuManageSystem/admin/judge/judge-manage.jsp">裁判员管理</a></li>
 	          	</ul>
         	</li>
 	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
-	        <li class="dropdown">
-          		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
-	          	<ul class="dropdown-menu">
-	            <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">录入成绩</a></li>
-	            <li><a href="/WushuManageSystem/admin/stage-msg.jsp">阶段信息</a></li>
-	          	</ul>
-        	</li>
+	        <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
 	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
 	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
@@ -379,15 +373,16 @@
    		var json = "[]";
    		var event_type = "${events[event_index].type}";
    		var event_id = "${events[event_index].id}";
+   		var delegation_id = "${delegation_id}";
    		if( event_type == "单人单项" || event_type == "全能"){
    			$("#athlet_apply_item_tb").children().each(function(){
    				if($(this).children().eq(4).find("div input").is(':checked')){
    					var name = $(this).children().eq(1).html();
    					var id = $(this).attr("id");
    					if(json == "[]")
-   						json = "[{\"athlets\":\""+id+"\",\"event_id\":\""+event_id+"\",\"apply_name\":\""+name+"\",\"remark\":\"\"}]";
+   						json = "[{\"athlets\":\""+id+"\",\"event_id\":\""+event_id+"\",\"apply_name\":\""+name+"\",\"remark\":\"\""+",\"delegation_id\":\""+delegation_id+"\"}]";
    					else 
-   						json = json.substring(0,json.length-1)+ ",{\"athlets\":\""+id+"\",\"event_id\":\""+event_id+"\",\"apply_name\":\""+name+"\",\"remark\":\"\"}]";
+   						json = json.substring(0,json.length-1)+ ",{\"athlets\":\""+id+"\",\"event_id\":\""+event_id+"\",\"apply_name\":\""+name+"\",\"remark\":\"\""+",\"delegation_id\":\""+delegation_id+"\"}]";
    				}
    			});
 		}else{
@@ -406,13 +401,13 @@
    			});
 			ids = ids.substring(0,ids.length-1);
 			names = names.substring(0,names.length-1);
-			json = "[{\"athlets\":\""+ids+"\",\"event_id\":\""+event_id+"\",\"apply_name\":\""+names+"\",\"remark\":\"\"}]";
+			json = "[{\"athlets\":\""+ids+"\",\"event_id\":\""+event_id+"\",\"apply_name\":\""+names+"\",\"remark\":\"\""+",\"delegation_id\":\""+delegation_id+"\"}]";
 		}
    		$.post("/WushuManageSystem/servlet/ApplyServlet?action=add",{data:json},function(data){
 			if(data != "200")
    				alert("添加报项失败");
 			window.location.reload();
-		});
+		}); 
    	});
    	
    	

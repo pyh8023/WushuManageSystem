@@ -61,4 +61,12 @@
     <servlet-name>ApplyServlet</servlet-name>
     <url-pattern>/servlet/ApplyServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>GroupServlet</servlet-name>
+    <servlet-class>com.pan.competition.servlet.GroupServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GroupServlet</servlet-name>
+    <url-pattern>/servlet/GroupServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

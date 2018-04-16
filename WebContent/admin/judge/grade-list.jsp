@@ -11,7 +11,7 @@
 
     <!-- Bootstrap -->
     <link href="/WushuManageSystem/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/WushuManageSystem/css/table.css" rel="stylesheet">
+    <link href="/WushuManageSystem/css/table-simple.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,13 +50,7 @@
 	          	</ul>
         	</li>
 	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
-	        <li class="dropdown active">
-          		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
-	          	<ul class="dropdown-menu">
-	            <li  class="active"><a href="/WushuManageSystem/admin/judge/grade-list.jsp">录入成绩</a></li>
-	            <li><a href="/WushuManageSystem/admin/stage-msg.jsp">阶段信息</a></li>
-	          	</ul>
-        	</li>
+	        <li class="active"><a href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
 	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
 	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
@@ -66,7 +60,6 @@
 	<ol class="breadcrumb">
 	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
 	  <li><a href="#">成绩处理</a></li>
-	  <li><a href="#">录入成绩</a></li>
 	</ol>
 	
 	<div class="container content  col-sm-10 col-sm-offset-1 col-md-10 col-md-offset-1">

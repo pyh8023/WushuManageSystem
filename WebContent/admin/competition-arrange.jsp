@@ -1,7 +1,67 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.pan.competition.bean.*"%>
+<%@page import="java.util.List"%>
+<%@page import="com.pan.competition.service.*"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
+<% 
+	CompetitionService competitionService = new CompetitionService();
+	List<MenuItem> competitionNames = competitionService.getCompetitionName();
+	String competition_id = null,event_id=null,stage_id=null;
+	List<MenuItem> eventNames=null,stageNames=null;
+	List<Group> groupList = null;
+	List<Arrange> arrangeList = null;
+	Cookie[] cookies = request.getCookies();
+	for(Cookie cookie : cookies ){
+		if(cookie.getName().equals("competition_id")){
+			competition_id = cookie.getValue();
+		}else if(cookie.getName().equals("event_id")){
+			event_id = cookie.getValue();
+		}else if(cookie.getName().equals("stage_id")){
+			stage_id = cookie.getValue();
+		}
+	}
+	if(competitionNames.size()!=0){
+		if(competition_id == null||"null".equals(competition_id)){
+			competition_id = competitionNames.get(0).getId();
+		}
+		//获取项目列表
+		EventService eventService = new EventService();
+		eventNames = eventService.getEventNameList(competition_id).getData();
+		if(eventNames.size()!=0){
+			if(event_id == null||"null".equals(event_id)){
+				event_id = eventNames.get(0).getId();
+			}
+			StageService stageService = new StageService();
+			stageNames = stageService.getStageNameList(event_id).getData();
+			if(stageNames.size()!=0){
+				if(stage_id == null||"null".equals(stage_id) ){
+					stage_id = stageNames.get(0).getId();
+				}
+				GroupService groupService = new GroupService();
+				groupList = groupService.getGroupList(stage_id);
+				MatchService matchService = new MatchService();
+				arrangeList = matchService.getMatchArrangeList(stage_id);
+			}
+		}
+	}
+	request.setAttribute("competition_id", competition_id);
+	request.setAttribute("event_id", event_id);
+	request.setAttribute("stage_id", stage_id);
+	if(eventNames == null)
+		eventNames = new ArrayList<>();
+	if(stageNames == null)
+		stageNames = new ArrayList<>();
+	if(groupList == null)
+		groupList = new ArrayList<>();
+	if(arrangeList == null)
+		arrangeList = new ArrayList<>();
+	request.setAttribute("groupList", groupList);
+	request.setAttribute("arrangeList", arrangeList);
+%>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,13 +113,7 @@
 	          	</ul>
         	</li>
 	        <li class="active"><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
-	        <li class="dropdown">
-          		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
-	          	<ul class="dropdown-menu">
-	            <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">录入成绩</a></li>
-	            <li><a href="/WushuManageSystem/admin/stage-msg.jsp">阶段信息</a></li>
-	          	</ul>
-        	</li>
+	        <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
 	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
 	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
@@ -72,33 +126,24 @@
 	</ol>
 	
 	<div class="container competition_arrange_div  col-md-8 col-md-offset-2">
-		
 		<form class="form form-inline">
-			<label for="competition_name" class="control-label">赛事名称</label>&ensp;
-		   	<select class="form-control" id="competition_name">
-	    		<option>第十三届全运会武术套路比赛</option>
-		  		<option>第十二届全运会武术套路比赛</option>
-		  		<option>第十一届全运会武术套路比赛</option>
-		  		<option>第十届全运会武术套路比赛</option>
-		  		<option>第九届全运会武术套路比赛</option>
-		  		<option>第八届全运会武术套路比赛</option>
-		  		<option>第七届全运会武术套路比赛</option>
+			<label for="competition_name_select" class="control-label">赛事名称</label>&ensp;
+		   	<select class="form-control" id="competition_name_select">
+		   		<c:forEach var="competition" items="<%=competitionNames %>">
+		   			<option value="${competition.id }">${competition.name }</option>
+		   		</c:forEach>
 		    </select>&ensp;&ensp;
-				<label for="competition_event_name" class="control-label">比赛项目</label>&ensp;
-		   	<select class="form-control" id="competition_event_name">
-	    		<option>长拳青少年组女子单项</option>
-		  		<option>长拳青少年男组子单项</option>
-		  		<option>长拳成年组集体项目</option>
-		  		<option>太极拳成年组集体项目</option>
-		  		<option>南拳成年组集体项目</option>
-		  		<option>太极剑成年组集体项目</option>
-		  		<option>太极剑成年组男女混合集体项目</option>
-		    </select>&ensp;&ensp;
-		    <label for="competition_stage" class="control-label">比赛阶段</label>&ensp;
-		   	<select class="form-control" id="competition_stage">
-	    		<option>初赛</option>
-		  		<option>半决赛</option>
-		  		<option>决赛</option>
+				<label for="event_name_select" class="control-label">比赛项目</label>&ensp;
+			   	<select class="form-control" id="event_name_select">
+		    		<c:forEach var="event" items="<%=eventNames %>">
+			   			<option value="${event.id }">${event.name }</option>
+			   		</c:forEach>
+			    </select>&ensp;&ensp;
+		    <label for="stage_name_select" class="control-label">比赛阶段</label>&ensp;
+		   	<select class="form-control" id="stage_name_select">
+	    		<c:forEach var="stage" items="<%=stageNames %>">
+		   			<option value="${stage.id }">${stage.name }</option>
+		   		</c:forEach>
 		    </select>
 	 </form>
 		
@@ -112,40 +157,46 @@
 		  			<th>场地</th>
 		  		</tr>
 		  	</thead>
-		  	<tbody>
-		  		<tr>
-		  			<td>
-			      	<a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-			      	<a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a>
-			     </td>
-			  		<td><input class="form-control" type="number" placeholder="请输入第几组" /></td>
-			  		<td>
-			  			<form class="form-inline">
-			  				<input class="form-control datetimepicker" placeholder="起始时间"/>
-			  				&ensp;到&ensp;
-			  				<input class="form-control datetimepicker" placeholder="结束时间"/>
-			  			</form>
-			  		</td>
-			  		<td><input class="form-control" placeholder="请输入比赛场地"/></td>
-			  	</tr>
-			  	<tr>
-		  			<td>
-			      	<a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-			      	<a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a>
-			     </td>
-			  		<td><input class="form-control" type="number" placeholder="请输入第几组" /></td>
-			  		<td>
-			  			<form class="form-inline">
-			  				<input class="form-control datetimepicker" placeholder="起始时间"/>
-			  				&ensp;到&ensp;
-			  				<input class="form-control datetimepicker" placeholder="结束时间"/>
-			  			</form>
-			  		</td>
-			  		<td><input class="form-control" placeholder="请输入比赛场地"/></td>
-			  	</tr>
+		  	<tbody id="group_tb">
+		  		<c:if test="${groupList.size()==0 }">
+		  			<tr>
+			  			<td>
+					      	<a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+					      	<a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+				     	</td>
+				  		<td><input class="form-control" type="number" value="1" placeholder="请输入第几组" /></td>
+				  		<td>
+				  			<form class="form-inline">
+				  				<input class="form-control datetimepicker" placeholder="起始时间"/>
+				  				&ensp;到&ensp;
+				  				<input class="form-control datetimepicker" placeholder="结束时间"/>
+				  			</form>
+				  		</td>
+				  		<td><input class="form-control" placeholder="请输入比赛场地"/></td>
+				  	</tr>
+		  		</c:if>
+		  		<c:if test="${groupList.size()!=0 }">
+		  		<c:forEach var="group" items="${groupList }">
+		  			<tr>
+			  			<td>
+					      	<a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+					      	<a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+				     	</td>
+				  		<td><input class="form-control" type="number" placeholder="请输入第几组" value="${group.group_num }"/></td>
+				  		<td>
+				  			<form class="form-inline">
+				  				<input class="form-control datetimepicker" id="start_time" placeholder="起始时间" value="${group.start_time }"/>
+				  				&ensp;到&ensp;
+				  				<input class="form-control datetimepicker" id="end_time" placeholder="结束时间" value="${group.end_time }"/>
+				  			</form>
+				  		</td>
+				  		<td><input class="form-control" placeholder="请输入比赛场地" value="${group.location }"/></td>
+				  	</tr>
+		  		</c:forEach>
+		  		</c:if>
 		  	</tbody>
 		  </table>
-		  <button class="btn btn-primary">保存</button>
+		  <button class="btn btn-primary" id="save_group_btn">保存</button>
 		  
 		  
 		  <hr />
@@ -159,31 +210,20 @@
 		  			<th>分组</th>
 		  		</tr>
 		  	</thead>
-		  	<tbody>
-		  		<tr>
-		  			<td><input class="form-control" type="number" placeholder="请输入序号" /></td>
-		  			<td>上海代表团</td>
-			  		<td>上海队</td>
-			  		<td><input class="form-control" type="number" placeholder="请输入第几组" /></td>
-			  	</tr>
-			  	<tr>
-		  			<td><input class="form-control" type="number" placeholder="请输入序号" /></td>
-		  			<td>北京代表团</td>
-			  		<td>北京队</td>
-			  		<td><input class="form-control" type="number" placeholder="请输入第几组" /></td>
-			  	</tr>
-			  	<tr>
-		  			<td><input class="form-control" type="number" placeholder="请输入序号" /></td>
-		  			<td>武汉代表团</td>
-			  		<td>武汉队</td>
-			  		<td><input class="form-control" type="number" placeholder="请输入第几组" /></td>
-			  	</tr>
-			  	<tr>
-		  			<td><input class="form-control" type="number" placeholder="请输入序号" /></td>
-		  			<td>南京代表团</td>
-			  		<td>南京队</td>
-			  		<td><input class="form-control" type="number" placeholder="请输入第几组" /></td>
-			  	</tr>
+		  	<tbody id="arrange_tb">
+		  		<c:if test="${arrangeList.size() ==0 }">
+		  			该项目报项为空
+		  		</c:if>
+		  		<c:if test="${arrangeList.size() !=0 }">
+		  		<c:forEach var="arrange" items="${arrangeList }">
+		  			<tr>
+			  			<td><input class="form-control" type="number" placeholder="请输入序号" value="${arrange.order }" /></td>
+			  			<td>${arrange.delegation_name }</td>
+				  		<td>${arrange.apply_name }</td>
+				  		<td><input class="form-control" type="number" placeholder="请输入第几组" value="${arrange.group_num }" /></td>
+				  	</tr>
+		  		</c:forEach>
+		  		</c:if>
 		  	</tbody>
 		  </table>
 		  <button class="btn btn-primary">保存</button>
@@ -192,37 +232,90 @@
 	    
 	<script src="/WushuManageSystem/js/bootstrap-datetimepicker.min.js"></script>
     <script src="/WushuManageSystem/js/bootstrap-datetimepicker.zh-CN.js"></script>
-    
+    <script src="/WushuManageSystem/js/jquery.cookie.js"></script>
     <script type="text/javascript">
     	$(document).ready(function(){
-    		
-    	 $("tr").eq(0).css("width","60px");
-    	 
-    	 $("table tr").each(function(){
-    	 		$(this).children().eq(5).css("padding-top","10px");
-    	 });
+    		//设置select选中内容
+    		if("${competition_id}" != ""){
+        		$("#competition_name_select option[value='${competition_id}']").attr("selected",true);
+        	}
+        	if("${event_id}" != ""){
+        		$("#event_name_select option[value='${event_id}']").attr("selected",true);
+        	}
+        	if("${stage_id}" != ""){
+        		$("#stage_name_select option[value='${stage_id}']").attr("selected",true);
+        	}
 			
 			 $(".datetimepicker").datetimepicker({
 			 	format:"yyyy-mm-dd hh:ii",
 			 	language: "zh-CN",
 			 	autoclose:true
 			 });
-			 
+		});
+    	
+    	function add(arg){
+			$(arg).parent().parent().after('<tr><td><a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>'
+			+' <a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a></td>'
+			+'<td><input class="form-control" type="number" placeholder="请输入第几组" /></td>'
+			+'<td><div class="form-inline"><input class="form-control datetimepicker" placeholder="起始时间"/>'
+			+' &ensp;到 &ensp;<input class="form-control datetimepicker" placeholder="结束时间"/></div></td>'
+			+'<td><input class="form-control" placeholder="请输入比赛场地"/></td></tr>');
+			$(".datetimepicker").datetimepicker({
+			 	format:"yyyy-mm-dd hh:ii",
+			 	language: "zh-CN",
+			 	autoclose:true
 			 });
-			 
-			 function remove(arg){
-			 	 $(arg).parent().parent().remove();
-			 }
-			 
-			function add(arg){
-				$(arg).parent().parent().after('<tr><td><a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>'
-				+' <a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a></td>'
-				+'<td><input class="form-control" type="text" placeholder="请输入项目名称"/></td>'
-				+'<td><select class="form-control"><option>上午场</option><option>下午场</option><option>晚上场</option></select></td>'
-				+'<td><form class="form-inline"><input class="form-control datetimepicker" placeholder="起始时间"/>&ensp;&ensp;到&ensp;&ensp;<input class="form-control datetimepicker" placeholder="结束时间"/></form></td>'
-				+'<td><input class="form-control" placeholder="请输入比赛场地"/></td>'
-				+'<td><a class="btn btn-primary btn-sm" href="competition-athlet-order.html">出场顺序</a> <a class="btn btn-primary btn-sm" href="competition-judge-arrange.html">裁判编排</a></td></tr>');
+		}
+    	
+    	$("#save_group_btn").click(function(){
+    		var startDate=$("#start_time").val();  
+			var endDate=$("#end_time").val();  
+			var curTime = new Date();
+			var startTime = new Date(Date.parse(startDate));
+			var endTime = new Date(Date.parse(endDate));
+			if(curTime<=startTime || curTime<=endTime){
+				alert("填写日期不能大于当前日期！");
+				return false;
+			}else if(startTime >= endTime){
+				alert("开始日期不能大于结束日期！");
+				return false;
 			}
+    		var json = "[";
+    		$("#group_tb").children().each(function(){
+    			var group_num = $(this).children().eq(1).children().val();
+    			var start_time = $(this).children().eq(2).find("input").eq(0).val();
+    			var end_time = $(this).children().eq(2).find("input").eq(1).val();
+    			var location = $(this).children().eq(3).children().val();
+    			json = json + '{"stage_id":"'+"${stage_id}"+'","group_num":"'+group_num+'","start_time":"'+start_time+'","end_time":"'+end_time+'","location":"'+location+'"},';
+    		});
+    		json = json.substring(0,json.length-1)+']';
+    		$.post("/WushuManageSystem/servlet/GroupServlet",{data:json},function(data){
+    			alert(data);
+    		});
+    	});
+    	
+    	$("#competition_name_select").change(function(){
+    		$.cookie('competition_id', $(this).val());
+        	$.cookie('event_id', null);
+        	$.cookie('stage_id', null);
+        	window.location.reload();
+    	});
+    	
+		$("#event_name_select").change(function(){
+        	$.cookie('event_id', $(this).val());
+        	$.cookie('stage_id', null);
+        	window.location.reload();
+    	});
+		
+		$("#stage_name_select").change(function(){
+        	$.cookie('stage_id', $(this).val());
+        	window.location.reload();
+    	});
+			 
+		 function remove(arg){
+		 	 $(arg).parent().parent().remove();
+		 }
+			 
     </script>
  </body>
 </html>

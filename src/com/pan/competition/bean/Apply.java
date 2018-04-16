@@ -7,6 +7,7 @@ public class Apply {
 	private String apply_name;
 	private String ranking;
 	private String remark;
+	private String delegation_id;
 	public String getId() {
 		return id;
 	}
@@ -42,5 +43,11 @@ public class Apply {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public String getDelegation_id() {
+		return delegation_id;
+	}
+	public void setDelegation_id(String delegation_id) {
+		this.delegation_id = delegation_id;
 	}
 }

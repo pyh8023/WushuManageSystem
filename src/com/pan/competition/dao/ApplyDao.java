@@ -45,12 +45,13 @@ public class ApplyDao {
 		Connection con = null;
 		try {
 			con = DBUtil.getCon();
-			String sql = "insert into apply set athlets = ?,event_id=?,apply_name=?,remark=?";
+			String sql = "insert into apply set athlets = ?,event_id=?,apply_name=?,remark=?,delegation_id=?";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, apply.getAthlets());
 			pstmt.setInt(2, Integer.parseInt(apply.getEvent_id()));
 			pstmt.setString(3, apply.getApply_name());
 			pstmt.setString(4, apply.getRemark());
+			pstmt.setInt(5, Integer.parseInt(apply.getDelegation_id()));
 		    result = pstmt.executeUpdate();
 			pstmt.close();
 			for(String athlet_id : apply.getAthlets().split(",")) {
@@ -61,6 +62,25 @@ public class ApplyDao {
 			    result = pstmt.executeUpdate();
 				pstmt.close();
 			}
+			int apply_event_id = 0,stage_id=0;
+			sql = "select max(apply_event_id) as id from apply";
+			pstmt = con.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				apply_event_id = rs.getInt("id");
+			}
+			pstmt.close();
+			sql = "SELECT stage_id FROM stage WHERE event_id = ? AND attribute = (SELECT MIN(attribute) FROM stage WHERE event_id = ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(apply.getEvent_id()));
+			pstmt.setInt(2, Integer.parseInt(apply.getEvent_id()));
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				stage_id = rs.getInt("stage_id");
+			}
+			pstmt.close();
+			MatchDao matchDao = new MatchDao();
+			matchDao.addMatch(apply_event_id, stage_id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -83,6 +103,18 @@ public class ApplyDao {
 				event_id = rs.getString("event_id");
 			}
 			pstmt.close();
+			int stage_id = 0;
+			sql = "SELECT stage_id FROM stage WHERE event_id = ? AND attribute = (SELECT MIN(attribute) FROM stage WHERE event_id = ?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(event_id));
+			pstmt.setInt(2, Integer.parseInt(event_id));
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				stage_id = rs.getInt("stage_id");
+			}
+			pstmt.close();
+			MatchDao matchDao = new MatchDao();
+			matchDao.removeMatch(Integer.parseInt(apply_id), stage_id);
 			sql = "delete from apply where apply_event_id = ?";
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, Integer.parseInt(apply_id));

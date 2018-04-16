@@ -23,7 +23,7 @@ public class StageDao {
 		Connection con = null;
 		try {
 			con = DBUtil.getCon();
-			String sql = "select stage_id,name,stage_num,attribute from stage where event_id = ?";
+			String sql = "select stage_id,name,stage_num,attribute from stage where event_id = ? order by attribute";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, Integer.parseInt(event_id));
 			ResultSet rs = pstmt.executeQuery();
@@ -59,7 +59,7 @@ public class StageDao {
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, stage.getName());
 			pstmt.setString(2, stage.getStage_num());
-			pstmt.setString(3, stage.getAttribute());
+			pstmt.setInt(3, Integer.parseInt(stage.getAttribute()));
 			pstmt.setInt(4, Integer.parseInt(stage.getEvent_id()));
 			result = pstmt.executeUpdate();
 			pstmt.close();
@@ -81,7 +81,7 @@ public class StageDao {
 		Connection con = null;
 		try {
 			con = DBUtil.getCon();
-			String sql = "select stage_id,name from stage where event_id = ?";
+			String sql = "select stage_id,name from stage where event_id = ? order by attribute";
 			PreparedStatement pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, Integer.parseInt(event_id));
 			ResultSet rs = pstmt.executeQuery();

@@ -62,13 +62,7 @@
 	          	</ul>
         	</li>
 	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
-	        <li class="dropdown">
-          		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
-	          	<ul class="dropdown-menu">
-	            <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">录入成绩</a></li>
-	            <li><a href="/WushuManageSystem/admin/stage-msg.jsp">阶段信息</a></li>
-	          	</ul>
-        	</li>
+	        <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
 	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
 	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
@@ -105,12 +99,12 @@
 						<td><input type="text" class="form-control" name="stage_name" placeholder="请输入阶段名称" required></td>
 						<td>
 							<select class="form-control" name="stage_type">
-								<option>首轮</option>
-								<option>第二轮</option>
-								<option>第三轮</option>
-								<option>第四轮</option>
-								<option>第五轮</option>
-								<option>决赛</option>
+								<option value="1">第一轮</option>
+								<option value="2">第二轮</option>
+								<option value="3">第三轮</option>
+								<option value="4">第四轮</option>
+								<option value="5">第五轮</option>
+								<option value="9">决赛</option>
 							</select>
 						</td>
 					</tr>
@@ -126,12 +120,12 @@
 							<td><input type="text" class="form-control" name="stage_name" placeholder="请输入阶段名称" value="${stage.name }" required></td>
 							<td>
 								<select class="form-control" name="stage_type">
-									<option <c:if test="${stage.attribute eq '首轮'}">selected</c:if>>首轮</option>
-									<option <c:if test="${stage.attribute eq '第二轮'}">selected</c:if>>第二轮</option>
-									<option <c:if test="${stage.attribute eq '第三轮'}">selected</c:if>>第三轮</option>
-									<option <c:if test="${stage.attribute eq '第四轮'}">selected</c:if>>第四轮</option>
-									<option <c:if test="${stage.attribute eq '第五轮'}">selected</c:if>>第五轮</option>
-									<option <c:if test="${stage.attribute eq '决赛'}">selected</c:if>>决赛</option>
+									<option value="1" <c:if test="${stage.attribute eq '1'}">selected</c:if>>第一轮</option>
+									<option value="2" <c:if test="${stage.attribute eq '2'}">selected</c:if>>第二轮</option>
+									<option value="3" <c:if test="${stage.attribute eq '3'}">selected</c:if>>第三轮</option>
+									<option value="4" <c:if test="${stage.attribute eq '4'}">selected</c:if>>第四轮</option>
+									<option value="5" <c:if test="${stage.attribute eq '5'}">selected</c:if>>第五轮</option>
+									<option value="9" <c:if test="${stage.attribute eq '9'}">selected</c:if>>决赛</option>
 								</select>
 							</td>
 						</tr>
@@ -154,7 +148,7 @@
     		+'<a onclick="remove_stage(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a></td>'
     		+'<td><input type="text" class="form-control" name="stage_number" placeholder="请输入编号" required></td>'
     		+'<td><input type="text" class="form-control" name="stage_name" placeholder="请输入阶段名称" required></td>'
-    		+'<td><select class="form-control" name="stage_type"><option>首轮</option><option>第二轮</option><option>第三轮</option><option>第四轮</option><option>第五轮</option><option>决赛</option></select></td>'
+    		+'<td><select class="form-control" name="stage_type"><option value="1">第一轮</option><option value="2">第二轮</option><option value="3">第三轮</option><option value="4">第四轮</option><option value="5">第五轮</option><option value="9">决赛</option></select></td>'
     		+'</tr>');
     	}
     	
@@ -177,7 +171,7 @@
     		json = json.substring(0,json.length-1) +"]";
     		$.post("/WushuManageSystem/servlet/StageServlet",{data:json},function(data){
     			alert(data);
-    		});
+    		}); 
     	});
     	
     	function checkEmpty(){

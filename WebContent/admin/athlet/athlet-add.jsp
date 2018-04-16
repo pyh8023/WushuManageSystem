@@ -56,13 +56,7 @@
 	          	</ul>
         	</li>
 	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
-	        <li class="dropdown">
-          		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">成绩处理 <span class="caret"></span></a>
-	          	<ul class="dropdown-menu">
-	            <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">录入成绩</a></li>
-	            <li><a href="/WushuManageSystem/admin/stage-msg.jsp">阶段信息</a></li>
-	          	</ul>
-        	</li>
+	        <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
 	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
 	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
