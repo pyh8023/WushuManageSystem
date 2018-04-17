@@ -197,8 +197,6 @@
 		  	</tbody>
 		  </table>
 		  <button class="btn btn-primary" id="save_group_btn">保存</button>
-		  
-		  
 		  <hr />
 		  <h4 class="text-center"><b>出场顺序</b></h4>
 	    	<table class="table table-bordered">
@@ -211,12 +209,9 @@
 		  		</tr>
 		  	</thead>
 		  	<tbody id="arrange_tb">
-		  		<c:if test="${arrangeList.size() ==0 }">
-		  			该项目报项为空
-		  		</c:if>
 		  		<c:if test="${arrangeList.size() !=0 }">
 		  		<c:forEach var="arrange" items="${arrangeList }">
-		  			<tr>
+		  			<tr id="${arrange.match_id }">
 			  			<td><input class="form-control" type="number" placeholder="请输入序号" value="${arrange.order }" /></td>
 			  			<td>${arrange.delegation_name }</td>
 				  		<td>${arrange.apply_name }</td>
@@ -226,8 +221,11 @@
 		  		</c:if>
 		  	</tbody>
 		  </table>
-		  <button class="btn btn-primary">保存</button>
-		  <button class="btn btn-primary">抽签</button>
+		  <c:if test="${arrangeList.size() ==0 }">
+		  	<p class="text-center">该项目报项为空</p>
+		  </c:if>
+		  <button id="save_arrange_btn" class="btn btn-primary <c:if test="${arrangeList.size() ==0 }">disabled</c:if>">保存</button>
+		  <%-- <button id="draw_log_btn" class="btn btn-primary <c:if test="${arrangeList.size() ==0 }">disabled</c:if>">抽签</button> --%>
 	  </div>
 	    
 	<script src="/WushuManageSystem/js/bootstrap-datetimepicker.min.js"></script>
@@ -293,6 +291,45 @@
     			alert(data);
     		});
     	});
+    	
+    	$("#save_arrange_btn").click(function(){
+    		var json="[";
+    		var stage_id = "${stage_id}";
+    		$("#arrange_tb").children().each(function(){
+    			var match_id = $(this).attr("id");
+    			var order = $(this).children().eq(0).children().eq(0).val();
+    			var group_num = $(this).children().eq(3).children().eq(0).val();
+    			if(group_num == ""){
+    				alert("分组不能为空");
+    				return false;
+    			}
+    			json = json + '{"match_id":"'+match_id+'","order":"'+order+'","group_num":"'+group_num+'","stage_id":"'+stage_id+'"},';
+    		});
+    		json = json.substring(0,json.length-1) +']';
+    		$.post("/WushuManageSystem/servlet/MatchServlet?action=saveArrange",{data:json},function(data){
+    			alert(data);
+    			window.location.reload();
+    		});
+    	});
+    	
+		/* $("#draw_log_btn").click(function(){
+			var json="[";
+    		var stage_id = "${stage_id}";
+    		$("#arrange_tb").children().each(function(){
+    			var match_id = $(this).attr("id");
+    			var group_num = $(this).children().eq(3).children().eq(0).val();
+    			if(group_num == ""){
+    				alert("分组不能为空");
+    				return false;
+    			}
+    			json = json + '{"match_id":"'+match_id+'","group_num":"'+group_num+'","stage_id":"'+stage_id+'"},';
+    		});
+    		json = json.substring(0,json.length-1) +']';
+    		$.post("/WushuManageSystem/servlet/MatchServlet?action=autoArrange",{data:json},function(data){
+    			alert(data);
+    			window.location.reload();
+    		});
+    	}); */
     	
     	$("#competition_name_select").change(function(){
     		$.cookie('competition_id', $(this).val());

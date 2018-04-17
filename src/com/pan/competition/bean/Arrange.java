@@ -6,6 +6,13 @@ public class Arrange {
 	private String delegation_name;
 	private String apply_name; //报项名
 	private String group_num; //组号
+	private String stage_id;
+	public String getStage_id() {
+		return stage_id;
+	}
+	public void setStage_id(String stage_id) {
+		this.stage_id = stage_id;
+	}
 	public String getMatch_id() {
 		return match_id;
 	}
