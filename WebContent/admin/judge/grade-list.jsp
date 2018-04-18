@@ -10,6 +10,7 @@
 <%
 	CompetitionService competitionService = new CompetitionService();
 	List<MenuItem> competitionNames = competitionService.getCompetitionName();
+	int isFinalStage = 0;
 	String competition_id = null, event_id = null, stage_id = null;
 	List<MenuItem> eventNames = null, stageNames = null;
 	List<Grade> gradeList = null;
@@ -41,13 +42,19 @@
 					stage_id = stageNames.get(0).getId();
 				}
 				MatchService matchService = new MatchService();
-				gradeList = matchService.getGradeList(stage_id);
+				String action = request.getParameter("action");
+				if("ranking".equals(action))
+					gradeList = matchService.getGradeListOrderByRanking(stage_id);
+				else
+					gradeList = matchService.getGradeList(stage_id);
+				isFinalStage = stageService.isFinalStage(stage_id);
 			}
 		}
 	}
 	request.setAttribute("competition_id", competition_id);
 	request.setAttribute("event_id", event_id);
 	request.setAttribute("stage_id", stage_id);
+	request.setAttribute("isFinalStage", isFinalStage);
 	if (eventNames == null)
 		eventNames = new ArrayList<>();
 	if (stageNames == null)
@@ -163,11 +170,12 @@
 					<th>晋级</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="grade_tb">
 				<c:forEach var="grade" items="${gradeList }" varStatus="status">
 					<tr id="${grade.match_id }">
-						<td>${status.count }</td>
+						<%-- <td>${status.count }</td> --%>
 						<%-- <td>${grade.group_num }</td> --%>
+						 <td>${grade.order }</td>
 						<td>${grade.apply_name }</td>
 						<td>${grade.delegation_name }</td>
 						<td><input type="number" class="form-control" value="${grade.gradeA }"/></td>
@@ -177,7 +185,7 @@
 						<td><input type="number" class="form-control" value="${grade.total_points }"/></td>
 						<td><input type="number" class="form-control" value="${grade.ranking }"/></td>
 						<td>
-							<button class="btn btn-primary btn-xs" onclick="promote_or_cancle(this)">
+							<button class="btn btn-primary btn-xs <c:if test="${isFinalStage == 1 }">disabled</c:if>" onclick="promote_or_cancle(this)">
 								<c:if test="${grade.is_promoted eq '0' }">未晋级</c:if>
 								<c:if test="${grade.is_promoted != '0' }">晋级</c:if>
 							</button>
@@ -186,10 +194,16 @@
 				</c:forEach>
 			</tbody>
 		</table>
-
-		<button class="btn btn-primary" id="save_grade_btn">保存</button>
-		<button class="btn btn-primary" id="count_total_points_btn">计算总分</button>
-		<button class="btn btn-primary" id="ranking_btn">排名</button>
+		<c:if test="${gradeList.size()==0 }">
+			<button class="btn btn-primary disabled">保存</button>
+			<button class="btn btn-primary disabled">计算总分</button>
+			<button class="btn btn-primary disabled">排名</button>
+		</c:if>
+		<c:if test="${gradeList.size()!=0 }">
+			<button class="btn btn-primary" id="save_grade_btn">保存</button>
+			<button class="btn btn-primary" id="count_total_points_btn">计算总分</button>
+			<button class="btn btn-primary" id="ranking_btn">排名</button>
+		</c:if>
 	</div>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -229,13 +243,72 @@
         	$.cookie('stage_id', $(this).val());
         	window.location.reload();
     	});
+		
+		/* 保存成绩 */
+		$("#save_grade_btn").click(function(){
+			var json = "[";
+			$("#grade_tb").children().each(function(){
+				var id = $(this).attr("id");
+				var gradeA = $(this).children().eq(3).children().eq(0).val();
+				var gradeB = $(this).children().eq(4).children().eq(0).val();
+				var gradeC = $(this).children().eq(5).children().eq(0).val();
+				var coach_grade = $(this).children().eq(6).children().eq(0).val();
+				var total_points = $(this).children().eq(7).children().eq(0).val();
+				var ranking = $(this).children().eq(8).children().eq(0).val();
+				json += '{"match_id":"'+id+'","gradeA":"'+gradeA+'","gradeB":"'+gradeB+'","gradeC":"'+gradeC
+				+'","coach_grade":"'+coach_grade+'","total_points":"'+total_points+'","ranking":"'+ranking+'"},';
+			});
+			if(json == "[")
+				json = "[]";
+			else
+				json = json.substring(0,json.length-1)+']';
+			$.post("/WushuManageSystem/servlet/MatchServlet?action=saveGrade",{data:json},function(data){
+				alert(data);
+			});
+		});
+		
+		/* 计算总分 */
+		$("#count_total_points_btn").click(function(){
+			$("#grade_tb").children().each(function(){
+				var gradeA = $(this).children().eq(3).children().eq(0).val();
+				var gradeB = $(this).children().eq(4).children().eq(0).val();
+				var gradeC = $(this).children().eq(5).children().eq(0).val();
+				var coach_grade = $(this).children().eq(6).children().eq(0).val();
+				if(gradeA != "" && gradeB !="" && gradeC!="" && coach_grade!=""){
+					var total_points = parseFloat(gradeA)+parseFloat(gradeB)+parseFloat(gradeC)+parseFloat(coach_grade);
+					$(this).children().eq(7).children().eq(0).val(total_points);
+				}
+			});
+		});
+		
+		/* 排名 */
+		$("#ranking_btn").click(function(){
+			window.location.href = "/WushuManageSystem/admin/judge/grade-list.jsp?action=ranking";
+		});
     	
     	function promote_or_cancle(arg){
-    		if($(arg).html()=="晋级"){
-    			$(arg).html("未晋级");
-    		}else{
-    			$(arg).html("晋级");
-    		}
+    		var isPromoted;
+    		var tr = $(arg).parent().parent();
+    		var match_id = tr.attr("id");
+       		var gradeA = tr.children().eq(3).children().eq(0).val();
+   			var gradeB = tr.children().eq(4).children().eq(0).val();
+   			var gradeC = tr.children().eq(5).children().eq(0).val();
+   			var coach_grade =tr.children().eq(6).children().eq(0).val();
+   			var total_points = tr.children().eq(7).children().eq(0).val();
+   			var ranking = tr.children().eq(8).children().eq(0).val();
+   			if(gradeA == "" || gradeB =="" || gradeC=="" || coach_grade==""||total_points==""||ranking==""){
+   				alert("请将分数信息填写完整");
+				return;
+   			}
+    		var btn_content = $.trim($(arg).html());
+    		if(btn_content == "晋级")
+    			isPromoted = "1";
+    		else
+    			isPromoted = "0";
+    		$.post("/WushuManageSystem/servlet/MatchServlet?action=promote",{match_id:match_id,isPromoted:isPromoted,event_id:"${event_id}"},function(data){
+    			alert(data);
+    			window.location.reload();
+			});
     	}
     </script>
 </body>

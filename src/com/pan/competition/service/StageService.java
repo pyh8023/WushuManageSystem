@@ -51,4 +51,12 @@ public class StageService {
 		}
 		
 	}
+	
+	public int isFinalStage(String stage_id) {
+		if(stageDao.isFinalStage(stage_id)) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
 }

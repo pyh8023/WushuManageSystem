@@ -21,6 +21,27 @@ public class MatchService {
 		return list;
 	}
 	
+	public List<Grade> getGradeListOrderByRanking(String stage_id){
+		List<Grade> list = matchDao.getGradeListOrderByRanking(Integer.parseInt(stage_id));
+		return list;
+	}
+	
+	public String updatePromote(String match_id,String event_id,String isPromoted) {
+		if("0".equals(isPromoted)){
+			int status = matchDao.setPromoted(match_id, event_id);
+			if(status == 1) 
+				return "晋级成功";
+			else
+				return "晋级失败";
+		}else {
+			int status = matchDao.canclePromoted(match_id, event_id);
+			if(status == 1) 
+				return "取消晋级成功";
+			else
+				return "取消晋级失败";
+		}
+	}
+	
 	/*public String updateMatchArrange(Arrange arrange) {
 		int add_order_result = matchDao.addMatchOrder(arrange.getMatch_id(), arrange.getOrder());
 		if(add_order_result != 1) {
@@ -43,6 +64,14 @@ public class MatchService {
 	public String updateMatchArrange(Arrange arrange) {
 		int status = matchDao.updateMatchArrange(arrange);
 		if(status == 1) 
+			return Constant.QUERY_SUCCESS_RESPONSE_CODE;
+		else 
+			return Constant.QUERY_FAILED_RESPONSE_CODE;
+	}
+	
+	public String updateMatchGrade(Grade grade) {
+		int status = matchDao.updateGrade(grade);
+		if(status == 1)
 			return Constant.QUERY_SUCCESS_RESPONSE_CODE;
 		else 
 			return Constant.QUERY_FAILED_RESPONSE_CODE;

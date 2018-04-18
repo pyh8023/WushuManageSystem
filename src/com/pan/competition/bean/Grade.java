@@ -13,6 +13,13 @@ public class Grade {
 	private String apply_name;
 	private String delegation_name;
 	private String group_num;
+	private String order;
+	public String getOrder() {
+		return order;
+	}
+	public void setOrder(String order) {
+		this.order = order;
+	}
 	public String getGroup_num() {
 		return group_num;
 	}

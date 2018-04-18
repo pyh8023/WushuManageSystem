@@ -153,4 +153,26 @@ public class StageDao {
 		}
 		return Constant.NOT_EXISTED;
 	}
+	
+	public boolean isFinalStage(String stage_id) {
+		Connection con = null;
+		boolean result = false;
+		try {
+			con = DBUtil.getCon();
+			String sql = "select attribute from stage where stage_id = ?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(stage_id));
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				if(rs.getInt("attribute") == 9)
+					result = true;
+			}
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return result;
+	}
 }
