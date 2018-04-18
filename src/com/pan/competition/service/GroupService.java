@@ -4,6 +4,7 @@ package com.pan.competition.service;
 import java.util.List;
 
 import com.pan.competition.bean.Group;
+import com.pan.competition.bean.MenuItem;
 import com.pan.competition.bean.Message;
 import com.pan.competition.config.Constant;
 import com.pan.competition.dao.GroupDao;
@@ -40,6 +41,9 @@ public class GroupService {
 		}else {
 			return false;
 		}
-		
+	}
+	
+	public List<MenuItem> getGroupNumList(String stage_id){
+		return groupDao.getGroupNumList(stage_id);
 	}
 }

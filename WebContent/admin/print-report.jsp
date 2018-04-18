@@ -1,7 +1,15 @@
+<%@page import="com.pan.competition.bean.MenuItem"%>
+<%@page import="java.util.List"%>
+<%@page import="com.pan.competition.service.CompetitionService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
+<%
+	CompetitionService competitionService = new CompetitionService();
+	List<MenuItem> competitionNames = competitionService.getCompetitionName();
+%>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -67,25 +75,21 @@
 			
 		 <form class="form-inline">
 		 	<div class="form-group">
-		 		<label class="control-label" for="competition_key">赛事名称</label>&ensp;
-				<select class="form-control" id="competition_name">
-	    		<option>第十三届全运会武术套路比赛</option>
-		  		<option>第十二届全运会武术套路比赛</option>
-		  		<option>第十一届全运会武术套路比赛</option>
-		  		<option>第十届全运会武术套路比赛</option>
-		  		<option>第九届全运会武术套路比赛</option>
-		  		<option>第八届全运会武术套路比赛</option>
-		  		<option>第七届全运会武术套路比赛</option>
-		    </select>&ensp;&ensp;
+		 		<label class="control-label" for="competition_name_select">赛事名称</label>&ensp;
+				<select class="form-control" id="competition_name_select">
+    				<c:forEach var="competition" items="<%=competitionNames %>">
+			   			<option value="${competition.id }">${competition.name }</option>
+			   		</c:forEach>
+		    	</select>&ensp;&ensp;
 		    <label for="report_name" class="control-label">报表类型</label>&ensp;
-		    <select class="form-control">
+		    <select class="form-control" id="report_type">
 		    	<optgroup label="报名表">
-		    		<option>项目报名表</option>
-		    		<option>代表团报名表</option>
+		    		<option value="1">项目报名表</option>
+		    		<option value="2">代表团报名表</option>
 		    	</optgroup>
-		    	<option>秩序单</option>
-		    	<option>成绩表</option>
-		    	<option>名次表</option>
+		    	<option value="3">秩序单</option>
+		    	<option value="4">成绩表</option>
+		    	<option value="5">名次表</option>
 		    </select>
 		  </div>
 		 </form>
@@ -173,6 +177,13 @@
     <script src="/WushuManageSystem/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
-
+	<script type="text/javascript">
+		$("#competition_name_select").change(function(){
+			$.cookie('competition_id', $(this).val());
+	    	$.cookie('event_id', null);
+	    	$.cookie('stage_id', null);
+	    	window.location.reload();
+		});
+	</script>
  </body>
 </html>

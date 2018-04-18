@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.pan.competition.bean.Group;
+import com.pan.competition.bean.MenuItem;
 import com.pan.competition.util.DBUtil;
 import com.pan.competition.util.DateUtil;
 
@@ -104,5 +105,29 @@ public class GroupDao {
 			DBUtil.closeCon(con);
 		}
 		return result;
+	}
+	
+	public List<MenuItem> getGroupNumList(String stage_id){
+		List<MenuItem> list = new ArrayList<>();
+		Connection con = null;
+		try {
+			con = DBUtil.getCon();
+			String sql = "select group_id,group_num from `group` where stage_id=? order by group_num";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(stage_id));
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				MenuItem menuItem = new MenuItem();
+				menuItem.setId(rs.getString("group_id"));
+				menuItem.setName(rs.getString("group_num"));
+				list.add(menuItem);
+			}
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return list;
 	}
 }

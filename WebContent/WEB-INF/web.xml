@@ -77,4 +77,12 @@
     <servlet-name>MatchServlet</servlet-name>
     <url-pattern>/servlet/MatchServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>JudgeServlet</servlet-name>
+    <servlet-class>com.pan.competition.servlet.JudgeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JudgeServlet</servlet-name>
+    <url-pattern>/servlet/JudgeServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

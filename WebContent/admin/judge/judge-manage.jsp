@@ -1,7 +1,66 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.pan.competition.service.*"%>
+<%@page import="com.pan.competition.bean.*"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
+<% 
+	CompetitionService competitionService = new CompetitionService();
+	List<MenuItem> competitionNames = competitionService.getCompetitionName();
+	String competition_id = null,event_id=null,stage_id=null;
+	List<MenuItem> eventNames=null,stageNames=null,groupNums=null;
+	List<Judge> judgeList = null;
+	Cookie[] cookies = request.getCookies();
+	for(Cookie cookie : cookies ){
+		if(cookie.getName().equals("competition_id")){
+			competition_id = cookie.getValue();
+		}else if(cookie.getName().equals("event_id")){
+			event_id = cookie.getValue();
+		}else if(cookie.getName().equals("stage_id")){
+			stage_id = cookie.getValue();
+		}
+	}
+	if(competitionNames.size()!=0){
+		if(competition_id == null||"null".equals(competition_id)){
+			competition_id = competitionNames.get(0).getId();
+		}
+		//获取项目列表
+		EventService eventService = new EventService();
+		eventNames = eventService.getEventNameList(competition_id).getData();
+		if(eventNames.size()!=0){
+			if(event_id == null||"null".equals(event_id)){
+				event_id = eventNames.get(0).getId();
+			}
+			StageService stageService = new StageService();
+			stageNames = stageService.getStageNameList(event_id).getData();
+			if(stageNames.size()!=0){
+				if(stage_id == null||"null".equals(stage_id) ){
+					stage_id = stageNames.get(0).getId();
+				}
+				JudgeService judgeService = new JudgeService();
+				judgeList = judgeService.getJudgeList(stage_id);
+				GroupService groupService = new GroupService();
+				groupNums = groupService.getGroupNumList(stage_id);
+			}
+		}
+	}
+	request.setAttribute("competition_id", competition_id);
+	request.setAttribute("event_id", event_id);
+	request.setAttribute("stage_id", stage_id);
+	if(eventNames == null)
+		eventNames = new ArrayList<>();
+	if(stageNames == null)
+		stageNames = new ArrayList<>();
+	if(judgeList == null)
+		judgeList = new ArrayList<>();
+	if(groupNums == null)
+		groupNums = new ArrayList<>();
+	request.setAttribute("judgeList", judgeList);
+	request.setAttribute("groupNums", groupNums);
+%>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -64,39 +123,28 @@
 	</ol>
 	
 		<div class="container div_judge_manage  col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-			
-			<form class="form-inline">
-			    <label for="competition_name" class="control-label">赛事名称</label>&ensp;
-			  	<select class="form-control" id="competition_name">
-			  		<option>第十三届全运会武术套路比赛</option>
-			  		<option>第十二届全运会武术套路比赛</option>
-			  		<option>第十一届全运会武术套路比赛</option>
-			  		<option>第十届全运会武术套路比赛</option>
-			  		<option>第九届全运会武术套路比赛</option>
-			  		<option>第八届全运会武术套路比赛</option>
-			  		<option>第七届全运会武术套路比赛</option>
-			  	</select>
-			  	&ensp;&ensp;
-						<label for="event_name" class="control-label">比赛项目</label>
-				   	<select class="form-control" id="event_name">
-			    		<option>长拳青少年组女子单项</option>
-				  		<option>长拳青少年组男子单项</option>
-				  		<option>长拳成年组集体项目</option>
-				  		<option>太极拳成年组集体项目</option>
-				  		<option>南拳成年组集体项目</option>
-				  		<option>太极剑成年组集体项目</option>
-				  		<option>太极剑成年组男女混合集体项目</option>
+			<form class="form form-inline">
+					<label for="competition_name_select" class="control-label">赛事名称</label>&ensp;
+				   	<select class="form-control" id="competition_name_select">
+				   		<c:forEach var="competition" items="<%=competitionNames %>">
+				   			<option value="${competition.id }">${competition.name }</option>
+				   		</c:forEach>
+				    </select>&ensp;&ensp;
+						<label for="event_name_select" class="control-label">比赛项目</label>&ensp;
+					   	<select class="form-control" id="event_name_select">
+				    		<c:forEach var="event" items="<%=eventNames %>">
+					   			<option value="${event.id }">${event.name }</option>
+					   		</c:forEach>
+					    </select>&ensp;&ensp;
+				    <label for="stage_name_select" class="control-label">比赛阶段</label>&ensp;
+				   	<select class="form-control" id="stage_name_select">
+			    		<c:forEach var="stage" items="<%=stageNames %>">
+				   			<option value="${stage.id }">${stage.name }</option>
+				   		</c:forEach>
 				    </select>
-				    &ensp;&ensp;
-		    <label for="competition_stage" class="control-label">比赛阶段</label>&ensp;
-		   	<select class="form-control" id="competition_stage">
-	    		<option>初赛</option>
-		  		<option>半决赛</option>
-		  		<option>决赛</option>
-		    </select>
-    	</form>
+			 </form>
     	
-    	<hr />
+    		<hr />
 			
 			 <h4 class="text-center"><b>裁判员列表</b></h4>
 			 <table class="table table-bordered" id="judge_list">
@@ -106,171 +154,79 @@
 		  			<th>裁判员</th>
 		  			<th>性别</th>
 		  			<th>岗位</th>
+		  			<th>分组</th>
 		  		</tr>
 		  	</thead>
-		  	<tbody>
-		  		<tr>
-		  			<td>
-			      	<a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-			      	<a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a>
-			     </td>
-			  		<td>
-			  			<input class="form-control" type="text" placeholder="请输入裁判员姓名" value="张三"/>
-			  		</td>
-			  		<td>
-			  			<select class="form-control">
-			  				<option>男</option>
-			  				<option>女</option>
-			  			</select>
-			  		</td>
-			  		<td>
-			  			<select class="form-control">
-			  				<option>裁判长</option>
-			  				<option>A组裁判员</option>
-			  				<option>B组裁判员</option>
-			  				<option>C组裁判员</option>
-			  			</select>
-			  		</td>
-			  	</tr>
-			  	<tr>
-		  			<td>
-			      	<a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-			      	<a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a>
-			     </td>
-			  		<td>
-			  			<input class="form-control" type="text" placeholder="请输入裁判员姓名"/>
-			  		</td>
-			  		<td>
-			  			<select class="form-control">
-			  				<option>男</option>
-			  				<option>女</option>
-			  			</select>
-			  		</td>
-			  		<td>
-			  			<select class="form-control">
-			  				<option>裁判长</option>
-			  				<option>A组裁判员</option>
-			  				<option>B组裁判员</option>
-			  				<option>C组裁判员</option>
-			  			</select>
-			  		</td>
-			  	</tr>
+		  	<tbody id="judge_tb">
+		  		<c:if test="${judgeList.size()==0 }">
+		  			<tr>
+			  			<td>
+					      	<a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+					      	<a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+					     </td>
+				  		<td>
+				  			<input class="form-control" type="text" placeholder="请输入裁判员姓名"/>
+				  		</td>
+				  		<td>
+				  			<select class="form-control">
+				  				<option>男</option>
+				  				<option>女</option>
+				  			</select>
+				  		</td>
+				  		<td>
+				  			<select class="form-control">
+				  				<option>裁判长</option>
+				  				<option>A组裁判员</option>
+				  				<option>B组裁判员</option>
+				  				<option>C组裁判员</option>
+				  			</select>
+				  		</td>
+				  		<td>
+				  			<select class="form-control">
+				  				<c:forEach var="group_num" items="${groupNums }">
+				  					<option>第${group_num.name }组</option>
+				  				</c:forEach>
+				  			</select>
+				  		</td>
+				  	</tr>
+		  		</c:if>
+		  		<c:if test="${judgeList.size()!=0 }">
+		  		<c:forEach var="judge" items="${judgeList }">
+		  			<tr>
+			  			<td>
+				      	<a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+				      	<a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a>
+				     </td>
+				  		<td>
+				  			<input class="form-control" type="text" placeholder="请输入裁判员姓名" value="${judge.name }"/>
+				  		</td>
+				  		<td>
+				  			<select class="form-control">
+				  				<option <c:if test="${judge.sex eq '男' }">selected</c:if>>男</option>
+				  				<option <c:if test="${judge.sex eq '女' }">selected</c:if>>女</option>
+				  			</select>
+				  		</td>
+				  		<td>
+				  			<select class="form-control">
+				  				<option <c:if test="${judge.job eq '裁判长' }">selected</c:if>>裁判长</option>
+				  				<option <c:if test="${judge.job eq 'A组裁判员' }">selected</c:if>>A组裁判员</option>
+				  				<option <c:if test="${judge.job eq 'B组裁判员' }">selected</c:if>>B组裁判员</option>
+				  				<option <c:if test="${judge.job eq 'C组裁判员' }">selected</c:if>>C组裁判员</option>
+				  			</select>
+				  		</td>
+				  		<td>
+				  			<select class="form-control">
+				  				<c:forEach var="group_num" items="${groupNums }">
+				  					<option>第${group_num.name }组</option>
+				  				</c:forEach>
+				  			</select>
+				  		</td>
+				  	</tr>
+		  		</c:forEach>
+		  		</c:if>
 		  	</tbody>
 		  </table>
-		  <button class="btn btn-primary">保存</button>
-			 <!--<table class="table table-bordered" id="judge_list">
-				<thead>
-					<tr>
-						<th>编号</th>
-						<th>裁判员</th>
-						<th>性别</th>
-						<th>岗位</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>1</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>A组评分裁判员</td>
-						<td>
-							<a class="btn btn-primary btn-xs" href="judge-msg-change.html">修改</a>
-							<a class="btn btn-primary btn-xs remove_judge">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>李四</td>
-						<td>男</td>
-						<td>A组评分裁判员</td>
-						<td>
-							<a class="btn btn-primary btn-xs" href="judge-msg-change.html">修改</a>
-							<a class="btn btn-primary btn-xs remove_judge">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>A组评分裁判员</td>
-						<td>
-							<a class="btn btn-primary btn-xs" href="judge-msg-change.html">修改</a>
-							<a class="btn btn-primary btn-xs">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>B组评分裁判员</td>
-						<td>
-							<a class="btn btn-primary btn-xs" href="judge-msg-change.html">修改</a>
-							<a class="btn btn-primary btn-xs remove_judge">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>B组评分裁判员</td>
-						<td>
-							<a class="btn btn-primary btn-xs" href="judge-msg-change.html">修改</a>
-							<a class="btn btn-primary btn-xs remove_judge">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>6</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>B组评分裁判员</td>
-						<td>
-							<a class="btn btn-primary btn-xs" href="judge-msg-change.html">修改</a>
-							<a class="btn btn-primary btn-xs remove_judge">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>7</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>C组评分裁判员</td>
-						<td>
-							<a class="btn btn-primary btn-xs" href="judge-msg-change.html">修改</a>
-							<a class="btn btn-primary btn-xs remove_judge">删除</a>
-						</td>
-					</tr><tr>
-						<td>8</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>C组评分裁判员</td>
-						<td>
-							<a class="btn btn-primary btn-xs" href="judge-msg-change.html">修改</a>
-							<a class="btn btn-primary btn-xs remove_judge">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>9</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>C组评分裁判员</td>
-						<td>
-							<a class="btn btn-primary btn-xs" href="judge-msg-change.html">修改</a>
-							<a class="btn btn-primary btn-xs remove_judge">删除</a>
-						</td>
-					</tr>
-					<tr>
-						<td>10</td>
-						<td>张三</td>
-						<td>男</td>
-						<td>裁判长</td>
-						<td>
-							<a class="btn btn-primary btn-xs" href="judge-msg-change.html">修改</a>
-							<a class="btn btn-primary btn-xs remove_judge">删除</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			<a href="judge-add.html" class="btn btn-primary">添加裁判员</a>-->
+		  <button class="btn btn-primary" id="save_judge_btn">保存</button>
 		</div>
 		
 		
@@ -279,23 +235,71 @@
     <script src="/WushuManageSystem/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
+    <script src="/WushuManageSystem/js/jquery.cookie.js"></script>
     <script type="text/javascript">
+    
+	 	 //设置select选中内容
+		if("${competition_id}" != ""){
+			$("#competition_name_select option[value='${competition_id}']").attr("selected",true);
+		}
+		if("${event_id}" != ""){
+			$("#event_name_select option[value='${event_id}']").attr("selected",true);
+		}
+		if("${stage_id}" != ""){
+			$("#stage_name_select option[value='${stage_id}']").attr("selected",true);
+		}
     	/*删除成员*/
-    	$(".remove_judge").click(function(){
-    		$(this).parent().parent().remove();
+    	function remove(arg){
+			 $(arg).parent().parent().remove();
+		}
+			 
+		function add(arg){
+			$(arg).parent().parent().after('<tr><td><a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>'
+			+' <a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a></td>'
+			+'<td><input class="form-control" type="text" placeholder="请输入裁判员姓名"/></td>'
+			+'<td><select class="form-control"><option>男</option><option>女</option></select></td>'
+			+'<td><select class="form-control"><option>裁判长</option><option>A组裁判员</option><option>B组裁判员</option><option>C组裁判员</option></select></td>'
+			+'<td><select class="form-control"><c:forEach var="group_num" items="${groupNums }"><option>第${group_num.name }组</option></c:forEach></select></td></tr>');
+		}
+		
+		$("#save_judge_btn").click(function(){
+			var json = "[";
+			var stage_id = "${stage_id}";
+			$("#judge_tb").children().each(function(){
+				var name = $(this).children().eq(1).children().val();
+				var sex = $(this).children().eq(2).children().val();
+				var job = $(this).children().eq(3).children().val();
+				if(name == ""){
+					alert("姓名不能为空");
+					return false;
+				}
+				json = json + '{"name":"'+name+'","sex":"'+sex+'","job":"'+job+'",stage_id:"'+stage_id+'"},';
+			});
+			if(json == "[")
+				return;
+			json = json.substring(0,json.length-1)+']';
+			$.post("/WushuManageSystem/servlet/JudgeServlet",{data:json},function(data){
+    			alert(data);
+    		});
+		});
+		
+		$("#competition_name_select").change(function(){
+    		$.cookie('competition_id', $(this).val());
+        	$.cookie('event_id', null);
+        	$.cookie('stage_id', null);
+        	window.location.reload();
     	});
     	
-    	function remove(arg){
-			 	 $(arg).parent().parent().remove();
-			}
-			 
-			function add(arg){
-				$(arg).parent().parent().after('<tr><td><a onclick="add(this)"><span class="div_plus_icon glyphicon glyphicon-plus" aria-hidden="true"></span></a>'
-				+' <a onclick="remove(this)"><span class="div_minus_icon glyphicon glyphicon-minus" aria-hidden="true"></span></a></td>'
-				+'<td><input class="form-control" type="text" placeholder="请输入裁判员姓名"/></td>'
-				+'<td><select class="form-control"><option>男</option><option>女</option></select></td>'
-				+'<td><select class="form-control"><option>裁判长</option><option>A组裁判员</option><option>B组裁判员</option><option>C组裁判员</option></select></td>');
-			}
+		$("#event_name_select").change(function(){
+        	$.cookie('event_id', $(this).val());
+        	$.cookie('stage_id', null);
+        	window.location.reload();
+    	});
+		
+		$("#stage_name_select").change(function(){
+        	$.cookie('stage_id', $(this).val());
+        	window.location.reload();
+    	});
     </script>
  </body>
 </html>

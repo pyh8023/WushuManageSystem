@@ -199,10 +199,10 @@
 		  <button class="btn btn-primary" id="save_group_btn">保存</button>
 		  <hr />
 		  <h4 class="text-center"><b>出场顺序</b></h4>
-	    	<table class="table table-bordered">
+	    	<table class="table table-bordered" id="arrange_table">
 		  	<thead>
 		  		<tr>
-		  			<th>序号</th>
+		  			<th style="width:30%">序号</th>
 		  			<th>代表团</th>
 		  			<th>报项名</th>
 		  			<th>分组</th>
@@ -215,7 +215,13 @@
 			  			<td><input class="form-control" type="number" placeholder="请输入序号" value="${arrange.order }" /></td>
 			  			<td>${arrange.delegation_name }</td>
 				  		<td>${arrange.apply_name }</td>
-				  		<td><input class="form-control" type="number" placeholder="请输入第几组" value="${arrange.group_num }" /></td>
+				  		<td>
+				  			<select class="form-control">
+				  				<c:forEach var="group" items="${groupList }">
+				  					<option value="${group.group_num}" <c:if test="${arrange.group_num eq group.group_num }">selected</c:if>>第${group.group_num}组</option>
+				  				</c:forEach>
+				  			</select>
+				  		</td>
 				  	</tr>
 		  		</c:forEach>
 		  		</c:if>
@@ -289,6 +295,7 @@
     		json = json.substring(0,json.length-1)+']';
     		$.post("/WushuManageSystem/servlet/GroupServlet",{data:json},function(data){
     			alert(data);
+    			window.location.reload();
     		});
     	});
     	
@@ -306,6 +313,7 @@
     			json = json + '{"match_id":"'+match_id+'","order":"'+order+'","group_num":"'+group_num+'","stage_id":"'+stage_id+'"},';
     		});
     		json = json.substring(0,json.length-1) +']';
+    		alert(json)
     		$.post("/WushuManageSystem/servlet/MatchServlet?action=saveArrange",{data:json},function(data){
     			alert(data);
     			window.location.reload();
