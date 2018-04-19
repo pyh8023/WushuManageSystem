@@ -4,22 +4,28 @@ body{
    		background: #EBEBEB;
    	}
    	
+   	.breadcrumb {
+   		/* position:fixed; */
+   		margin-top: 50px;
+   		width:100%;
+   	}
+   	
    	.competition_arrange_div{
-			background: white;
+	  background: white;
    	  padding: 30px 20px;
    	  border-radius: 5px;
    	  margin-bottom: 20px;
    	  min-height: 500px;
 		}
 		
-		.competition_arrange_div form{
-			text-align: center;
-		}
+	.competition_arrange_div form{
+		text-align: center;
+	}
 		
-		.competition_arrange_div table {
-			margin-top: 20px;
-			text-align: center;
-		}
+	.competition_arrange_div table {
+		margin-top: 20px;
+		text-align: center;
+	}
    	
    	.competition_arrange_div table th,td {
    		text-align: center;
@@ -43,6 +49,3 @@ body{
    		width: 20px;
    	}
    	
-   	.breadcrumb{
-   		margin-top: 50px;
-   	}

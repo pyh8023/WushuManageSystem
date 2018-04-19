@@ -6,8 +6,16 @@ body {
   		background: #EBEBEB;
   	}
   	
+  	.breadcrumb {
+  	    width:100%;
+  		/* position:fixed;
+  		backgroud:#F5F5F5;
+  		z-indx:9; */
+  	}
+  	
   	.content {
-  		background: white;
+  	  /* margin-top: 55px; */
+  	  background: white;
   	  padding: 30px 40px;
   	  border-radius: 5px;
   	  margin-bottom: 20px;

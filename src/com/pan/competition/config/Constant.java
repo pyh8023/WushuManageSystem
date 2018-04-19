@@ -13,4 +13,10 @@ public class Constant {
 	public static final String STAGE_NUM_IS_EXISTED = "比赛阶段编号已存在";
 	public static final String STAGE_ATTRIBUTE_IS_EXISTED = "比赛阶段属性已存在";
 	public static final String NOT_EXISTED = "不存在";
+	
+	public static final String EVENT_APPLY_REPORT = "1";
+	public static final String DELEGATION_APPLY_REPORT = "2";
+	public static final String ORDER_REPORT = "3";
+	public static final String GRADE_REPORT = "4";
+	public static final String RANKING_REPORT = "5";
 }

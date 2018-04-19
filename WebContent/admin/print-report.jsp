@@ -1,3 +1,6 @@
+<%@page import="com.pan.competition.service.ReportService"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.pan.competition.bean.Report"%>
 <%@page import="com.pan.competition.bean.MenuItem"%>
 <%@page import="java.util.List"%>
 <%@page import="com.pan.competition.service.CompetitionService"%>
@@ -9,6 +12,31 @@
 <%
 	CompetitionService competitionService = new CompetitionService();
 	List<MenuItem> competitionNames = competitionService.getCompetitionName();
+	String competition_id = null,report_type = null;
+	Cookie[] cookies = request.getCookies();
+	List<Report> reportList = null;
+	for(Cookie cookie : cookies ){
+		if(cookie.getName().equals("competition_id")){
+			competition_id = cookie.getValue();
+		}else if(cookie.getName().equals("report_type")){
+			report_type = cookie.getValue();
+		}
+	}
+	if(competitionNames.size()>0){
+		if(competition_id == null && "null".equals(competition_id)){
+			competition_id = competitionNames.get(0).getId();
+		}
+		if(report_type == null){
+			report_type = "1";
+		}
+		ReportService reportService = new ReportService();
+		reportList = reportService.getReportName(competition_id, report_type);
+	}
+	if(reportList == null)
+		reportList = new ArrayList<>();
+	request.setAttribute("reportList", reportList);
+	request.setAttribute("competition_id", competition_id);
+	request.setAttribute("report_type", report_type);
 %>
   <head>
     <meta charset="utf-8">
@@ -72,7 +100,6 @@
 	</ol>
 
 	<div class="container content col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-			
 		 <form class="form-inline">
 		 	<div class="form-group">
 		 		<label class="control-label" for="competition_name_select">赛事名称</label>&ensp;
@@ -101,88 +128,50 @@
     			<tr>
     				<th>序号</th>
     				<th>报表名称</th>
-    				<th>操作</th>
+    				<th>下载</th>
     			</tr>
     		</thead>
     		<tbody>
-    			<tr>
-    				<td>1</td>
-    				<td>南棍男子单项报名表</td>
-    				<td>
-    					<button class="btn btn-primary btn-xs">预览</button>
-    					<button class="btn btn-primary btn-xs">打印</button>
-    				</td>
-    			</tr>
-    			<tr>
-    				<td>2</td>
-    				<td>南刀女子单项报名表</td>
-    				<td>
-    					<button class="btn btn-primary btn-xs">预览</button>
-    					<button class="btn btn-primary btn-xs">打印</button>
-    				</td>
-    			</tr>
-    			<tr>
-    				<td>3</td>
-    				<td>长拳男女混合集体项目报名表</td>
-    				<td>
-    					<button class="btn btn-primary btn-xs">预览</button>
-    					<button class="btn btn-primary btn-xs">打印</button>
-    				</td>
-    			</tr>
-    			<tr>
-    				<td>4</td>
-    				<td>刀术女子单项报名表</td>
-    				<td>
-    					<button class="btn btn-primary btn-xs">预览</button>
-    					<button class="btn btn-primary btn-xs">打印</button>
-    				</td>
-    			</tr>
-    			<tr>
-    				<td>5</td>
-    				<td>剑术女子单项报名表</td>
-    				<td>
-    					<button class="btn btn-primary btn-xs">预览</button>
-    					<button class="btn btn-primary btn-xs">打印</button>
-    				</td>
-    			</tr>
-    			<tr>
-    				<td>6</td>
-    				<td>棍术女子单项报名表</td>
-    				<td>
-    					<button class="btn btn-primary btn-xs">预览</button>
-    					<button class="btn btn-primary btn-xs">打印</button>
-    				</td>
-    			</tr>
-    			<tr>
-    				<td>7</td>
-    				<td>枪术女子单项报名表</td>
-    				<td>
-    					<button class="btn btn-primary btn-xs">预览</button>
-    					<button class="btn btn-primary btn-xs">打印</button>
-    				</td>
-    			</tr>
-    			<tr>
-    				<td>8</td>
-    				<td>南拳女子单项报名表</td>
-    				<td>
-    					<button class="btn btn-primary btn-xs">预览</button>
-    					<button class="btn btn-primary btn-xs">打印</button>
-    				</td>
-    			</tr>
+    			<c:forEach var="report" items="${reportList }" varStatus="status">
+    				<tr id="${report.id }">
+	    				<td>${status.count }</td>
+	    				<td>${report.name }</td>
+	    				<td>
+	    					<button class="btn btn-primary btn-xs">word格式</button>
+	    					<button class="btn btn-primary btn-xs">pdf格式</button>
+	    				</td>
+	    			</tr>
+    			</c:forEach>
     		</tbody>
    </table>
+   <c:if test="${reportList.size()==0 }">
+   		该赛事暂无报表
+   </c:if>
 	</div>
 
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="/WushuManageSystem/js/jquery-1.11.1.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
+    <script src="/WushuManageSystem/js/jquery.cookie.js"></script>
 	<script type="text/javascript">
+		//设置select选中内容
+		if("${competition_id}" != ""){
+			$("#competition_name_select option[value='${competition_id}']").attr("selected",true);
+		}
+		
+		if("${report_type}" != ""){
+			$("#report_type option[value='${report_type}']").attr("selected",true);
+		}
+		
 		$("#competition_name_select").change(function(){
 			$.cookie('competition_id', $(this).val());
-	    	$.cookie('event_id', null);
-	    	$.cookie('stage_id', null);
 	    	window.location.reload();
+		});
+		
+		$("#report_type").change(function(){
+			$.cookie('report_type', $(this).val());
+			window.location.reload();
 		});
 	</script>
  </body>
