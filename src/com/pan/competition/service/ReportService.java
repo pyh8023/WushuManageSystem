@@ -35,7 +35,7 @@ public class ReportService {
 			for(MenuItem event: eventList) {
 				Report report = new Report();
 				report.setId(event.getId());
-				report.setName(event.getName()+"秩序表");
+				report.setName(event.getName()+"秩序单");
 				report.setType(report_type);
 				list.add(report);
 			}
