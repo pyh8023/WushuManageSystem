@@ -43,7 +43,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>打印报表</title>
+    <title>报表下载</title>
 
     <!-- Bootstrap -->
     <link href="/WushuManageSystem/css/bootstrap.min.css" rel="stylesheet">
@@ -88,7 +88,7 @@
         	</li>
 	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
 	        <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
-	        <li class="active"><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
+	        <li class="active"><a href="/WushuManageSystem/admin/print-report.jsp">报表生成</a></li>
 	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
@@ -96,7 +96,7 @@
 	
 	<ol class="breadcrumb">
 	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
-	  <li><a href="#">打印报表</a></li>
+	  <li><a href="#">报表生成</a></li>
 	</ol>
 
 	<div class="container content col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
@@ -108,16 +108,16 @@
 			   			<option value="${competition.id }">${competition.name }</option>
 			   		</c:forEach>
 		    	</select>&ensp;&ensp;
-		    <label for="report_name" class="control-label">报表类型</label>&ensp;
-		    <select class="form-control" id="report_type">
-		    	<optgroup label="报名表">
-		    		<option value="1">项目报名表</option>
-		    		<option value="2">代表团报名表</option>
-		    	</optgroup>
-		    	<option value="3">秩序单</option>
-		    	<option value="4">成绩表</option>
-		    	<option value="5">名次表</option>
-		    </select>
+			    <label for="report_name" class="control-label">报表类型</label>&ensp;
+			    <select class="form-control" id="report_type">
+			    	<optgroup label="报名表">
+			    		<option value="1">项目报名表</option>
+			    		<option value="2">代表团报名表</option>
+			    	</optgroup>
+			    	<option value="3">秩序单</option>
+			    	<option value="4">成绩表</option>
+			    	<option value="5">名次表</option>
+			    </select>
 		  </div>
 		 </form>
 		 
@@ -128,7 +128,7 @@
     			<tr>
     				<th>序号</th>
     				<th>报表名称</th>
-    				<th>下载</th>
+    				<th>格式</th>
     			</tr>
     		</thead>
     		<tbody>

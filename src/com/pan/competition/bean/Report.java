@@ -4,6 +4,20 @@ public class Report {
 	private String id;
 	private String type;
 	private String name;
+	private String stage_id;
+	private String stage_name;
+	public String getStage_id() {
+		return stage_id;
+	}
+	public void setStage_id(String stage_id) {
+		this.stage_id = stage_id;
+	}
+	public String getStage_name() {
+		return stage_name;
+	}
+	public void setStage_name(String stage_name) {
+		this.stage_name = stage_name;
+	}
 	public String getId() {
 		return id;
 	}

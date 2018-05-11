@@ -11,16 +11,18 @@
 	CompetitionService competitionService = new CompetitionService();
 	List<MenuItem> competitionNames = competitionService.getCompetitionName();
 	String competition_id = null,event_id=null,stage_id=null;
-	List<MenuItem> eventNames=null,stageNames=null,groupNums=null;
+	List<MenuItem> eventNames=null,stageNames=null;
 	List<Judge> judgeList = null;
 	Cookie[] cookies = request.getCookies();
-	for(Cookie cookie : cookies ){
-		if(cookie.getName().equals("competition_id")){
-			competition_id = cookie.getValue();
-		}else if(cookie.getName().equals("event_id")){
-			event_id = cookie.getValue();
-		}else if(cookie.getName().equals("stage_id")){
-			stage_id = cookie.getValue();
+	if(cookies !=null){
+		for(Cookie cookie : cookies ){
+			if(cookie.getName().equals("competition_id")){
+				competition_id = cookie.getValue();
+			}else if(cookie.getName().equals("event_id")){
+				event_id = cookie.getValue();
+			}else if(cookie.getName().equals("stage_id")){
+				stage_id = cookie.getValue();
+			}
 		}
 	}
 	if(competitionNames.size()!=0){
@@ -42,8 +44,8 @@
 				}
 				JudgeService judgeService = new JudgeService();
 				judgeList = judgeService.getJudgeList(stage_id);
-				GroupService groupService = new GroupService();
-				groupNums = groupService.getGroupNumList(stage_id);
+				/* GroupService groupService = new GroupService();
+				groupNums = groupService.getGroupNumList(stage_id); */
 			}
 		}
 	}
@@ -56,10 +58,10 @@
 		stageNames = new ArrayList<>();
 	if(judgeList == null)
 		judgeList = new ArrayList<>();
-	if(groupNums == null)
-		groupNums = new ArrayList<>();
+	/* if(groupNums == null)
+		groupNums = new ArrayList<>(); */
 	request.setAttribute("judgeList", judgeList);
-	request.setAttribute("groupNums", groupNums);
+	//request.setAttribute("groupNums", groupNums);
 %>
   <head>
     <meta charset="utf-8">
@@ -110,7 +112,7 @@
         	</li>
 	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
 	        <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
-	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
+	        <li><a href="/WushuManageSystem/admin/print-report.jsp">报表生成</a></li>
 	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
@@ -154,7 +156,6 @@
 		  			<th>裁判员</th>
 		  			<th>性别</th>
 		  			<th>岗位</th>
-		  			<th>分组</th>
 		  		</tr>
 		  	</thead>
 		  	<tbody id="judge_tb">
@@ -181,13 +182,13 @@
 				  				<option>C组裁判员</option>
 				  			</select>
 				  		</td>
-				  		<td>
+				  		<%-- <td>
 				  			<select class="form-control">
 				  				<c:forEach var="group_num" items="${groupNums }">
 				  					<option>第${group_num.name }组</option>
 				  				</c:forEach>
 				  			</select>
-				  		</td>
+				  		</td> --%>
 				  	</tr>
 		  		</c:if>
 		  		<c:if test="${judgeList.size()!=0 }">
@@ -212,13 +213,6 @@
 				  				<option <c:if test="${judge.job eq 'A组裁判员' }">selected</c:if>>A组裁判员</option>
 				  				<option <c:if test="${judge.job eq 'B组裁判员' }">selected</c:if>>B组裁判员</option>
 				  				<option <c:if test="${judge.job eq 'C组裁判员' }">selected</c:if>>C组裁判员</option>
-				  			</select>
-				  		</td>
-				  		<td>
-				  			<select class="form-control">
-				  				<c:forEach var="group_num" items="${groupNums }">
-				  					<option>第${group_num.name }组</option>
-				  				</c:forEach>
 				  			</select>
 				  		</td>
 				  	</tr>
@@ -259,7 +253,7 @@
 			+'<td><input class="form-control" type="text" placeholder="请输入裁判员姓名"/></td>'
 			+'<td><select class="form-control"><option>男</option><option>女</option></select></td>'
 			+'<td><select class="form-control"><option>裁判长</option><option>A组裁判员</option><option>B组裁判员</option><option>C组裁判员</option></select></td>'
-			+'<td><select class="form-control"><c:forEach var="group_num" items="${groupNums }"><option>第${group_num.name }组</option></c:forEach></select></td></tr>');
+			+'</tr>');
 		}
 		
 		$("#save_judge_btn").click(function(){

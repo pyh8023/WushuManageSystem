@@ -95,6 +95,4 @@ public class ApplyServlet extends HttpServlet {
 	    out.flush();
 	    out.close();
 	}
-
-
 }

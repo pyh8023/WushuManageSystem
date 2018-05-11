@@ -219,7 +219,7 @@ public class MatchDao {
 			String sql = null;
 			PreparedStatement pstmt = null;
 			if(arrange.getOrder().equals("")) {
-				sql = "UPDATE `match` SET group_num = ? WHERE match_id = ? AND ? IN (SELECT group_num FROM `group` WHERE stage_id = ?)";
+				sql = "UPDATE `match` SET group_num = ?,`order`=null WHERE match_id = ? AND ? IN (SELECT group_num FROM `group` WHERE stage_id = ?)";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, Integer.parseInt(arrange.getGroup_num()));
 				pstmt.setInt(2, Integer.parseInt(arrange.getMatch_id()));

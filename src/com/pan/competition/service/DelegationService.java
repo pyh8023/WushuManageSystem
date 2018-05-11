@@ -41,9 +41,9 @@ public class DelegationService {
 		}else {
 			int status = delegationDao.updateDelegation(delegation);
 			if(status ==1)
-				message = new Message<String>(Constant.QUERY_SUCCESS_RESPONSE_CODE, "修改代表团成功", "");
+				message = new Message<String>(Constant.QUERY_SUCCESS_RESPONSE_CODE, "代表团修改成功", "");
 			else
-				message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, "修改代表团失败", "");
+				message = new Message<String>(Constant.QUERY_FAILED_RESPONSE_CODE, "代表团修改失败", "");
 		}
 		return message;
 	}

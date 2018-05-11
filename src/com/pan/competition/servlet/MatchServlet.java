@@ -2,7 +2,10 @@ package com.pan.competition.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,9 +50,9 @@ public class MatchServlet extends HttpServlet {
 		}else if("promote".equals(action)) {
 			changeMatchPromote(request,response);
 		}
-		/*else if("autoArrange".equals(action)){
+		else if("autoArrange".equals(action)){
 			autoMatchArrange(request,response);
-		}*/
+		}
 	}
 
 	private void changeMatchPromote(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -83,9 +86,34 @@ public class MatchServlet extends HttpServlet {
 		out.close();
 	}
 
-	/*private void autoMatchArrange(HttpServletRequest request, HttpServletResponse response) {
-		
-	}*/
+	private void autoMatchArrange(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String json = request.getParameter("data");
+		Gson gson = new Gson();
+		List<Arrange> list = gson.fromJson(json, new TypeToken<List<Arrange>>(){}.getType());
+		List<Arrange> orderList = new ArrayList<>();
+		Random random = new Random(list.size());
+		for(int i=1;list.size()>0;i++){
+			int index = random.nextInt(list.size());
+			Arrange arrange = list.get(index);
+			arrange.setOrder(i+"");
+			orderList.add(arrange);
+			list.remove(index);
+		}
+		String msg = null;
+		for (Arrange arrange : orderList) {
+			String result = matchService.updateMatchArrange(arrange);
+			if(!result.equals(Constant.QUERY_SUCCESS_RESPONSE_CODE)) {
+				msg = "抽签失败";
+				break;
+			}
+		}
+		if(msg == null) 
+			msg = "抽签并保存成功";
+		PrintWriter out = response.getWriter();
+		out.write(msg);
+		out.flush();
+		out.close();
+	}
 
 	private void saveMatchArrange(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String json = request.getParameter("data");

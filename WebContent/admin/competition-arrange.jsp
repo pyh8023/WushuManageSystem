@@ -114,7 +114,7 @@
         	</li>
 	        <li class="active"><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
 	        <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
-	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
+	        <li><a href="/WushuManageSystem/admin/print-report.jsp">报表生成</a></li>
 	      </ul>	     
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
@@ -228,10 +228,10 @@
 		  	</tbody>
 		  </table>
 		  <c:if test="${arrangeList.size() ==0 }">
-		  	<p class="text-center">该项目报项为空</p>
+		  	<p class="text-center">该比赛阶段参赛队伍为空</p>
 		  </c:if>
 		  <button id="save_arrange_btn" class="btn btn-primary <c:if test="${arrangeList.size() ==0 }">disabled</c:if>">保存</button>
-		  <%-- <button id="draw_log_btn" class="btn btn-primary <c:if test="${arrangeList.size() ==0 }">disabled</c:if>">抽签</button> --%>
+		  <button id="draw_log_btn" class="btn btn-primary <c:if test="${arrangeList.size() ==0 }">disabled</c:if>">抽签</button>
 	  </div>
 	    
 	<script src="/WushuManageSystem/js/bootstrap-datetimepicker.min.js"></script>
@@ -313,14 +313,13 @@
     			json = json + '{"match_id":"'+match_id+'","order":"'+order+'","group_num":"'+group_num+'","stage_id":"'+stage_id+'"},';
     		});
     		json = json.substring(0,json.length-1) +']';
-    		alert(json)
     		$.post("/WushuManageSystem/servlet/MatchServlet?action=saveArrange",{data:json},function(data){
     			alert(data);
     			window.location.reload();
     		});
     	});
     	
-		/* $("#draw_log_btn").click(function(){
+		 $("#draw_log_btn").click(function(){
 			var json="[";
     		var stage_id = "${stage_id}";
     		$("#arrange_tb").children().each(function(){
@@ -337,7 +336,7 @@
     			alert(data);
     			window.location.reload();
     		});
-    	}); */
+    	}); 
     	
     	$("#competition_name_select").change(function(){
     		$.cookie('competition_id', $(this).val());

@@ -119,7 +119,7 @@
 				<li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
 				<li class="active"><a
 					href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
-				<li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
+				<li><a href="/WushuManageSystem/admin/print-report.jsp">报表生成</a></li>
 			</ul>
 		</div>
 		<!-- /.navbar-collapse -->

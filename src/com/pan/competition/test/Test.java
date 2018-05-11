@@ -1,11 +1,14 @@
 package com.pan.competition.test;
 
 import java.util.List;
+import java.util.Random;
 
+import com.pan.competition.bean.ApplyReport;
 import com.pan.competition.bean.Competition;
 import com.pan.competition.bean.Event;
 import com.pan.competition.bean.Stage;
 import com.pan.competition.dao.CompetitionDao;
+import com.pan.competition.dao.ReportDao;
 import com.pan.competition.service.CompetitionService;
 import com.pan.competition.service.EventService;
 import com.pan.competition.service.StageService;
@@ -14,6 +17,9 @@ import com.pan.competition.service.StageService;
 public class Test {
 
 	public static void main(String[] args) {
+		ReportDao reportDao = new ReportDao();
+		List<ApplyReport> applyReports = reportDao.getEventApplyReport("16");
+		System.out.println(applyReports);
 		//competitionServiceTest();
 		//getCompetitionNameList();
 		//eventServiceTest();
