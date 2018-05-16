@@ -1,22 +1,19 @@
 package com.pan.competition.bean;
 
-public class OrderReport {
-	private String order;
+import java.util.List;
+import java.util.Map;
+
+public class RankingReport {
 	private String apply_name;
 	private String delegation_name;
-	private String group_num;
 	private String event_name;
+	private String ranking;
+	private List<Map<String,String>> stage_grade;
 	public String getEvent_name() {
 		return event_name;
 	}
 	public void setEvent_name(String event_name) {
 		this.event_name = event_name;
-	}
-	public String getOrder() {
-		return order;
-	}
-	public void setOrder(String order) {
-		this.order = order;
 	}
 	public String getApply_name() {
 		return apply_name;
@@ -30,10 +27,17 @@ public class OrderReport {
 	public void setDelegation_name(String delegation_name) {
 		this.delegation_name = delegation_name;
 	}
-	public String getGroup_num() {
-		return group_num;
+	public String getRanking() {
+		return ranking;
 	}
-	public void setGroup_num(String group_num) {
-		this.group_num = group_num;
+	public void setRanking(String ranking) {
+		this.ranking = ranking;
 	}
+	public List<Map<String,String>> getStage_grade() {
+		return stage_grade;
+	}
+	public void setStage_grade(List<Map<String,String>> stage_grade) {
+		this.stage_grade = stage_grade;
+	}
+	
 }

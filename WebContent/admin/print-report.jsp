@@ -124,7 +124,31 @@
 		 <hr/>
 		 
 		 <table class="table table-bordered">
-    		<thead>
+		 	<c:if test="${report_type eq '3' || report_type eq '4' }">
+		 		<thead>
+	    			<tr>
+	    				<th>序号</th>
+	    				<th>报表名称</th>
+	    				<th>比赛阶段</th>
+	    				<th>格式</th>
+	    			</tr>
+	    		</thead>
+	    		<tbody>
+	    			<c:forEach var="report" items="${reportList }" varStatus="status">
+	    				<tr id="${report.id }">
+		    				<td>${status.count }</td>
+		    				<td>${report.name }</td>
+		    				<td>${report.stage_name }</td>
+		    				<td>
+		    					<button class="btn btn-primary btn-xs">word格式</button>
+		    					<button class="btn btn-primary btn-xs">pdf格式</button>
+		    				</td>
+		    			</tr>
+	    			</c:forEach>
+	    		</tbody>
+		 	</c:if>
+		 	<c:if test="${report_type eq '1' || report_type eq '2' || report_type eq '5'}">
+		 		<thead>
     			<tr>
     				<th>序号</th>
     				<th>报表名称</th>
@@ -143,6 +167,7 @@
 	    			</tr>
     			</c:forEach>
     		</tbody>
+		 	</c:if>
    </table>
    <c:if test="${reportList.size()==0 }">
    		该赛事暂无报表

@@ -37,6 +37,7 @@ public class JudgeServlet extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		String json = request.getParameter("data");
+		System.out.println(json);
 		Gson gson = new Gson();
 		List<Judge> list = gson.fromJson(json, new TypeToken<List<Judge>>(){}.getType());
 		String msg = null;
