@@ -276,7 +276,7 @@
 				var coach_grade = $(this).children().eq(6).children().eq(0).val();
 				if(gradeA != "" && gradeB !="" && gradeC!="" && coach_grade!=""){
 					var total_points = parseFloat(gradeA)+parseFloat(gradeB)+parseFloat(gradeC)+parseFloat(coach_grade);
-					$(this).children().eq(7).children().eq(0).val(total_points);
+					$(this).children().eq(7).children().eq(0).val(total_points.toFixed(2));
 				}
 			});
 		});

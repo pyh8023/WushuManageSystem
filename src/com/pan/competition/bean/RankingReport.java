@@ -3,7 +3,7 @@ package com.pan.competition.bean;
 import java.util.List;
 import java.util.Map;
 
-public class RankingReport {
+public class RankingReport implements IReport{
 	private String apply_name;
 	private String delegation_name;
 	private String event_name;

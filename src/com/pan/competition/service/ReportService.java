@@ -3,12 +3,20 @@ package com.pan.competition.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.pan.competition.bean.ApplyReport;
+import com.pan.competition.bean.GradeReport;
+import com.pan.competition.bean.IReport;
 import com.pan.competition.bean.MenuItem;
+import com.pan.competition.bean.OrderReport;
+import com.pan.competition.bean.RankingReport;
 import com.pan.competition.bean.Report;
 import com.pan.competition.bean.Stage;
 import com.pan.competition.config.Constant;
+import com.pan.competition.dao.ReportDao;
 
 public class ReportService {
+	
+	private ReportDao reportDao = new ReportDao();
 
 	public List<Report> getReportName(String competition_id,String report_type) {
 		List<Report> list = new ArrayList<>();
@@ -67,5 +75,25 @@ public class ReportService {
 			}
 		}
 		return list;
+	}
+	
+	public List<ApplyReport> getDelegationApplyReportList(String id){
+		return reportDao.getDelegationApplyReport(id);
+	}
+	
+	public List<ApplyReport> getApplyReportList(String id){
+		return reportDao.getEventApplyReport(id);
+	}
+	
+	public List<OrderReport> getOrderReportList(String id){
+		return reportDao.getOrderReport(id);
+	}
+	
+	public List<GradeReport> getGradeReportList(String id){
+		return reportDao.getGradeReport(id);
+	}
+	
+	public List<RankingReport> getRankingReportList(String id){
+		return reportDao.getRankingReport(id);
 	}
 }

@@ -1,7 +1,11 @@
+<%@page import="com.pan.competition.bean.RankingReport"%>
+<%@page import="com.pan.competition.bean.GradeReport"%>
+<%@page import="com.pan.competition.bean.OrderReport"%>
+<%@page import="com.pan.competition.bean.ApplyReport"%>
+<%@page import="com.pan.competition.config.Constant"%>
 <%@page import="com.pan.competition.service.ReportService"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.pan.competition.bean.Report"%>
-<%@page import="com.pan.competition.bean.MenuItem"%>
 <%@page import="java.util.List"%>
 <%@page import="com.pan.competition.service.CompetitionService"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -10,33 +14,36 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="zh-CN">
 <%
-	CompetitionService competitionService = new CompetitionService();
-	List<MenuItem> competitionNames = competitionService.getCompetitionName();
-	String competition_id = null,report_type = null;
-	Cookie[] cookies = request.getCookies();
-	List<Report> reportList = null;
-	for(Cookie cookie : cookies ){
-		if(cookie.getName().equals("competition_id")){
-			competition_id = cookie.getValue();
-		}else if(cookie.getName().equals("report_type")){
-			report_type = cookie.getValue();
-		}
-	}
-	if(competitionNames.size()>0){
-		if(competition_id == null && "null".equals(competition_id)){
-			competition_id = competitionNames.get(0).getId();
-		}
-		if(report_type == null){
-			report_type = "1";
-		}
+		String report_type = request.getParameter("type");
+		request.setAttribute("report_type", report_type);
+		String id =  request.getParameter("id");
 		ReportService reportService = new ReportService();
-		reportList = reportService.getReportName(competition_id, report_type);
-	}
-	if(reportList == null)
-		reportList = new ArrayList<>();
-	request.setAttribute("reportList", reportList);
-	request.setAttribute("competition_id", competition_id);
-	request.setAttribute("report_type", report_type);
+		if(Constant.EVENT_APPLY_REPORT.equals(report_type)) {
+			List<ApplyReport> applyReports = reportService.getApplyReportList(id);
+			request.setAttribute("reportList", applyReports);
+			if(applyReports.size() !=0)
+				request.setAttribute("name", applyReports.get(0).getEvent_name()+"报名表");
+		}else if(Constant.DELEGATION_APPLY_REPORT.equals(report_type)) {
+			List<ApplyReport> applyReports = reportService.getDelegationApplyReportList(id);
+			request.setAttribute("reportList", applyReports);
+			if(applyReports.size() !=0)
+				request.setAttribute("name", applyReports.get(0).getDelegation_name()+"报名表");
+		}else if(Constant.ORDER_REPORT.equals(report_type)) {
+			List<OrderReport> orderReports = reportService.getOrderReportList(id);
+			request.setAttribute("reportList", orderReports);
+			if(orderReports.size() !=0)
+				request.setAttribute("name", orderReports.get(0).getEvent_name()+"秩序单");
+		}else if(Constant.GRADE_REPORT.equals(report_type)) {
+			List<GradeReport> gradeReports = reportService.getGradeReportList(id);
+			request.setAttribute("reportList", gradeReports);
+			if(gradeReports.size() !=0)
+				request.setAttribute("name", gradeReports.get(0).getEvent_name()+"成绩单");
+		}else if(Constant.RANKING_REPORT.equals(report_type)) {
+			List<RankingReport> rankingReports = reportService.getRankingReportList(id);
+			request.setAttribute("reportList", rankingReports);
+			if(rankingReports.size() !=0)
+				request.setAttribute("name", rankingReports.get(0).getEvent_name()+"名次表");
+		}
 %>
   <head>
     <meta charset="utf-8">
@@ -96,35 +103,74 @@
 	
 	<ol class="breadcrumb">
 	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
-	  <li><a href="#">报表生成</a></li>
+	  <li><a href="/WushuManageSystem/admin/print-report.jsp">报表生成</a></li>
+	  <li><a href="#">报表内容</a></li>
 	</ol>
 
 	<div class="container content col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-		 <form class="form-inline">
-		 	<div class="form-group">
-		 		<label class="control-label" for="competition_name_select">赛事名称</label>&ensp;
-				<select class="form-control" id="competition_name_select">
-    				<c:forEach var="competition" items="<%=competitionNames %>">
-			   			<option value="${competition.id }">${competition.name }</option>
-			   		</c:forEach>
-		    	</select>&ensp;&ensp;
-			    <label for="report_name" class="control-label">报表类型</label>&ensp;
-			    <select class="form-control" id="report_type">
-			    	<optgroup label="报名表">
-			    		<option value="1">项目报名表</option>
-			    		<option value="2">代表团报名表</option>
-			    	</optgroup>
-			    	<option value="3">秩序单</option>
-			    	<option value="4">成绩表</option>
-			    	<option value="5">名次表</option>
-			    </select>
-		  </div>
-		 </form>
-		 
-		 <hr/>
-		 
+	<h4><b>${name }</b></h4>
 		 <table class="table table-bordered">
-		 	<c:if test="${report_type eq '3' || report_type eq '4' }">
+		 	<c:if test="${report_type eq '1'}">
+		 		<thead>
+	    			<tr>
+	    				<th>报项名</th>
+	    				<th>代表团</th>
+	    				<th>运动员</th>
+	    				<th>介绍</th>
+	    			</tr>
+	    		</thead>
+	    		<tbody>
+	    			<c:forEach var="report" items="${reportList }">
+	    				<tr>
+		    				<td>${report.apply_name }</td>
+		    				<td>${report.delegation_name }</td>
+		    				<td>${report.athlets }</td>
+		    				<td>${report.remark }</td>
+	    				</tr>
+	    			</c:forEach>
+    			</tbody>
+		 	</c:if>
+		 	<c:if test="${report_type eq '2'}">
+		 		<thead>
+	    			<tr>
+	    				<th>项目名</th>
+	    				<th>报项名</th>
+	    				<th>运动员</th>
+	    				<th>介绍</th>
+	    			</tr>
+	    		</thead>
+	    		<tbody>
+	    			<c:forEach var="report" items="${reportList }">
+	    				<tr>
+		    				<td>${report.event_name }</td>
+		    				<td>${report.apply_name }</td>
+		    				<td>${report.athlets }</td>
+		    				<td>${report.remark }</td>
+	    				</tr>
+	    			</c:forEach>
+    			</tbody>
+		 	</c:if>
+		 	<c:if test="${report_type eq '3'}">
+		 		<thead>
+	    			<tr>
+	    				<th>分组</th>
+	    				<th>序号</th>
+	    				<th>报项名</th>
+	    				<th>代表团</th>
+	    			</tr>
+	    		</thead>
+	    		<tbody>
+	    			<c:forEach var="report" items="${reportList }">
+	    				<tr>
+		    				<td>${report.group_num }</td>
+		    				<td>${report.order }</td>
+		    				<td>${report.apply_name }</td>
+		    				<td>${report.delegation_name }</td>
+	    				</tr>
+	    			</c:forEach>
+    			</tbody>
+		 	</c:if>
+		 	<c:if test="${report_type eq '4'}">
 		 		<thead>
 	    			<tr>
 	    				<th>序号</th>
@@ -134,44 +180,26 @@
 	    			</tr>
 	    		</thead>
 	    		<tbody>
-	    			<c:forEach var="report" items="${reportList }" varStatus="status">
-	    				<tr id="${report.id }">
-		    				<td>${status.count }</td>
-		    				<td><a href="report-detail.jsp?id=${report.id }&type=${report_type}">${report.name }</a></td>
-		    				<td>${report.stage_name }</td>
-		    				<td>
-		    					<button class="btn btn-primary btn-xs">word格式</button>
-		    					<button class="btn btn-primary btn-xs">pdf格式</button>
-		    				</td>
-		    			</tr>
-	    			</c:forEach>
-	    		</tbody>
+	    			
+    		
+    			</tbody>
 		 	</c:if>
-		 	<c:if test="${report_type eq '1' || report_type eq '2' || report_type eq '5'}">
+		 	<c:if test="${report_type eq '5'}">
 		 		<thead>
-    			<tr>
-    				<th>序号</th>
-    				<th>报表名称</th>
-    				<th>格式</th>
-    			</tr>
-    		</thead>
-    		<tbody>
-    			<c:forEach var="report" items="${reportList }" varStatus="status">
-    				<tr id="${report.id }">
-	    				<td>${status.count }</td>
-	    				<td><a href="report-detail.jsp?id=${report.id }&type=${report_type}">${report.name }</a></td>
-	    				<td>
-	    					<button class="btn btn-primary btn-xs">word格式</button>
-	    					<button class="btn btn-primary btn-xs">pdf格式</button>
-	    				</td>
+	    			<tr>
+	    				<th>序号</th>
+	    				<th>报表名称</th>
+	    				<th>比赛阶段</th>
+	    				<th>格式</th>
 	    			</tr>
-    			</c:forEach>
-    		</tbody>
+	    		</thead>
+	    		<tbody>
+	    			
+    		
+    			</tbody>
 		 	</c:if>
-   </table>
-   <c:if test="${reportList.size()==0 }">
-   		该赛事暂无报表
-   </c:if>
+   		</table>
+   		<c:if test="${reportList.size()==0 }">内容为空</c:if>
 	</div>
 
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -180,24 +208,7 @@
     <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
     <script src="/WushuManageSystem/js/jquery.cookie.js"></script>
 	<script type="text/javascript">
-		//设置select选中内容
-		if("${competition_id}" != ""){
-			$("#competition_name_select option[value='${competition_id}']").attr("selected",true);
-		}
 		
-		if("${report_type}" != ""){
-			$("#report_type option[value='${report_type}']").attr("selected",true);
-		}
-		
-		$("#competition_name_select").change(function(){
-			$.cookie('competition_id', $(this).val());
-	    	window.location.reload();
-		});
-		
-		$("#report_type").change(function(){
-			$.cookie('report_type', $(this).val());
-			window.location.reload();
-		});
 	</script>
  </body>
 </html>

@@ -11,18 +11,12 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.pan.competition.bean.ApplyReport;
 import com.pan.competition.bean.GradeReport;
+import com.pan.competition.bean.IReport;
 import com.pan.competition.bean.OrderReport;
 import com.pan.competition.bean.RankingReport;
 import com.pan.competition.util.DBUtil;
 
 public class ReportDao {
-	
-	public static void main(String[] args) {
-		ReportDao reportDao = new ReportDao();
-		List<OrderReport> applyReports = reportDao.getOrderReport("50");
-		Gson gson = new Gson();
-		System.out.println(gson.toJson(applyReports).toString());
-	}
 	
 	public List<RankingReport> getRankingReport(String event_id){
 		List<RankingReport> list = new ArrayList<>();

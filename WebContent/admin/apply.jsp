@@ -374,7 +374,7 @@
    		var event_type = "${events[event_index].type}";
    		var event_id = "${events[event_index].id}";
    		var delegation_id = "${delegation_id}";
-   		if( event_type == "单人单项" || event_type == "全能"){
+   		if( event_type == "单人单项" || event_type == "全能项目"){
    			$("#athlet_apply_item_tb").children().each(function(){
    				if($(this).children().eq(4).find("div input").is(':checked')){
    					var name = $(this).children().eq(1).html();

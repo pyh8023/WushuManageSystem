@@ -1,6 +1,6 @@
 package com.pan.competition.bean;
 
-public class ApplyReport {
+public class ApplyReport implements IReport{
 	private String athlets;
 	private String apply_name;
 	private String event_name;
