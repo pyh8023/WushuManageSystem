@@ -29,6 +29,8 @@ public class ReportDao {
 			pstmt.setInt(1, Integer.parseInt(event_id));
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
+				if(rs.getString("ranking")==null)
+					continue;	
 				RankingReport rankingReport = new RankingReport();
 				rankingReport.setApply_name(rs.getString("apply_name"));
 				rankingReport.setDelegation_name(rs.getString("name"));
@@ -38,14 +40,15 @@ public class ReportDao {
 				PreparedStatement pStatement = con.prepareStatement(sql);
 				pStatement.setInt(1, apply_event_id);
 				ResultSet resultSet = pStatement.executeQuery();
-				List<Map<String,String>> stageGrade = new ArrayList<>();
+				List<String> stage_name = new ArrayList<>();
+				List<String> stage_grade = new ArrayList<>();
 				while(resultSet.next()) {
-					Map<String,String> map = new HashMap<>();
-					map.put(resultSet.getString("name"), resultSet.getString("total_points"));
-					stageGrade.add(map);
+					stage_name.add(resultSet.getString("name"));
+					stage_grade.add(resultSet.getString("total_points"));
 				}
-				rankingReport.setStage_grade(stageGrade);
-				rankingReport.setEvent_name(event_name);
+				rankingReport.setStage_grade(stage_grade);
+				rankingReport.setStage_name(stage_name);
+				rankingReport.setReport_name(event_name+"名次表");
 				list.add(rankingReport);
 				resultSet.close();
 				pStatement.close();
@@ -108,7 +111,10 @@ public class ReportDao {
 		List<GradeReport> list = new ArrayList<>();
 		Connection con = null;
 		try {
-			String sql = "SELECT `apply`.`apply_name`,`gradeA`,`gradeB`,`gradeC`,`coach_grade`,`total_points`,`is_promoted`,`ranking`,`delegation`.`name` AS delegation_name FROM `match`,`apply`,`delegation` WHERE `stage_id`=? AND `apply`.`apply_event_id` = `match`.`apply_event_id` AND `delegation`.`delegation_id` = `apply`.`delegation_id`";
+			String sql = "SELECT `apply`.`apply_name`,`gradeA`,`gradeB`,`gradeC`,`coach_grade`,"
+					+ "`total_points`,`is_promoted`,`ranking`,`delegation`.`name` AS delegation_name,`stage`.`name` AS stage_name FROM `match`"
+					+ ",`apply`,`delegation`,`stage` WHERE `match`.`stage_id`=? AND `match`.`stage_id`=`stage`.`stage_id` AND `apply`.`apply_event_id` = `match`.`apply_event_id` "
+					+ "AND `delegation`.`delegation_id` = `apply`.`delegation_id` order by `ranking`";
 			con = DBUtil.getCon();
 			String event_name = getEventNameByStageId(stage_id);
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -122,10 +128,14 @@ public class ReportDao {
 				gradeReport.setGradeC(rs.getString("gradeC"));
 				gradeReport.setCoach_grade(rs.getString("coach_grade"));
 				gradeReport.setTotal_points(rs.getString("total_points"));
-				gradeReport.setPromote(rs.getString("is_promoted"));
+				int is_promoted = rs.getInt("is_promoted");
+				if(is_promoted == 1)
+					gradeReport.setPromote("晋级");
+				else
+					gradeReport.setPromote("未晋级");
 				gradeReport.setRanking(rs.getString("ranking"));
 				gradeReport.setDelegation_name(rs.getString("delegation_name"));
-				gradeReport.setEvent_name(event_name);
+				gradeReport.setReport_name((event_name+rs.getString("stage_name")+"成绩表"));
 				list.add(gradeReport);
 			}
 			rs.close();
@@ -142,7 +152,12 @@ public class ReportDao {
 		List<OrderReport> list = new ArrayList<>();
 		Connection con = null;
 		try {
-			String sql = "SELECT `apply`.`apply_name`,`order`,`group_num`,`delegation`.`name` AS delegation_name FROM `match`,`apply`,`delegation` WHERE `stage_id`=? AND `apply`.`apply_event_id` = `match`.`apply_event_id` AND `delegation`.`delegation_id` = `apply`.`delegation_id` order by `group_num`,`order`";
+			String sql = "SELECT `apply`.`apply_name`,`order`,`group_num`"
+					+ ",`delegation`.`name` AS delegation_name,`stage`.`name`"
+					+ " AS stage_name FROM `match`,`apply`,`delegation`,`stage` "
+					+ "WHERE `match`.`stage_id`=? AND `match`.`stage_id`=`stage`.`stage_id` "
+					+ "AND `apply`.`apply_event_id` = `match`.`apply_event_id` AND "
+					+ "`delegation`.`delegation_id` = `apply`.`delegation_id` ORDER BY `group_num`,`order`";
 			con = DBUtil.getCon();
 			String event_name = getEventNameByStageId(stage_id);
 			PreparedStatement pstmt = con.prepareStatement(sql);
@@ -154,7 +169,7 @@ public class ReportDao {
 				orderReport.setGroup_num("第"+rs.getInt("group_num")+"组");
 				orderReport.setOrder(rs.getString("order"));
 				orderReport.setDelegation_name(rs.getString("delegation_name"));
-				orderReport.setEvent_name(event_name);
+				orderReport.setReport_name(event_name+rs.getString("stage_name")+"秩序单");
 				list.add(orderReport);
 			}
 			rs.close();
@@ -191,6 +206,7 @@ public class ReportDao {
 			while(rs.next()) {
 				ApplyReport applyReport = new ApplyReport();
 				applyReport.setDelegation_name(delegation_name);
+				applyReport.setReport_name(delegation_name+"报名表");
 				applyReport.setAthlets(getAthletNames(rs.getString("athlets")));
 				applyReport.setRemark(rs.getString("remark"));
 				applyReport.setApply_name(rs.getString("apply_name"));
@@ -241,6 +257,7 @@ public class ReportDao {
 				applyReport.setRemark(rs.getString("remark"));
 				String athlets = rs.getString("athlets");
 				applyReport.setEvent_name(event_name);
+				applyReport.setReport_name(event_name+"报名表");
 				int delegation_id = rs.getInt("delegation_id");
 				//设置参赛运动员姓名
 				applyReport.setAthlets(getAthletNames(athlets));

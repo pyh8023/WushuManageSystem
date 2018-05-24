@@ -140,8 +140,8 @@
 		    				<td><a href="report-detail.jsp?id=${report.id }&type=${report_type}">${report.name }</a></td>
 		    				<td>${report.stage_name }</td>
 		    				<td>
-		    					<button class="btn btn-primary btn-xs">word格式</button>
-		    					<button class="btn btn-primary btn-xs">pdf格式</button>
+		    					<button class="btn btn-primary btn-xs" onclick="download(${report.id },'word')">word格式</button>
+		    					<button class="btn btn-primary btn-xs" onclick="download(${report.id },'pdf')">pdf格式</button>
 		    				</td>
 		    			</tr>
 	    			</c:forEach>
@@ -161,8 +161,8 @@
 	    				<td>${status.count }</td>
 	    				<td><a href="report-detail.jsp?id=${report.id }&type=${report_type}">${report.name }</a></td>
 	    				<td>
-	    					<button class="btn btn-primary btn-xs">word格式</button>
-	    					<button class="btn btn-primary btn-xs">pdf格式</button>
+	    					<button class="btn btn-primary btn-xs"  onclick="download(${report.id },'word')">word格式</button>
+	    					<button class="btn btn-primary btn-xs" onclick="download(${report.id },'pdf')">pdf格式</button>
 	    				</td>
 	    			</tr>
     			</c:forEach>
@@ -198,6 +198,10 @@
 			$.cookie('report_type', $(this).val());
 			window.location.reload();
 		});
+		
+		function download(id,format){
+			window.location.href = "/WushuManageSystem/servlet/ReportServlet?id="+id+"&type=${report_type}&format="+format;
+		}
 	</script>
  </body>
 </html>

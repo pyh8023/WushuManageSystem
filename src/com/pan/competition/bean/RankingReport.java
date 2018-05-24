@@ -6,14 +6,15 @@ import java.util.Map;
 public class RankingReport implements IReport{
 	private String apply_name;
 	private String delegation_name;
-	private String event_name;
+	private String report_name;
 	private String ranking;
-	private List<Map<String,String>> stage_grade;
-	public String getEvent_name() {
-		return event_name;
+	private List<String> stage_name;
+	private List<String> stage_grade;
+	public String getReport_name() {
+		return report_name;
 	}
-	public void setEvent_name(String event_name) {
-		this.event_name = event_name;
+	public void setReport_name(String report_name) {
+		this.report_name = report_name;
 	}
 	public String getApply_name() {
 		return apply_name;
@@ -33,11 +34,16 @@ public class RankingReport implements IReport{
 	public void setRanking(String ranking) {
 		this.ranking = ranking;
 	}
-	public List<Map<String,String>> getStage_grade() {
+	public List<String> getStage_name() {
+		return stage_name;
+	}
+	public void setStage_name(List<String> stage_name) {
+		this.stage_name = stage_name;
+	}
+	public List<String> getStage_grade() {
 		return stage_grade;
 	}
-	public void setStage_grade(List<Map<String,String>> stage_grade) {
+	public void setStage_grade(List<String> stage_grade) {
 		this.stage_grade = stage_grade;
 	}
-	
 }

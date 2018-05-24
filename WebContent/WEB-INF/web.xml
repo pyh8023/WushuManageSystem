@@ -85,4 +85,12 @@
     <servlet-name>JudgeServlet</servlet-name>
     <url-pattern>/servlet/JudgeServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>ReportServlet</servlet-name>
+    <servlet-class>com.pan.competition.servlet.ReportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReportServlet</servlet-name>
+    <url-pattern>/servlet/ReportServlet</url-pattern>
+  </servlet-mapping>
 </web-app>

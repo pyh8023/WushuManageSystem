@@ -1,71 +1,70 @@
 package com.pan.competition.test;
 
-import java.util.List;
-import java.util.Random;
-
-import com.pan.competition.bean.ApplyReport;
-import com.pan.competition.bean.Competition;
-import com.pan.competition.bean.Event;
-import com.pan.competition.bean.Stage;
-import com.pan.competition.dao.CompetitionDao;
-import com.pan.competition.dao.ReportDao;
-import com.pan.competition.service.CompetitionService;
-import com.pan.competition.service.EventService;
-import com.pan.competition.service.StageService;
-
-
-public class Test {
-
-	public static void main(String[] args) {
-		ReportDao reportDao = new ReportDao();
-		List<ApplyReport> applyReports = reportDao.getEventApplyReport("16");
-		System.out.println(applyReports);
-		//competitionServiceTest();
-		//getCompetitionNameList();
-		//eventServiceTest();
-		//addEventTest();
-		//stageServiceTest();
-	}
-	
-	static void stageServiceTest() {
-		StageService service = new StageService();
-		/*Stage stage = new Stage();
-		stage.setName("初赛");
-		stage.setStage_num("f2931");
-		stage.setAttribute("1");
-		stage.setEvent_id("2");
-		System.out.println(service.addStage(stage));*/
-		//System.out.println(service.getStageList("1"));
-		//System.out.println(service.getStageNameList("1"));
-		System.out.println(service.removeStage("5"));
-	}
-	
-	static void competitionServiceTest() {
-		CompetitionService service = new CompetitionService();
-		System.out.println(service.getCompetitionName());
-	}
-	
-	static void eventServiceTest() {
-		EventService service = new EventService();
-		System.out.println(service.removeEvent("4"));
-	}
-	
-	static void addEventTest() {
-		EventService eventService = new EventService();
-		Event event = new Event();
-		event.setId("2");
-		event.setCompetition_id("1");
-		event.setName("太极拳成年组男子集体项目");
-		event.setSex("男子");
-		event.setType("集体项目");
-		event.setEvent_group("成年组");
-		event.setEvent_num("td213");
-		event.setMax_athlet_num("15");
-		event.setMin_athlet_num("10");
-		event.setMax_male_num("15");
-		event.setMin_male_num("10");
-		event.setMin_female_num("0");
-		event.setMax_female_num("0");
-		System.out.println(eventService.updateEvent(event));
-	}
-}
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPRow;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+ 
+import java.io.FileOutputStream;
+import java.util.List;  
+  
+   
+public class Test {  
+  
+    public static void main(String[] args)throws Exception {  
+    	       //创建文件
+    	          Document document = new Document();
+    	       //建立一个书写器
+    	          PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("table.pdf"));
+    	          //打开文件
+    	         document.open();
+    	         Paragraph paragraph = new Paragraph("HD content here");
+    	         paragraph.setAlignment(Element.ALIGN_CENTER);
+    	         document.add(paragraph);
+    	      
+    	         PdfPTable table = new PdfPTable(3); 
+    	         table.setWidthPercentage(100); // 宽度100%填充
+    	         table.setSpacingBefore(10f); // 前间距
+    	         table.setSpacingAfter(10f); // 后间距
+    	 
+    	         List<PdfPRow> listRow = table.getRows();
+    	         //设置列宽
+    	         float[] columnWidths = { 1f, 1f, 2f };
+    	         table.setWidths(columnWidths);
+    	         
+    	         //行1
+    	         PdfPCell cells1[]= new PdfPCell[3];
+    	         PdfPRow row1 = new PdfPRow(cells1);
+    	        
+    	         //单元格
+    	         cells1[0] = new PdfPCell(new Paragraph("111"));//单元格内容
+    	         cells1[0].setBorderColor(BaseColor.BLUE);//边框验证
+    	         cells1[0].setPaddingLeft(20);//左填充20
+    	         cells1[0].setHorizontalAlignment(Element.ALIGN_CENTER);//水平居中
+    	         cells1[0].setVerticalAlignment(Element.ALIGN_MIDDLE);//垂直居中
+    	 
+                cells1[1] = new PdfPCell(new Paragraph("222"));
+    	        cells1[2] = new PdfPCell(new Paragraph("333"));
+    	         
+    	         //行2
+    	         PdfPCell cells2[]= new PdfPCell[3];
+    	         PdfPRow row2 = new PdfPRow(cells2);
+    	         cells2[0] = new PdfPCell(new Paragraph("444"));
+    	
+    	         //把第一行添加到集合
+    	         listRow.add(row1);
+    	         listRow.add(row2);
+    	        //把表格添加到文件中
+    	         document.add(table);
+    	         
+    	         //关闭文档
+    	        document.close();
+    	         //关闭书写器
+    	        writer.close();
+         }
+    		
+    }

@@ -9,7 +9,7 @@ public class LoginDao {
 	
 	DBUtil dbcon = new DBUtil();
 	
-	public static String queryAdmin(String username){
+	public String queryAdmin(String username){
 		String password = null;
 		Connection con = null;
 		try {
@@ -32,10 +32,6 @@ public class LoginDao {
 			}
 		}
 		return password;
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(queryAdmin("213"));
 	}
 	
 }

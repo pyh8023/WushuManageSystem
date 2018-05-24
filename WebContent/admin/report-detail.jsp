@@ -21,28 +21,18 @@
 		if(Constant.EVENT_APPLY_REPORT.equals(report_type)) {
 			List<ApplyReport> applyReports = reportService.getApplyReportList(id);
 			request.setAttribute("reportList", applyReports);
-			if(applyReports.size() !=0)
-				request.setAttribute("name", applyReports.get(0).getEvent_name()+"报名表");
 		}else if(Constant.DELEGATION_APPLY_REPORT.equals(report_type)) {
 			List<ApplyReport> applyReports = reportService.getDelegationApplyReportList(id);
 			request.setAttribute("reportList", applyReports);
-			if(applyReports.size() !=0)
-				request.setAttribute("name", applyReports.get(0).getDelegation_name()+"报名表");
 		}else if(Constant.ORDER_REPORT.equals(report_type)) {
 			List<OrderReport> orderReports = reportService.getOrderReportList(id);
 			request.setAttribute("reportList", orderReports);
-			if(orderReports.size() !=0)
-				request.setAttribute("name", orderReports.get(0).getEvent_name()+"秩序单");
 		}else if(Constant.GRADE_REPORT.equals(report_type)) {
 			List<GradeReport> gradeReports = reportService.getGradeReportList(id);
 			request.setAttribute("reportList", gradeReports);
-			if(gradeReports.size() !=0)
-				request.setAttribute("name", gradeReports.get(0).getEvent_name()+"成绩单");
 		}else if(Constant.RANKING_REPORT.equals(report_type)) {
 			List<RankingReport> rankingReports = reportService.getRankingReportList(id);
 			request.setAttribute("reportList", rankingReports);
-			if(rankingReports.size() !=0)
-				request.setAttribute("name", rankingReports.get(0).getEvent_name()+"名次表");
 		}
 %>
   <head>
@@ -108,7 +98,7 @@
 	</ol>
 
 	<div class="container content col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
-	<h4><b>${name }</b></h4>
+	<c:if test="${reportList.size()>0 }"><h4><b>${reportList[0].report_name }</b></h4></c:if>
 		 <table class="table table-bordered">
 		 	<c:if test="${report_type eq '1'}">
 		 		<thead>
@@ -173,29 +163,57 @@
 		 	<c:if test="${report_type eq '4'}">
 		 		<thead>
 	    			<tr>
-	    				<th>序号</th>
-	    				<th>报表名称</th>
-	    				<th>比赛阶段</th>
-	    				<th>格式</th>
+	    				<th>报项名</th>
+	    				<th>代表团</th>
+	    				<th>动作质量得分</th>
+	    				<th>难度得分</th>
+	    				<th>演练水平得分</th>
+	    				<th>裁判长</th>
+	    				<th>总分</th>
+	    				<th>名次</th>
+	    				<th>晋级</th>
 	    			</tr>
 	    		</thead>
 	    		<tbody>
-	    			
-    		
+	    			<c:forEach var="report" items="${reportList }">
+	    				<tr>
+		    				<td>${report.apply_name }</td>
+		    				<td>${report.delegation_name }</td>
+		    				<td>${report.gradeA }</td>
+		    				<td>${report.gradeB }</td>
+		    				<td>${report.gradeC }</td>
+		    				<td>${report.coach_grade }</td>
+		    				<td>${report.total_points }</td>
+		    				<td>${report.ranking }</td>
+		    				<td>${report.promote }</td>
+	    				</tr>
+	    			</c:forEach>
     			</tbody>
 		 	</c:if>
 		 	<c:if test="${report_type eq '5'}">
 		 		<thead>
 	    			<tr>
-	    				<th>序号</th>
-	    				<th>报表名称</th>
-	    				<th>比赛阶段</th>
-	    				<th>格式</th>
+	    				<th>报项名</th>
+	    				<th>代表团名称</th>
+	    				<c:if test="${reportList.size()>0 }">
+		    				<c:forEach var="stage" items="${reportList[0].stage_name }">
+		    					<th>${stage}</th>
+		    				</c:forEach>
+	    				</c:if>
+	    				<th>名次</th>
 	    			</tr>
 	    		</thead>
 	    		<tbody>
-	    			
-    		
+    				<c:forEach var="report" items="${reportList }"  varStatus="status">
+	    				<tr>
+		    				<td>${report.apply_name }</td>
+		    				<td>${report.delegation_name }</td>
+		    				<c:forEach var="grade" items="${report.stage_grade }">
+		    					<td>${grade }</td>
+		    				</c:forEach>
+		    				<td>${report.ranking }</td>
+	    				</tr>
+	    			</c:forEach>
     			</tbody>
 		 	</c:if>
    		</table>
@@ -207,8 +225,5 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/WushuManageSystem/js/bootstrap.min.js"></script>
     <script src="/WushuManageSystem/js/jquery.cookie.js"></script>
-	<script type="text/javascript">
-		
-	</script>
  </body>
 </html>

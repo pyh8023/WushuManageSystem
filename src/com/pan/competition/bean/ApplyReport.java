@@ -6,6 +6,13 @@ public class ApplyReport implements IReport{
 	private String event_name;
 	private String remark;
 	private String delegation_name;
+	private String report_name;
+	public String getReport_name() {
+		return report_name;
+	}
+	public void setReport_name(String report_name) {
+		this.report_name = report_name;
+	}
 	public String getAthlets() {
 		return athlets;
 	}

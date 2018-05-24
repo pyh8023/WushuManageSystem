@@ -10,12 +10,12 @@ public class GradeReport implements IReport{
 	private String promote;
 	private String ranking;
 	private String delegation_name;
-	private String event_name;
-	public String getEvent_name() {
-		return event_name;
+	private String report_name;
+	public String getReport_name() {
+		return report_name;
 	}
-	public void setEvent_name(String event_name) {
-		this.event_name = event_name;
+	public void setReport_name(String report_name) {
+		this.report_name = report_name;
 	}
 	public String getApply_name() {
 		return apply_name;

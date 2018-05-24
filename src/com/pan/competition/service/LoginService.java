@@ -15,4 +15,8 @@ public class LoginService {
 		}
 		
 	}
+	
+	public boolean register() {
+		return false;
+	}
 }
