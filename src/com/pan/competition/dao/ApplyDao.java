@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.pan.competition.bean.Apply;
 import com.pan.competition.bean.Athlet;
-import com.pan.competition.bean.Event;
 import com.pan.competition.util.DBUtil;
 
 public class ApplyDao {

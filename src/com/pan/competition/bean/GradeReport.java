@@ -1,6 +1,6 @@
 package com.pan.competition.bean;
 
-public class GradeReport implements IReport{
+public class GradeReport{
 	private String apply_name;
 	private String gradeA;
 	private String gradeB;

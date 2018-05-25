@@ -1,9 +1,8 @@
 package com.pan.competition.bean;
 
 import java.util.List;
-import java.util.Map;
 
-public class RankingReport implements IReport{
+public class RankingReport{
 	private String apply_name;
 	private String delegation_name;
 	private String report_name;

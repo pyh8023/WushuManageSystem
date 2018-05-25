@@ -1,10 +1,14 @@
 package com.pan.competition.service;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import com.pan.competition.bean.Arrange;
 import com.pan.competition.bean.Grade;
+import com.pan.competition.bean.MenuItem;
 import com.pan.competition.config.Constant;
+import com.pan.competition.dao.GroupDao;
 import com.pan.competition.dao.MatchDao;
 
 public class MatchService {
@@ -16,13 +20,13 @@ public class MatchService {
 		return list;
 	}
 	
-	public List<Grade> getGradeList(String stage_id){
-		List<Grade> list = matchDao.getGradeList(Integer.parseInt(stage_id));
+	public List<Grade> getGradeList(String stage_id,String group_num){
+		List<Grade> list = matchDao.getGradeList(stage_id,Integer.parseInt(group_num));
 		return list;
 	}
 	
-	public List<Grade> getGradeListOrderByRanking(String stage_id){
-		List<Grade> list = matchDao.getGradeListOrderByRanking(Integer.parseInt(stage_id));
+	public List<Grade> getGradeListOrderByRanking(String stage_id,String group_num){
+		List<Grade> list = matchDao.getGradeListOrderByRanking(stage_id,Integer.parseInt(group_num));
 		return list;
 	}
 	
@@ -77,7 +81,29 @@ public class MatchService {
 			return Constant.QUERY_FAILED_RESPONSE_CODE;
 	}
 	
-	/*public String autoUpdateMatchOrder() {
-		return null;
-	}*/
+	public String autoUpdateMatchOrder(List<Arrange> list) {
+		for(Arrange arrange :list)
+			matchDao.updateMatchArrange(arrange);
+		String msg = "抽签成功";
+		String stage_id = list.get(0).getStage_id();
+		List<MenuItem> groups = new GroupDao().getGroupNumList(list.get(0).getStage_id()); 
+		for(MenuItem group :groups) {
+			List<String> groupArranges = new LinkedList<>(matchDao.getMatchIdList(stage_id, group.getName()));
+			Random random = new Random();
+			for(int i=1;groupArranges.size()>0;i++){
+				int index = random.nextInt(groupArranges.size());
+				String match_id = groupArranges.remove(index);
+				int status = matchDao.updateMatchOrder(match_id, i);
+				if(status!=1) {
+					msg = "抽签失败";
+					break;
+				}
+			}
+		}
+		return msg;
+	}
+	
+	public List<MenuItem> getGroupNameList(String stage_id){
+		return new GroupDao().getGroupNumList(stage_id);
+	}
 }

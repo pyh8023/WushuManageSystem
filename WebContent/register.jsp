@@ -42,50 +42,50 @@
 	      </ul>
 	      
 	      <ul class="nav navbar-nav navbar-right">
-	        <li><a href="login.jsp">登录</a></li>
-	        <li class="active"><a href="register.jsp">注册</a></li>
+	        <li><a href="/WushuManageSystem/login.jsp">登录</a></li>
+	        <li class="active"><a href="/WushuManageSystem/register.jsp">注册</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
 	<!--注册表单-->
-	<div class="container-fluid col-md-5 col-md-offset-3">
-		<form class="form-horizontal" id="form_register">
-			<h2 class="text-center" style="margin-bottom: 30px;">用户注册</h2>
+	<div class="container-fluid col-md-4 col-md-offset-4">
+		<form  id="form_register" action="/WushuManageSystem/servlet/LoginServlet?action=register" method="post">
+		 <h2 class="text-center" style="margin-bottom: 30px;">用户注册</h2>
 		  <div class="form-group">
-		    <label for="username" class="control-label col-sm-3">姓名</label>
-		    <div class="col-sm-9">
-		    	<input type="text" class="form-control" id="username" placeholder="请输入用户名" required autofocus>
+		    <label for="username" class="control-label">姓名</label>
+		    <div>
+		    	<input type="text" class="form-control" name="username" placeholder="请输入用户名" required autofocus>
 		    </div>
 		  </div>
 		  <div class="form-group">
-		    <label for="phone" class="control-label col-sm-3">手机号码</label>
-		    <div class="col-sm-9">
-		    	<input type="tel" maxlength="11" class="form-control" id="phone" placeholder="请输入手机号码" required>
+		    <label for="email" class="control-label">邮箱</label>
+		    <div>
+		    	<input type="text" class="form-control" name="email" id="email" placeholder="请输入邮箱" required>
 		    </div>
 		  </div>
-		  <div class="form-group">
-		    <label for="verification_code" class="control-label col-sm-3">验证码</label>
-		    <div class="form-inline col-sm-9">
+		  <!-- <div class="form-group">
+		    <label for="verification_code" class="control-label">验证码</label>
+		    <div class="form-inline">
 		    	<input type="number" maxlength="6" class="form-control" id="verification_code" placeholder="请输入验证码" required>
 		    	<button class="btn btn-primary" id="send_verification_code">发送验证码</button>
 		    </div>
-		  </div>
+		  </div> -->
 		  <div class="form-group">
-		    <label for="password" class="control-label col-sm-3">密码</label>
-		    <div class="col-sm-9">
-		    	<input type="password" class="form-control" id="password" placeholder="请输入密码" required>
+		    <label for="password" class="control-label">密码</label>
+		    <div>
+		    	<input type="password" class="form-control" name="password" id="password" placeholder="请输入密码" required>
 		    </div>
 		  </div>
 		  <div class="form-group">
-		    <label for="confirm_password" class="control-label col-sm-3">确认密码</label>
-		    <div class="col-sm-9">
+		    <label for="confirm_password" class="control-label">确认密码</label>
+		    <div>
 		   		<input type="password" class="form-control" id="confirm_password" placeholder="请输入确认密码" required>
 		   	</div>
 		  </div>
-		  <div class="col-sm-12 div_register_button">
-		  	<button type="submit" class="col-md-offset-3 btn btn-primary col-md-9 col-sm-12">注册</button>
+		  <div class="div_register_button">
+		  	<button type="submit" class="btn btn-primary col-md-12" id="register_btn">注册</button>
 		  </div>
 		</form>
 	</div>
@@ -94,5 +94,25 @@
 		<script src="/WushuManageSystem/js/jquery-1.11.1.min.js"></script>
 		<!-- Include all compiled plugins (below), or include individual files as needed -->
 		<script src="/WushuManageSystem/js/bootstrap.min.js"></script>
+		<script type="text/javascript">
+	    	var msg = "${ register_msg }";
+	    	if(msg !=null && msg!=""){
+	    		alert(msg);
+	    	}
+	    	
+	    	$("#register_btn").click(function(){
+	    		var email = $("#email").val();
+	    		if(!email.match(/^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/)){
+	    			alert("邮箱格式错误");
+	    			return false;
+	    		}
+	    		var password = $("#password").val();
+	    		var confirmPassword = $("#confirm_password").val();
+	    		if(password != confirmPassword){
+	    			alert("密码两次输入不一致");
+	    			return false;
+	    		}
+	    	});
+	    </script>
   </body>
 </html>

@@ -43,7 +43,7 @@
 	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	      	<!--<li><a href="index.html">首页</a></li>-->
-	        <li><a href="/WushuManageSystem/index.jsp">首页<span class="sr-only">(current)</span></a></li>
+	        <li><a href="/WushuManageSystem/admin/index.jsp">首页<span class="sr-only">(current)</span></a></li>
 	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
@@ -62,7 +62,7 @@
 	</nav>
 	
 	<ol class="breadcrumb">
-	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
+	  <li><a href="/WushuManageSystem/admin/index.jsp">首页</a></li>
 	  <li><a href="#">成绩处理</a></li>
 	  <li><a href="#">阶段信息</a></li>
 	</ol>

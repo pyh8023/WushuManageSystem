@@ -75,7 +75,7 @@
 	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	      	<!--<li><a href="index.html">首页</a></li>-->
-	        <li class="active"><a href="/WushuManageSystem/index.jsp">首页<span class="sr-only">(current)</span></a></li>
+	        <li class="active"><a href="/WushuManageSystem/admin/index.jsp">首页<span class="sr-only">(current)</span></a></li>
 	        <li class="dropdown">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
@@ -88,7 +88,10 @@
 	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
 	        <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
 	        <li><a href="/WushuManageSystem/admin/print-report.jsp">打印报表</a></li>
-	      </ul>	     
+	      </ul>	   
+	      <ul class="nav navbar-nav navbar-right">
+	         <li><a href="/WushuManageSystem/servlet/LoginServlet?action=logout" onclick="logout()">注销</a></li>
+	      </ul>  
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
@@ -104,17 +107,17 @@
   <!-- 轮播图 -->
   <div class="carousel-inner" role="listbox">
     <div class="item active">
-      <img src="images/img2.jpg">
+      <img src="/WushuManageSystem/images/img2.jpg">
       <div class="carousel-caption">
       </div>
     </div>
     <div class="item">
-      <img src="images/img4.jpg" >
+      <img src="/WushuManageSystem/images/img4.jpg" >
       <div class="carousel-caption">
       </div>
     </div>
     <div class="item">
-      <img src="images/img3.jpg" >
+      <img src="/WushuManageSystem/images/img3.jpg" >
       <div class="carousel-caption">
       </div>
     </div>

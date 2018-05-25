@@ -11,8 +11,8 @@
 	CompetitionService competitionService = new CompetitionService();
 	List<MenuItem> competitionNames = competitionService.getCompetitionName();
 	int isFinalStage = 0;
-	String competition_id = null, event_id = null, stage_id = null;
-	List<MenuItem> eventNames = null, stageNames = null;
+	String competition_id = null, event_id = null, stage_id = null,group_num = null;
+	List<MenuItem> eventNames = null, stageNames = null,groupNames = null;
 	List<Grade> gradeList = null;
 	Cookie[] cookies = request.getCookies();
 	for (Cookie cookie : cookies) {
@@ -22,6 +22,8 @@
 			event_id = cookie.getValue();
 		} else if (cookie.getName().equals("stage_id")) {
 			stage_id = cookie.getValue();
+		}else if (cookie.getName().equals("group_num")) {
+			group_num = cookie.getValue();
 		}
 	}
 	if (competitionNames.size() != 0) {
@@ -42,18 +44,25 @@
 					stage_id = stageNames.get(0).getId();
 				}
 				MatchService matchService = new MatchService();
-				String action = request.getParameter("action");
-				if("ranking".equals(action))
-					gradeList = matchService.getGradeListOrderByRanking(stage_id);
-				else
-					gradeList = matchService.getGradeList(stage_id);
-				isFinalStage = stageService.isFinalStage(stage_id);
+				groupNames = matchService.getGroupNameList(stage_id);
+				if(groupNames.size() !=0){
+					if (group_num == null || "null".equals(group_num)) {
+						group_num = groupNames.get(0).getName();
+					}
+					String action = request.getParameter("action");
+					if("ranking".equals(action))
+						gradeList = matchService.getGradeListOrderByRanking(stage_id,group_num);
+					else
+						gradeList = matchService.getGradeList(stage_id,group_num);
+					isFinalStage = stageService.isFinalStage(stage_id);
+				}
 			}
 		}
 	}
 	request.setAttribute("competition_id", competition_id);
 	request.setAttribute("event_id", event_id);
 	request.setAttribute("stage_id", stage_id);
+	request.setAttribute("group_num", group_num);
 	request.setAttribute("isFinalStage", isFinalStage);
 	if (eventNames == null)
 		eventNames = new ArrayList<>();
@@ -61,6 +70,8 @@
 		stageNames = new ArrayList<>();
 	if(gradeList == null)
 		gradeList = new ArrayList<>();
+	if(groupNames == null)
+		groupNames = new ArrayList<>();
 	request.setAttribute("gradeList", gradeList);
 %>
 <head>
@@ -102,7 +113,7 @@
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				<!--<li><a href="index.html">首页</a></li>-->
-				<li><a href="/WushuManageSystem/index.jsp">首页<span
+				<li><a href="/WushuManageSystem/admin/index.jsp">首页<span
 						class="sr-only">(current)</span></a></li>
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -121,13 +132,16 @@
 					href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
 				<li><a href="/WushuManageSystem/admin/print-report.jsp">报表生成</a></li>
 			</ul>
+			<ul class="nav navbar-nav navbar-right">
+	         <li><a href="/WushuManageSystem/servlet/LoginServlet?action=logout" onclick="logout()">注销</a></li>
+	      </ul>
 		</div>
 		<!-- /.navbar-collapse -->
 	</div>
 	<!-- /.container-fluid --> </nav>
 
 	<ol class="breadcrumb">
-		<li><a href="/WushuManageSystem/index.jsp">首页</a></li>
+		<li><a href="/WushuManageSystem/admin/index.jsp">首页</a></li>
 		<li><a href="#">成绩处理</a></li>
 	</ol>
 
@@ -150,6 +164,13 @@
 					<c:forEach var="stage" items="<%=stageNames %>">
 						<option value="${stage.id }">${stage.name }</option>
 					</c:forEach>
+				</select>
+				&ensp;&ensp; <label for="group_name_select" class="control-label">比赛分组</label>&ensp;
+				<select class="form-control" id="group_name_select">
+					<c:forEach var="group" items="<%=groupNames %>">
+						<option value="${group.name }">第${group.name }组</option>
+					</c:forEach>
+					<option value="0">所有组</option>
 				</select>
 			</div>
 		</form>
@@ -223,6 +244,9 @@
 		if("${stage_id}" != ""){
 			$("#stage_name_select option[value='${stage_id}']").attr("selected",true);
 		}
+		if("${group_num}" != ""){
+			$("#group_name_select option[value='${group_num}']").attr("selected",true);
+		}
     	
     	$("table input").parent().css("width","120px");
     	
@@ -230,17 +254,25 @@
     		$.cookie('competition_id', $(this).val());
         	$.cookie('event_id', null);
         	$.cookie('stage_id', null);
+        	$.cookie('group_num', null);
         	window.location.reload();
     	});
     	
 		$("#event_name_select").change(function(){
         	$.cookie('event_id', $(this).val());
         	$.cookie('stage_id', null);
+        	$.cookie('group_num', null);
         	window.location.reload();
     	});
 		
 		$("#stage_name_select").change(function(){
         	$.cookie('stage_id', $(this).val());
+        	$.cookie('group_num', null);
+        	window.location.reload();
+    	});
+		
+		$("#group_name_select").change(function(){
+        	$.cookie('group_num', $(this).val());
         	window.location.reload();
     	});
 		

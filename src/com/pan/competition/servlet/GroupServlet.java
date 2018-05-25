@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pan.competition.bean.Group;
 import com.pan.competition.bean.Message;
-import com.pan.competition.bean.Stage;
 import com.pan.competition.service.GroupService;
 
 /**

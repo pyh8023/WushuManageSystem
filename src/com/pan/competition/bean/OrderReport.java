@@ -1,6 +1,6 @@
 package com.pan.competition.bean;
 
-public class OrderReport implements IReport{
+public class OrderReport{
 	private String order;
 	private String apply_name;
 	private String delegation_name;

@@ -93,14 +93,42 @@ public class MatchDao {
 		return list;
 	}
 	
-	public List<Grade> getGradeList(int stage_id) {
+	public List<String> getMatchIdList(String stage_id, String group_num) {
+		List<String> list = new ArrayList<>();
+		Connection con = null;
+		try {
+			con = DBUtil.getCon();
+			String sql = "SELECT `match_id` FROM `match` WHERE stage_id = ? and group_num = ? order by group_num,`order`";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(stage_id) );
+			pstmt.setInt(2, Integer.parseInt(group_num));
+			ResultSet rs = pstmt.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getString("match_id"));
+			}
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return list;
+	}
+	
+	public List<Grade> getGradeList(String stage_id,int group_num) {
 		List<Grade> list = new ArrayList<>();
 		Connection con = null;
 		try {
 			con = DBUtil.getCon();
-			String sql = "SELECT * FROM `match` WHERE stage_id = ? order by group_num,`order`";
+			String sql;
+			if(group_num == 0)
+				sql = "SELECT * FROM `match` WHERE stage_id = ? order by group_num,`order`";
+			else
+				sql = "SELECT * FROM `match` WHERE stage_id = ? and group_num = ? order by group_num,`order`";
 			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, stage_id);
+			pstmt.setInt(1, Integer.parseInt(stage_id));
+			if(group_num!=0)
+				pstmt.setInt(2, group_num);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Grade grade = new Grade();
@@ -152,14 +180,20 @@ public class MatchDao {
 		return list;
 	}
 	
-	public List<Grade> getGradeListOrderByRanking(int stage_id) {
+	public List<Grade> getGradeListOrderByRanking(String stage_id,int group_num) {
 		List<Grade> list = new ArrayList<>();
 		Connection con = null;
 		try {
 			con = DBUtil.getCon();
-			String sql = "SELECT * FROM `match` WHERE stage_id = ? order by total_points is null, total_points desc,ranking is null, ranking asc";
+			String sql;
+			if(group_num == 0)
+				sql = "SELECT * FROM `match` WHERE stage_id = ? order by total_points is null, total_points desc,ranking is null, ranking asc";
+			else
+				sql = "SELECT * FROM `match` WHERE stage_id = ? and group_num = ? order by total_points is null, total_points desc,ranking is null, ranking asc";
 			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, stage_id);
+			pstmt.setInt(1, Integer.parseInt(stage_id));
+			if(group_num != 0)
+				pstmt.setInt(2, group_num);
 			ResultSet rs = pstmt.executeQuery();
 			while(rs.next()) {
 				Grade grade = new Grade();
@@ -218,21 +252,17 @@ public class MatchDao {
 			con = DBUtil.getCon();
 			String sql = null;
 			PreparedStatement pstmt = null;
-			if(arrange.getOrder().equals("")) {
-				sql = "UPDATE `match` SET group_num = ?,`order`=null WHERE match_id = ? AND ? IN (SELECT group_num FROM `group` WHERE stage_id = ?)";
+			if(arrange.getOrder() ==null || arrange.getOrder().equals("")) {
+				sql = "UPDATE `match` SET group_num = ?,`order`=null WHERE match_id = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, Integer.parseInt(arrange.getGroup_num()));
 				pstmt.setInt(2, Integer.parseInt(arrange.getMatch_id()));
-				pstmt.setInt(3, Integer.parseInt(arrange.getGroup_num()));
-				pstmt.setInt(4, Integer.parseInt(arrange.getStage_id()));
 			}else {
-				sql = "UPDATE `match` SET `order`= ?, group_num = ? WHERE match_id = ? AND ? IN (SELECT group_num FROM `group` WHERE stage_id = ?)";
+				sql = "UPDATE `match` SET `order`= ?, group_num = ? WHERE match_id = ?";
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, Integer.parseInt(arrange.getOrder()));
 				pstmt.setInt(2, Integer.parseInt(arrange.getGroup_num()));
 				pstmt.setInt(3, Integer.parseInt(arrange.getMatch_id()));
-				pstmt.setInt(4, Integer.parseInt(arrange.getGroup_num()));
-				pstmt.setInt(5, Integer.parseInt(arrange.getStage_id()));
 			}
 			result = pstmt.executeUpdate();
 			pstmt.close();
@@ -244,14 +274,14 @@ public class MatchDao {
 		return result;
 	}
 	
-	public int updateMatchOrder(String match_id,String order) {
+	public int updateMatchOrder(String match_id,int order) {
 		int result = 0;
 		Connection con = null;
 		try {
 			con = DBUtil.getCon();
 			String sql = "UPDATE `match` SET `order`= ? WHERE match_id = ? ";
 			PreparedStatement pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, Integer.parseInt(order));
+			pstmt.setInt(1, order);
 			pstmt.setInt(2, Integer.parseInt(match_id));
 			result = pstmt.executeUpdate();
 			pstmt.close();

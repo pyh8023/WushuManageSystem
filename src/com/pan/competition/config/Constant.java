@@ -1,6 +1,10 @@
 package com.pan.competition.config;
 
 public class Constant {
+	
+	public static final String SEND_EMAIL = "15161167269@163.com"; //发件人邮箱
+	public static final String EMAIL_HOST = "smtp.163.com";  //指定发送邮件的主机smtp.qq.com(QQ)|smtp.163.com(网易)
+	public static final String EMAIL_CODE = "pyh1123581321"; //发件人授权码
 	//成功响应码
 	public static final String QUERY_SUCCESS_RESPONSE_CODE = "200";
 	public static final String QUERY_FAILED_RESPONSE_CODE = "-1";

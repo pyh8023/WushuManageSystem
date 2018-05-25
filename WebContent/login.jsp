@@ -46,8 +46,8 @@
 	      </ul>
 	      
 	      <ul class="nav navbar-nav navbar-right">
-	        <li class="active"><a href="/WushuManageSystem/admin/login.jsp">登录</a></li>
-	        <li><a href="/WushuManageSystem/admin/register.jsp">注册</a></li>
+	        <li class="active"><a href="/WushuManageSystem/login.jsp">登录</a></li>
+	        <li><a href="/WushuManageSystem/register.jsp">注册</a></li>
 	      </ul>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
@@ -55,7 +55,7 @@
 	
 	<!--登录表单-->
 	<div class="container-fluid col-md-4 col-md-offset-4">
-		<form id="form_login" method="post" action="/WushuManageSystem/servlet/LoginServlet">
+		<form id="form_login" method="post" action="/WushuManageSystem/servlet/LoginServlet?action=login">
 			<h2 class="text-center" style="margin-bottom: 30px;">登录</h2>
 		  <div class="form-group">
 		    <label for="username" class="control-label">用户名</label>

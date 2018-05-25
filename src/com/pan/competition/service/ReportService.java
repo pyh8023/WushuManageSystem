@@ -5,12 +5,10 @@ import java.util.List;
 
 import com.pan.competition.bean.ApplyReport;
 import com.pan.competition.bean.GradeReport;
-import com.pan.competition.bean.IReport;
 import com.pan.competition.bean.MenuItem;
 import com.pan.competition.bean.OrderReport;
 import com.pan.competition.bean.RankingReport;
 import com.pan.competition.bean.Report;
-import com.pan.competition.bean.Stage;
 import com.pan.competition.config.Constant;
 import com.pan.competition.dao.ReportDao;
 

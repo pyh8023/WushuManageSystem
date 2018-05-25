@@ -1,17 +1,15 @@
 package com.pan.competition.filter;
 
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 public class PrivilegeFilter implements Filter {
@@ -20,10 +18,12 @@ public class PrivilegeFilter implements Filter {
 			FilterChain chain) throws IOException, ServletException {
 
 		HttpServletRequest request = (HttpServletRequest) req;
+		HttpServletResponse response = (HttpServletResponse) res;
 
-		String role = (String) request.getSession(true).getAttribute("role");
+		String username = (String) request.getSession(true).getAttribute("username");
 
-		
+		if(username==null)
+			response.sendRedirect( request.getContextPath()+ "/login.jsp");
 		
 		chain.doFilter(req, res);
 	}

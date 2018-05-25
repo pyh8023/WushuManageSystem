@@ -53,7 +53,7 @@
 	    <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1">
 	      <ul class="nav navbar-nav">
 	      	<!--<li><a href="index.html">首页</a></li>-->
-	        <li><a href="/WushuManageSystem/index.jsp">首页<span class="sr-only">(current)</span></a></li>
+	        <li><a href="/WushuManageSystem/admin/index.jsp">首页<span class="sr-only">(current)</span></a></li>
 	        <li class="dropdown active">
           		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">赛事准备 <span class="caret"></span></a>
 	          	<ul class="dropdown-menu">
@@ -66,13 +66,16 @@
 	        <li><a href="/WushuManageSystem/admin/competition-arrange.jsp">竞赛编排</a></li>
 	        <li><a href="/WushuManageSystem/admin/judge/grade-list.jsp">成绩处理</a></li>
 	        <li><a href="/WushuManageSystem/admin/print-report.jsp">报表生成</a></li>
-	      </ul>	     
+	      </ul>	
+	      <ul class="nav navbar-nav navbar-right">
+	         <li><a href="/WushuManageSystem/servlet/LoginServlet?action=logout" onclick="logout()">注销</a></li>
+	      </ul>     
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
 	<ol class="breadcrumb">
-	  <li><a href="/WushuManageSystem/index.jsp">首页</a></li>
+	  <li><a href="/WushuManageSystem/admin/index.jsp">首页</a></li>
 	  <li><a href="#">赛事准备</a></li>
 	  <li><a href="/WushuManageSystem/admin/competition/competition-manage.jsp">赛事管理</a></li>
 	  <li><a href="/WushuManageSystem/admin/competition/competition-msg.jsp?competition_id=${event.competition_id}">赛事项目信息</a></li>

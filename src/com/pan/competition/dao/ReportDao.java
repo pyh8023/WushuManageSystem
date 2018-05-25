@@ -4,14 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.google.gson.Gson;
 import com.pan.competition.bean.ApplyReport;
 import com.pan.competition.bean.GradeReport;
-import com.pan.competition.bean.IReport;
 import com.pan.competition.bean.OrderReport;
 import com.pan.competition.bean.RankingReport;
 import com.pan.competition.util.DBUtil;
