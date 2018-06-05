@@ -14,6 +14,8 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pan.competition.bean.Apply;
 import com.pan.competition.config.Constant;
+import com.pan.competition.dao.CompetitionDao;
+import com.pan.competition.dao.EventDao;
 import com.pan.competition.service.ApplyService;
 
 
@@ -81,12 +83,17 @@ public class ApplyServlet extends HttpServlet {
 		Gson gson = new Gson();
 		List<Apply> list = gson.fromJson(json, new TypeToken<List<Apply>>(){}.getType());
 		String result = null;
+		if(list.size()==0)
+			return;
 		for(Apply apply:list) {
 		   result = applyService.addApply(apply);
 		   if(result.equals(Constant.QUERY_FAILED_RESPONSE_CODE)) {
 			   break;
 		   }
 		}
+		CompetitionDao competitionDao = new CompetitionDao();
+		int competition_id = new EventDao().getCompetitionIdByEventId(list.get(0).getEvent_id());
+		competitionDao.setCompetitionStatus(competition_id, "1");
 		PrintWriter out = response.getWriter();
 	    out.write(result);
 	    out.flush();

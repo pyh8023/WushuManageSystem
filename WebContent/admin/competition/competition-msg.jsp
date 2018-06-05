@@ -1,3 +1,4 @@
+<%@page import="com.pan.competition.dao.CompetitionDao"%>
 <%@page import="com.pan.competition.bean.*"%>
 <%@page import="java.util.List"%>
 <%@page import="com.pan.competition.service.EventService"%>
@@ -10,8 +11,11 @@
 	String competition_id = request.getParameter("competition_id");
 	EventService eventService = new EventService();
 	Message<List<Event>> message = eventService.getEventList(competition_id);
+	CompetitionDao competitionDao = new CompetitionDao();
+	int status = competitionDao.getCompetitionStatus(competition_id);
 	List<Event> list = message.getData();
 	request.setAttribute("list", list);
+	request.setAttribute("status", status);
 %>
   <head>
     <meta charset="utf-8">
@@ -105,15 +109,15 @@
 						<td>${event.event_group }</td>
 						<td>${event.sex }</td>
 						<td>
-							<a href="competition-event-change.jsp?event_id=${event.id }" class="btn btn-primary btn-xs">修改</a>
-							<a class="btn btn-primary btn-xs remove" onclick="remove(${event.id },${event.competition_id })">删除</a>
+							<a href="competition-event-change.jsp?event_id=${event.id }" class="btn btn-primary btn-xs <c:if test="${status !=0}">disabled</c:if>">修改</a>
+							<a class="btn btn-primary btn-xs remove <c:if test="${status !=0}">disabled</c:if>" onclick="remove(${event.id },${event.competition_id })">删除</a>
 						</td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>		
 		</c:if>
-		<a class="btn btn-primary" href="competition-event-add.jsp?competition_id=<%=competition_id %>">添加项目</a>
+		<a class="btn btn-primary <c:if test="${status !=0}">disabled</c:if>" href="competition-event-add.jsp?competition_id=<%=competition_id %>">添加项目</a>
 	</div>
 	
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

@@ -65,12 +65,8 @@ public class MatchService {
 		}
 	}*/
 	
-	public String updateMatchArrange(Arrange arrange) {
-		int status = matchDao.updateMatchArrange(arrange);
-		if(status == 1) 
-			return Constant.QUERY_SUCCESS_RESPONSE_CODE;
-		else 
-			return Constant.QUERY_FAILED_RESPONSE_CODE;
+	public int updateMatchArrange(Arrange arrange) {
+		return matchDao.updateMatchArrange(arrange);
 	}
 	
 	public String updateMatchGrade(Grade grade) {

@@ -234,6 +234,27 @@ public class EventDao {
 		return result;
 	}
 	
+	public int getCompetitionIdByEventId(String event_id) {
+		Connection con = null;
+		int status = 0;
+		try {
+			con = DBUtil.getCon();
+			String sql = "select competition_id from event where event_id = ?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(event_id));
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				status = rs.getInt("competition_id");
+			}
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return status;
+	}
+	
 	public Event getEventById(String event_id) {
 		Event event = null;
 		Connection con = null;

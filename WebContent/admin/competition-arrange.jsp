@@ -1,3 +1,4 @@
+<%@page import="com.pan.competition.dao.CompetitionDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.pan.competition.bean.*"%>
 <%@page import="java.util.List"%>
@@ -11,6 +12,7 @@
 	CompetitionService competitionService = new CompetitionService();
 	List<MenuItem> competitionNames = competitionService.getCompetitionName();
 	String competition_id = null,event_id=null,stage_id=null;
+	int status = 0;
 	List<MenuItem> eventNames=null,stageNames=null;
 	List<Group> groupList = null;
 	List<Arrange> arrangeList = null;
@@ -28,6 +30,8 @@
 		if(competition_id == null||"null".equals(competition_id)){
 			competition_id = competitionNames.get(0).getId();
 		}
+		CompetitionDao competitionDao = new CompetitionDao();
+		status = competitionDao.getCompetitionStatus(competition_id);
 		//获取项目列表
 		EventService eventService = new EventService();
 		eventNames = eventService.getEventNameList(competition_id).getData();
@@ -48,6 +52,7 @@
 			}
 		}
 	}
+	request.setAttribute("status", status);
 	request.setAttribute("competition_id", competition_id);
 	request.setAttribute("event_id", event_id);
 	request.setAttribute("stage_id", stage_id);
@@ -199,7 +204,7 @@
 		  		</c:if>
 		  	</tbody>
 		  </table>
-		  <button class="btn btn-primary" id="save_group_btn">保存</button>
+		  <button class="btn btn-primary <c:if test="${status >2 || status==0}">disabled</c:if>" id="save_group_btn">保存</button>
 		  <hr />
 		  <h4 class="text-center"><b>出场顺序</b></h4>
 	    	<table class="table table-bordered" id="arrange_table">
@@ -233,8 +238,8 @@
 		  <c:if test="${arrangeList.size() ==0 }">
 		  	<p class="text-center">该比赛阶段参赛队伍为空</p>
 		  </c:if>
-		  <button id="save_arrange_btn" class="btn btn-primary <c:if test="${arrangeList.size() ==0 }">disabled</c:if>">保存</button>
-		  <button id="draw_log_btn" class="btn btn-primary <c:if test="${arrangeList.size() ==0 }">disabled</c:if>">抽签</button>
+		  <button id="save_arrange_btn" class="btn btn-primary <c:if test="${arrangeList.size() ==0 || status !=2}">disabled</c:if>">保存</button>
+		  <button id="draw_log_btn" class="btn btn-primary <c:if test="${arrangeList.size() ==0 || status !=2}">disabled</c:if>">抽签</button>
 	  </div>
 	    
 	<script src="/WushuManageSystem/js/bootstrap-datetimepicker.min.js"></script>

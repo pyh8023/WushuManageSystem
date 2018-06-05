@@ -1,3 +1,4 @@
+<%@page import="com.pan.competition.dao.CompetitionDao"%>
 <%@page import="com.pan.competition.bean.Athlet"%>
 <%@page import="java.util.List"%>
 <%@page import="com.pan.competition.service.AthletService"%>
@@ -11,10 +12,13 @@
 	String competition_id = request.getParameter("competition_id");
 	AthletService athletService = new AthletService();
 	List<Athlet> list = athletService.getAthletList(delegation_id);
+	CompetitionDao competitionDao = new CompetitionDao();
+	int status = competitionDao.getCompetitionStatus(competition_id);
 	request.setAttribute("delegation_id", delegation_id);
 	request.setAttribute("competition_id", competition_id);
 	request.setAttribute("list", list);
 	request.setAttribute("index", 0);
+	request.setAttribute("status", status);
 %>
   <head>
     <meta charset="utf-8">
@@ -106,15 +110,15 @@
 							<td>${athlet.sex }</td>
 							<td>${athlet.age }</td>
 							<td>
-								<a href="/WushuManageSystem/admin/athlet/athlet-update.jsp?athlet_id=${athlet.id }&competition_id=${competition_id}" class="btn btn-xs btn-primary">修改</a>
-								<button class="btn btn-xs btn-primary" onclick="remove(${athlet.id })">删除</button>
+								<a href="/WushuManageSystem/admin/athlet/athlet-update.jsp?athlet_id=${athlet.id }&competition_id=${competition_id}" class="btn btn-xs btn-primary <c:if test="${status !=0}">disabled</c:if>">修改</a>
+								<button class="btn btn-xs btn-primary <c:if test="${status !=0}">disabled</c:if>" onclick="remove(${athlet.id })">删除</button>
 							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</c:if>
-		<a href="/WushuManageSystem/admin/athlet/athlet-add.jsp?delegation_id=${delegation_id }&competition_id=${competition_id }" class="btn btn-primary">添加运动员</a>
+		<a href="/WushuManageSystem/admin/athlet/athlet-add.jsp?delegation_id=${delegation_id }&competition_id=${competition_id }" class="btn btn-primary <c:if test="${status !=0}">disabled</c:if>">添加运动员</a>
 	</div>
 
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

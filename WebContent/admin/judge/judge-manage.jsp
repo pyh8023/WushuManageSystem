@@ -1,3 +1,4 @@
+<%@page import="com.pan.competition.dao.CompetitionDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.pan.competition.service.*"%>
 <%@page import="com.pan.competition.bean.*"%>
@@ -11,6 +12,7 @@
 	CompetitionService competitionService = new CompetitionService();
 	List<MenuItem> competitionNames = competitionService.getCompetitionName();
 	String competition_id = null,event_id=null,stage_id=null;
+	int status = 0;
 	List<MenuItem> eventNames=null,stageNames=null;
 	List<Judge> judgeList = null;
 	Cookie[] cookies = request.getCookies();
@@ -29,6 +31,8 @@
 		if(competition_id == null||"null".equals(competition_id)){
 			competition_id = competitionNames.get(0).getId();
 		}
+		CompetitionDao competitionDao = new CompetitionDao();
+		status = competitionDao.getCompetitionStatus(competition_id);
 		//获取项目列表
 		EventService eventService = new EventService();
 		eventNames = eventService.getEventNameList(competition_id).getData();
@@ -52,6 +56,7 @@
 	request.setAttribute("competition_id", competition_id);
 	request.setAttribute("event_id", event_id);
 	request.setAttribute("stage_id", stage_id);
+	request.setAttribute("status", status);
 	if(eventNames == null)
 		eventNames = new ArrayList<>();
 	if(stageNames == null)
@@ -223,7 +228,7 @@
 		  		</c:if>
 		  	</tbody>
 		  </table>
-		  <button class="btn btn-primary" id="save_judge_btn">保存</button>
+		  <button class="btn btn-primary <c:if test="${status !=0}">disabled</c:if>" id="save_judge_btn">保存</button>
 		</div>
 		
 		

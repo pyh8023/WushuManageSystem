@@ -1,3 +1,4 @@
+<%@page import="com.pan.competition.dao.CompetitionDao"%>
 <%@page import="com.pan.competition.service.*"%>
 <%@page import="com.pan.competition.bean.*"%>
 <%@page import="java.util.List"%>
@@ -11,6 +12,7 @@
 	CompetitionService competitionService = new CompetitionService();
 	List<MenuItem> competitionNames = competitionService.getCompetitionName();
 	String competition_id = null,delegation_id=null,event_index=null,sex_selected=null;
+	int status=0;
 	Cookie[] cookies = request.getCookies();
 	for(Cookie cookie : cookies ){
 		if(cookie.getName().equals("competition_id")){
@@ -28,6 +30,8 @@
 			competition_id = competitionNames.get(0).getId();
 		}
 		request.setAttribute("competition_id", competition_id);
+		CompetitionDao competitionDao = new CompetitionDao();
+		status = competitionDao.getCompetitionStatus(competition_id);
 		//获取项目列表
 		EventService eventService = new EventService();
 		List<Event> events = eventService.getEventList(competition_id).getData();
@@ -64,6 +68,7 @@
 			}
 		}
 	}
+	request.setAttribute("status", status);
 	request.setAttribute("sex_selected", sex_selected);
 	request.setAttribute("applyIndex", 0);
 	request.setAttribute("athletIndex", 0);
@@ -170,7 +175,7 @@
 							<td><input type="text" class="form-control" value="${apply.apply_name }"/></td>
 							<td><input type="text" class="form-control" value="${apply.remark }"/></td>
 							<td>
-								<button class="btn btn-primary btn-xs" onclick="remove(${apply.id })">删除</button>
+								<button class="btn btn-primary btn-xs <c:if test="${status !=1}">disabled</c:if>" onclick="remove(${apply.id })">删除</button>
 							</td>
 						</tr>
 					</c:forEach>
@@ -181,7 +186,7 @@
 				<p>该项目报项为空</p>
 			</c:if>
 	
-			<button id="submit_apply_btn" class="btn btn-primary <c:if test="${applyList.size() == 0 || events.size()==0 || delegationNames.size()==0}">disabled</c:if>">提交</button>
+			<button id="submit_apply_btn" class="btn btn-primary <c:if test="${applyList.size() == 0 || events.size()==0 || delegationNames.size()==0 || status !=1}">disabled</c:if>">提交</button>
 		</div>
 			
 			<div id="add_athlet_div" class="container col-md-5 col-sm-12"> 
@@ -265,7 +270,7 @@
 					</c:forEach>
 				</tbody>
 			</table>
-			<button class="btn btn-primary <c:if test="${events.size()==0 || delegationNames.size()==0 ||athlets.size()==0}">disabled</c:if>" id="add_apply_btn">添加</button>
+			<button class="btn btn-primary <c:if test="${events.size()==0 || delegationNames.size()==0 ||athlets.size()==0 ||status >1}">disabled</c:if>" id="add_apply_btn">添加</button>
 			</div>
 		</div>
 	
@@ -410,7 +415,7 @@
 			if(data != "200")
    				alert("添加报项失败");
 			window.location.reload();
-		}); 
+		});
    	});
    	
    	

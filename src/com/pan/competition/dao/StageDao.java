@@ -13,6 +13,27 @@ import com.pan.competition.util.DBUtil;
 
 public class StageDao {
 	
+	public int getCompetitionIdByStageId(String stage_id) {
+		int competition_id = 0;
+		Connection con = null;
+		try {
+			con = DBUtil.getCon();
+			String sql = "SELECT `competition_id` FROM `stage`,`event` WHERE `stage`.`stage_id`=? AND `stage`.`event_id` = `event`.`event_id`";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(stage_id));
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				competition_id = rs.getInt("competition_id");
+			}
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return competition_id;
+	}
+	
 	/**
 	 * 获取指定项目的所有阶段
 	 * @param event_id

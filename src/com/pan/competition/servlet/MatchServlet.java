@@ -100,8 +100,11 @@ public class MatchServlet extends HttpServlet {
 		List<Arrange> list = gson.fromJson(json, new TypeToken<List<Arrange>>(){}.getType());
 		String msg = null;
 		for (Arrange arrange : list) {
-			String result = matchService.updateMatchArrange(arrange);
-			if(!result.equals(Constant.QUERY_SUCCESS_RESPONSE_CODE)) {
+			int result = matchService.updateMatchArrange(arrange);
+			if(result == -1) {
+				msg = "出场顺序重复";
+				break;
+			}else if(result != 1){
 				msg = "保存失败";
 				break;
 			}

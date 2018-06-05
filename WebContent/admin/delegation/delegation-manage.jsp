@@ -1,3 +1,4 @@
+<%@page import="com.pan.competition.dao.CompetitionDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.pan.competition.service.DelegationService"%>
 <%@page import="com.pan.competition.bean.Delegation"%>
@@ -18,9 +19,12 @@
 	if(competitionNameList.size()!=0 && (selected == null||selected.equals(""))){
 		selected = competitionNameList.get(0).getId();
 	}
+	CompetitionDao competitionDao = new CompetitionDao();
+	int status = competitionDao.getCompetitionStatus(selected);
 	delegationList = delegationService.getDelegationList(selected);
 	request.setAttribute("delegationList", delegationList);
 	request.setAttribute("index", 0);
+	request.setAttribute("status", status);
 %>
 <html lang="zh-CN">
   <head>
@@ -124,8 +128,8 @@
 							<td>${delegation.province } ${delegation.city } ${delegation.district }</td>
 							<td>${delegation.phone }</td>
 							<td>
-								<a href="/WushuManageSystem/admin/delegation/delegation-update.jsp?delegation_id=${delegation.id }" class="btn btn-primary btn-xs">修改</a>
-								<a class="btn btn-primary btn-xs" onclick="remove(${delegation.id })">删除</a>
+								<a href="/WushuManageSystem/admin/delegation/delegation-update.jsp?delegation_id=${delegation.id }" class="btn btn-primary btn-xs <c:if test="${status !=0}">disabled</c:if>">修改</a>
+								<a class="btn btn-primary btn-xs <c:if test="${status !=0}">disabled</c:if>" onclick="remove(${delegation.id })">删除</a>
 							</td>
 						</tr>
 					</c:forEach>
@@ -136,7 +140,7 @@
 			<a class="btn btn-primary disabled" href="/WushuManageSystem/admin/delegation/delegation-add.jsp">添加代表团</a>
 		</c:if>
 		<c:if test="${competitionNameList.size()!=0 }">
-			<a class="btn btn-primary" href="/WushuManageSystem/admin/delegation/delegation-add.jsp?competition_id=<%=selected %>">添加代表团</a>
+			<a class="btn btn-primary <c:if test="${status !=0}">disabled</c:if>" href="/WushuManageSystem/admin/delegation/delegation-add.jsp?competition_id=<%=selected %>">添加代表团</a>
 		</c:if>
 	</div>
 

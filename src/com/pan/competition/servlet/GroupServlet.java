@@ -14,6 +14,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pan.competition.bean.Group;
 import com.pan.competition.bean.Message;
+import com.pan.competition.dao.CompetitionDao;
+import com.pan.competition.dao.EventDao;
+import com.pan.competition.dao.StageDao;
 import com.pan.competition.service.GroupService;
 
 /**
@@ -41,6 +44,9 @@ public class GroupServlet extends HttpServlet {
 		List<Group> list = gson.fromJson(json, new TypeToken<List<Group>>(){}.getType());
 		String stage_id = list.get(0).getStage_id();
 		String msg = null;
+		CompetitionDao competitionDao = new CompetitionDao();
+		int competition_id = new StageDao().getCompetitionIdByStageId(stage_id);
+		competitionDao.setCompetitionStatus(competition_id, "2");
 		groupService.removeGroup(stage_id);
 		for (Group group : list) {
 			Message<String> message = groupService.addGroup(group);

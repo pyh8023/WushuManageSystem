@@ -13,6 +13,46 @@ import com.pan.competition.util.DateUtil;
 
 public class CompetitionDao {
 	
+	public int getCompetitionStatus(String competition_id) {
+		Connection con = null;
+		int status = 0;
+		try {
+			con = DBUtil.getCon();
+			String sql = "select status from competition where competition_id = ? ";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(competition_id));
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				status = rs.getInt("status");
+			}
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return status;
+	}
+	
+	public int setCompetitionStatus(int competition_id,String status) {
+		Connection con = null;
+		int result = 0;
+		try {
+			con = DBUtil.getCon();
+			String sql = "update competition set status = ? where competition_id = ? ";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(status));
+			pstmt.setInt(2, competition_id);
+			result = pstmt.executeUpdate();
+			pstmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return result;
+	}
+	
 	/**
 	 * 添加赛事信息
 	 * @param competition

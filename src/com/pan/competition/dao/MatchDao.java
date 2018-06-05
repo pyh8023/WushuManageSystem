@@ -257,14 +257,45 @@ public class MatchDao {
 				pstmt = con.prepareStatement(sql);
 				pstmt.setInt(1, Integer.parseInt(arrange.getGroup_num()));
 				pstmt.setInt(2, Integer.parseInt(arrange.getMatch_id()));
+				result = pstmt.executeUpdate();
+				pstmt.close();
 			}else {
-				sql = "UPDATE `match` SET `order`= ?, group_num = ? WHERE match_id = ?";
-				pstmt = con.prepareStatement(sql);
-				pstmt.setInt(1, Integer.parseInt(arrange.getOrder()));
-				pstmt.setInt(2, Integer.parseInt(arrange.getGroup_num()));
-				pstmt.setInt(3, Integer.parseInt(arrange.getMatch_id()));
+				boolean isExisted = isExistOrder(arrange.getMatch_id(),arrange.getOrder(),arrange.getGroup_num());
+				if(isExisted)
+					result = -1;
+				else {
+					sql = "UPDATE `match` SET `order`= ?, group_num = ? WHERE match_id = ?";
+					pstmt = con.prepareStatement(sql);
+					pstmt.setInt(1, Integer.parseInt(arrange.getOrder()));
+					pstmt.setInt(2, Integer.parseInt(arrange.getGroup_num()));
+					pstmt.setInt(3, Integer.parseInt(arrange.getMatch_id()));
+					result = pstmt.executeUpdate();
+					pstmt.close();
+				}
 			}
-			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+			DBUtil.closeCon(con);
+		}
+		return result;
+	}
+	
+	private boolean isExistOrder(String match_id,String order,String group_num) {
+		Connection con = null;
+		boolean result = false;
+		try {
+			con = DBUtil.getCon();
+			String sql = "SELECT match_id FROM `match` WHERE `order`=? AND `group_num`=?";
+			PreparedStatement pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, Integer.parseInt(order));
+			pstmt.setInt(2, Integer.parseInt(group_num));
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				int id = rs.getInt("match_id");
+				if(!match_id.equals(id))
+					result = true;
+			}
 			pstmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,3 +1,4 @@
+<%@page import="com.pan.competition.dao.CompetitionDao"%>
 <%@page import="com.pan.competition.bean.Stage"%>
 <%@page import="java.util.List"%>
 <%@page import="com.pan.competition.bean.Message"%>
@@ -12,7 +13,10 @@
 	String competition_id = request.getParameter("competition_id");
 	StageService stageService = new StageService();
 	Message<List<Stage>> message = stageService.getStageList(event_id);
+	CompetitionDao competitionDao = new CompetitionDao();
+	int status = competitionDao.getCompetitionStatus(competition_id);
 	request.setAttribute("list", message.getData());
+	request.setAttribute("status", status);
 %>
   <head>
     <meta charset="utf-8">
@@ -136,7 +140,7 @@
 				</c:if>
 			</tbody>
 		</table>
-		<button type="submit" class="btn btn-primary" id="save_stage_btn">保存</button>
+		<button type="submit" class="btn btn-primary <c:if test="${status !=0}">disabled</c:if>" id="save_stage_btn">保存</button>
 	</div>
 	
   	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
